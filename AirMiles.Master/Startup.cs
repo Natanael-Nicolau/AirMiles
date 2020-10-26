@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using AirMiles.Master.Data;
 using AirMiles.Master.Data.Entities;
 using AirMiles.Master.Data.Repositories;
+using AirMiles.Master.Helpers;
+using MailKit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -61,6 +63,8 @@ namespace AirMiles.Master
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
+            services.AddScoped<IMailHelper, MailHelper>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -91,9 +95,9 @@ namespace AirMiles.Master
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>

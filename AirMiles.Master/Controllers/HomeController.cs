@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AirMiles.Master.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AirMiles.Master.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()
