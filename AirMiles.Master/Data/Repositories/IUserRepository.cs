@@ -10,6 +10,15 @@ namespace AirMiles.Master.Data.Repositories
 {
     public interface IUserRepository
     {
+        /// <summary>
+        /// Only Works for BackOffice users!
+        /// </summary>
+        /// <param name="user">BackOffice User</param>
+        /// <returns></returns>
+        Task<string> GetUserMainRoleAsync(User user);
+
+        ICollection<User> GetIndexList();
+
         Task<IdentityResult> AddUserAsync(User user, string password);
 
         Task AddUsertoRoleAsync(User user, string roleName);

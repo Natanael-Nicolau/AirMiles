@@ -128,7 +128,7 @@
 
                             <a class="nav-link" asp-controller="Account" asp-action="ChangePassword"><i class="fa fa-cog"></i> Change Password</a>
 
-                            <a class="nav-link" asp-controller="Account" asp-action="ChangePassword"><i class="fa fa-power-off"></i> Logout</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Logout"><i class="fa fa-power-off"></i> Logout</a>
                         </div>
                     </div>
                 </div>
@@ -147,21 +147,22 @@
             </div>
         </div>
 
+
         <div class="content mt-3">
-            @RenderBody();
+            @RenderBody()
         </div>
         <!-- /#right-panel -->
         <!-- Right Panel -->
-
         <script src="~/lib/bootstrap/vendors/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/vendors/popper.js/dist/umd/popper.min.js"></script>
         <script src="~/lib/bootstrap/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/main.js"></script>
 
-
         <script src="~/lib/bootstrap/vendors/jqvmap/dist/jquery.vmap.min.js"></script>
         <script src="~/lib/bootstrap/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
         <script src="~/lib/bootstrap/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+
+        @RenderSection("Scripts", required: false)
 </body>
 
 </html>

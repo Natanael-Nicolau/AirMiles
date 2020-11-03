@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AirMiles.Master.Data.Repositories;
 using AirMiles.Master.Helpers;
 using AirMiles.Master.Models.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -15,20 +16,36 @@ namespace AirMiles.Master.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly IMailHelper _mailHelper;
+        private readonly IConverterHelper _converterHelper;
 
         public AccountController(
             IUserRepository userRepository,
             IConfiguration configuration,
-            IMailHelper mailHelper)
+            IMailHelper mailHelper,
+            IConverterHelper converterHelper)
         {
             _userRepository = userRepository;
             _configuration = configuration;
             _mailHelper = mailHelper;
+            _converterHelper = converterHelper;
         }
 
-        public IActionResult Index()
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var userList = _userRepository.GetIndexList();
+
+
+            ICollection<IndexViewModel> modelList = new List<IndexViewModel>();
+            foreach (var user in userList)
+            {
+                var model = _converterHelper.ToIndexViewModel(user);
+                model.Position = await _userRepository.GetUserMainRoleAsync(user);
+
+                modelList.Add(model);
+            }
+
+            return View(modelList.OrderBy(m => m.FullName));
         }
 
         #region Login

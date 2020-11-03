@@ -50,8 +50,8 @@ namespace AirMiles.Master
             {
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
-
             services.AddTransient<DataSeed>();
+
 
             services.AddScoped<IAirportRepository, AirportRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
@@ -63,7 +63,10 @@ namespace AirMiles.Master
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
+
             services.AddScoped<IMailHelper, MailHelper>();
+            services.AddScoped<IConverterHelper, ConverterHelper>();
+
 
             services.Configure<CookiePolicyOptions>(options =>
             {

@@ -1,10 +1,14 @@
 ﻿using AirMiles.Master.Data.Entities;
 using AirMiles.Master.Models.Account;
+using Microsoft.AspNetCore.Antiforgery.Internal;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Internal;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Z.EntityFramework.Plus;
 
 namespace AirMiles.Master.Data.Repositories
 {
@@ -22,6 +26,22 @@ namespace AirMiles.Master.Data.Repositories
             _signInManager = signInManager;
             _roleManager = roleManager;
         }
+
+
+        public ICollection<User> GetIndexList()
+        {
+            return _userManager.Users
+                .AsNoTracking()
+                .ToList();
+        }
+
+        
+        public async Task<string> GetUserMainRoleAsync(User user)
+        {
+            var istoÉEstupido = await _userManager.GetRolesAsync(user);
+            return istoÉEstupido.FirstOrDefault(x => x == "Admin" || x == "Employee" || x == "SuperEmployee");
+        }
+
 
         public async Task<IdentityResult> AddUserAsync(User user, string password)
         {
