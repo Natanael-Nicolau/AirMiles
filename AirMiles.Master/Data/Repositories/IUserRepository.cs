@@ -1,6 +1,7 @@
 ﻿using AirMiles.Master.Data.Entities;
 using AirMiles.Master.Models.Account;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace AirMiles.Master.Data.Repositories
         Task<string> GetUserMainRoleAsync(User user);
 
         ICollection<User> GetIndexList();
+
+        IEnumerable<SelectListItem> GetBackOfficeRoles();
 
         Task<IdentityResult> AddUserAsync(User user, string password);
 

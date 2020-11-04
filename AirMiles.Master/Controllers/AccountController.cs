@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AirMiles.Master.Data.Entities;
 using AirMiles.Master.Data.Repositories;
 using AirMiles.Master.Helpers;
 using AirMiles.Master.Models.Account;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -17,17 +20,20 @@ namespace AirMiles.Master.Controllers
         private readonly IConfiguration _configuration;
         private readonly IMailHelper _mailHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly IImageHelper _imageHelper;
 
         public AccountController(
             IUserRepository userRepository,
             IConfiguration configuration,
             IMailHelper mailHelper,
-            IConverterHelper converterHelper)
+            IConverterHelper converterHelper,
+            IImageHelper imageHelper)
         {
             _userRepository = userRepository;
             _configuration = configuration;
             _mailHelper = mailHelper;
             _converterHelper = converterHelper;
+            _imageHelper = imageHelper;
         }
 
         [Authorize(Roles ="Admin")]
@@ -46,6 +52,84 @@ namespace AirMiles.Master.Controllers
             }
 
             return View(modelList.OrderBy(m => m.FullName));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var model = new CreateViewModel
+            {
+                Roles = _userRepository.GetBackOfficeRoles()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateViewModel model)
+        {
+            // Seed the Roles again
+            model.Roles = _userRepository.GetBackOfficeRoles();
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userRepository.GetUserByEmailAsync(model.Email);
+
+                if (user == null)
+                {
+                    string path;
+
+                    if (model.Photo != null && model.Photo.Length > 0)
+                    {
+                        path = await _imageHelper.UploadImageAsync(model.Photo, "Users");
+                    }
+                    else
+                    {
+                        path = Path.Combine(Directory.GetCurrentDirectory(),
+                            $"wwwroot\\images\\Users\\Default_User_Image.png");
+                    }
+
+                    user = new User
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Email = model.Email,
+                        PhotoUrl = path
+                    };
+
+                    var result = await _userRepository.AddUserAsync(user, "Password");
+
+                    if (result != IdentityResult.Success)
+                    {
+                        ModelState.AddModelError(string.Empty, "The User could not be created");
+                        return View(model);
+                    }
+
+                    // Add user to Role
+                    await _userRepository.AddUsertoRoleAsync(user, model.Role);
+
+                    var myToken = await _userRepository.GenerateEmailConfirmationTokenAsync(user);
+
+                    var tokenLink = this.Url.Action("ConfirmAccount", "Account", new
+                    {
+                        userid = user.Id,
+                        token = myToken,
+                    }, protocol: HttpContext.Request.Scheme);
+
+                    _mailHelper.SendMail(model.Email, "Account Confirmation", $"<h1>Account Confirmation</h1>" +
+                       $"To finish your account registration, " +
+                       $"please click this link:</br></br><a href = \"{tokenLink}\">Confirm Account</a>");
+
+                    this.ViewBag.Message = "The instructions to confirm your account have been sent to the email.";
+
+                    return View(model);
+                }
+
+                ModelState.AddModelError(string.Empty, "A User with this email is alredy registered");
+            }
+
+            return View(model);
         }
 
         #region Login

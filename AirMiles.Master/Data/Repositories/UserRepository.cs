@@ -3,6 +3,7 @@ using AirMiles.Master.Models.Account;
 using Microsoft.AspNetCore.Antiforgery.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Internal;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,11 +36,28 @@ namespace AirMiles.Master.Data.Repositories
                 .ToList();
         }
 
+        public IEnumerable<SelectListItem> GetBackOfficeRoles()
+        {
+            var list = _roleManager.Roles.Where(r => r.Name == "Admin" || r.Name == "Employee" || r.Name == "SuperEmployee").Select(r => new SelectListItem
+            {
+                Text = r.Name,
+                Value = r.Name
+            }).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "Please Choose a Role...",
+                Value = ""
+            });
+
+            return list;
+        }
+
         
         public async Task<string> GetUserMainRoleAsync(User user)
         {
-            var istoÉEstupido = await _userManager.GetRolesAsync(user);
-            return istoÉEstupido.FirstOrDefault(x => x == "Admin" || x == "Employee" || x == "SuperEmployee");
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles.FirstOrDefault(x => x == "Admin" || x == "Employee" || x == "SuperEmployee");
         }
 
 
