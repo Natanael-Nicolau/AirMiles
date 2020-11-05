@@ -74,10 +74,12 @@ namespace AirMiles.Master.Controllers
 
             if (ModelState.IsValid)
             {
+                //Gets the user
                 var user = await _userRepository.GetUserByEmailAsync(model.Email);
 
                 if (user == null)
                 {
+                    // Initializes an empty path
                     string path;
 
                     if (model.Photo != null && model.Photo.Length > 0)
@@ -86,18 +88,22 @@ namespace AirMiles.Master.Controllers
                     }
                     else
                     {
+                        //Defines the Photo as the default
                         path = Path.Combine(Directory.GetCurrentDirectory(),
                             $"wwwroot\\images\\Users\\Default_User_Image.png");
                     }
 
+                    //Initializes a new User
                     user = new User
                     {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
+                        UserName = model.Username,
                         Email = model.Email,
                         PhotoUrl = path
                     };
 
+                    // Adds the User to the DataBase
                     var result = await _userRepository.AddUserAsync(user, "Password");
 
                     if (result != IdentityResult.Success)
@@ -109,14 +115,17 @@ namespace AirMiles.Master.Controllers
                     // Add user to Role
                     await _userRepository.AddUsertoRoleAsync(user, model.Role);
 
+                    // Creates a Token in order to confirm the email
                     var myToken = await _userRepository.GenerateEmailConfirmationTokenAsync(user);
 
+                    // Defines the Link with its properties to be sent in the email
                     var tokenLink = this.Url.Action("ConfirmAccount", "Account", new
                     {
                         userid = user.Id,
                         token = myToken,
                     }, protocol: HttpContext.Request.Scheme);
 
+                    //Sends an Email to the User with the TokenLink
                     _mailHelper.SendMail(model.Email, "Account Confirmation", $"<h1>Account Confirmation</h1>" +
                        $"To finish your account registration, " +
                        $"please click this link:</br></br><a href = \"{tokenLink}\">Confirm Account</a>");
@@ -127,6 +136,71 @@ namespace AirMiles.Master.Controllers
                 }
 
                 ModelState.AddModelError(string.Empty, "A User with this email is alredy registered");
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> ConfirmAccount(string userId, string token)
+        {
+            // Verifies if the userId and token are not empty
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return this.NotFound();
+            }
+
+            // Gets the User through its Id
+            var user = await _userRepository.GetUserByIdAsync(userId);
+
+            if (user == null)
+            {
+                return this.NotFound();
+            }
+
+            // Initializes a new Model, filling the fields 
+            var model = new ResetPasswordViewModel
+            {
+                UserName = user.UserName,
+                Token = token
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmAccount(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userRepository.GetUserByEmailAsync(model.UserName);
+
+                if (user != null)
+                {
+                    // Confirms the Email
+                    var result = await _userRepository.ConfirmEmailAsync(user, model.Token);
+
+                    if (!result.Succeeded)
+                    {
+                        return this.NotFound();
+                    }
+
+                    result = await _userRepository.ChangePasswordAsync(user, "Password", model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        return this.RedirectToAction("Login");
+                    }
+                    else
+                    {
+                        this.ViewBag.Message = "Error while changing the password.";
+                    }
+
+                    return View(model);
+                }
+
+                this.ViewBag.Message = "User not found.";
+
+                return View(model);
             }
 
             return View(model);

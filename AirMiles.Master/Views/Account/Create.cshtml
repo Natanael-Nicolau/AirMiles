@@ -10,6 +10,7 @@
             <!--FirstName-->
 
             <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly"></div>
 
                 <div class="form-group">
                     <label asp-for="FirstName" class=" form-control-label"></label>
@@ -31,6 +32,7 @@
                 }
 
                 <!--FirstNameEnd-->
+
                 <!--LastName-->
 
                 <div class="form-group">
@@ -76,6 +78,7 @@
                 }
 
                 <!--EmailEnd-->
+
                 <!--BirthDate-->
 
                 <div class="form-group">
@@ -99,6 +102,7 @@
                 }
 
                 <!--BirthDateEnd-->
+
                 <!--Role-->
 
                 <div class="form-group">
@@ -122,6 +126,7 @@
                 }
 
                 <!--RoleEnd-->
+
                 <!--Photo-->
 
                 <div class="form-group">
@@ -145,15 +150,26 @@
 
                 <!--PhotoEnd-->
 
+                <!--Buttons-->
 
-                <div class="card-footer form-group">
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="fa fa-dot-circle-o"></i> Submit
-                    </button>
-                    <button type="reset" class="btn btn-danger btn-sm">
-                        <i class="fa fa-ban"></i> Reset
-                    </button>
+            <div class="card-footer form-group">
+
+                <div class="text-success">
+                    <p>
+                        @ViewBag.Message
+                    </p>
                 </div>
+
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-dot-circle-o"></i> Submit
+                </button>
+                <button type="reset" class="btn btn-danger btn-sm">
+                    <i class="fa fa-ban"></i> Reset
+                </button>
+            </div>
+
+                <!--ButtonsEnd-->
+
             </form>
         </div>
     </div>

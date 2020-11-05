@@ -66,6 +66,7 @@ namespace AirMiles.Master
 
             services.AddScoped<IMailHelper, MailHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
+            services.AddScoped<IImageHelper, ImageHelper>();
 
 
             services.Configure<CookiePolicyOptions>(options =>

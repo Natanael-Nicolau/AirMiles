@@ -23,13 +23,14 @@ namespace AirMiles.Master.Models.Account
         [EmailAddress]
         public string Email { get; set; }
 
+        public string Username => Email;
+
 
         [AllowedExtensions(new string[] { ".jpg", ".png", ".jpeg" })]
         public IFormFile Photo { get; set; }
 
         [Required]
         [Display(Name = "Birth Date", Prompt = "yyyy/mm/dd")]
-        [RegularExpression("[A-z]{2,50}", ErrorMessage = "Expression Malformed")]
         public string BirthDate { get; set; }
 
         [Required]

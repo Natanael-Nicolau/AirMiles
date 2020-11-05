@@ -11,7 +11,6 @@ namespace AirMiles.Master.Helpers
     {
         public async Task<string> UploadImageAsync(IFormFile imageFile, string folder)
         {
-            var type = imageFile.Name;
             var guid = Guid.NewGuid().ToString();
             var file = $"{guid}.jpg";
 
