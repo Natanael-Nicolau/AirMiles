@@ -39,7 +39,7 @@ namespace AirMiles.Master.Models.Account
 
         [Required]
         [Display(Name = "Birth Date", Prompt = "yyyy/mm/dd")]
-        public string BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required]
         [Display(Name = "Role")]

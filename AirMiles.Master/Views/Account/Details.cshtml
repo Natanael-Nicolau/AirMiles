@@ -30,6 +30,23 @@
     </section>
 </aside>
 
+<a asp-action="Edit" asp-route-email="@Model.Email" class="btn btn-warning">
+    <i class="fa fa-pencil"></i> Edit
+</a>
+
+@if (this.User.Identity.Name == Model.Email)
+{
+    <a asp-action="ChangePassword" class="btn btn-secondary">
+        <i class="fa fa-lock"></i> Change Password
+    </a>
+}
+@if (this.User.IsInRole("Admin"))
+{
+    <a asp-action="Delete" asp-route-email="@Model.Username" class="btn btn-danger">
+        <i class="fa fa-trash-o"></i> Delete
+    </a>
+}
+
 @section Scripts {
     <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
 }

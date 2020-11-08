@@ -149,5 +149,11 @@ namespace AirMiles.Master.Data.Repositories
                 password,
                 false);
         }
+
+        public async Task<IdentityResult> RemoveFromRole(User user, string role)
+        {
+            return await _userManager.RemoveFromRoleAsync(user, role);
+        }
+
     }
 }

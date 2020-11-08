@@ -37,11 +37,12 @@ namespace AirMiles.Master.Data
                 user = new User
                 {
                     FirstName = "Miles",
-                    LastName = "Jr.",
+                    LastName = "Júnior",
                     Email = "milhas@yopmail.com",
                     UserName = "milhas@yopmail.com",
                     PhoneNumber = "223232323",
-                    PhotoUrl = $"wwwroot\\images\\Users\\Default_User_Image.png"
+                    BirthDate = new DateTime(1995, 4, 25),
+                    PhotoUrl = $"~/images/Users/Default_User_Image.png"
                 };
 
                 var result = await _userRepository.AddUserAsync(user, "123123");

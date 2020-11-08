@@ -30,5 +30,32 @@ namespace AirMiles.Master.Helpers
                 IsEmailConfirmed = user.EmailConfirmed
             };
         }
+
+        public User ToUserEntity(CreateViewModel model, string photoPath)
+        {
+            return new User
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserName = model.Username,
+                Email = model.Email,
+                BirthDate = model.BirthDate,
+                PhotoUrl = photoPath
+            };
+        }
+
+        public EditViewModel ToEditViewModel(User user, string role)
+        {
+            return new EditViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                FullName = user.FullName,
+                BirthDate = user.BirthDate,
+                Email = user.Email,
+                PhotoUrl = user.PhotoUrl,
+                Role = role
+            };
+        }
     }
 }

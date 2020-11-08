@@ -95,23 +95,14 @@ namespace AirMiles.Master.Controllers
                     else
                     {
                         //Defines the Photo as the default
-                        path = Path.Combine(Directory.GetCurrentDirectory(),
-                            $"wwwroot\\images\\Users\\Default_User_Image.png");
+                        path = $"~/images/Users/Default_User_Image.png";
                     }
 
                     //Initializes a new User
-                    user = new User
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        UserName = model.Username,
-                        Email = model.Email,
-                        PhotoUrl = path
-                    };
+                    user = _converterHelper.ToUserEntity(model, path);
 
                     // Adds the User to the DataBase
                     var result = await _userRepository.AddUserAsync(user, "Password");
-
                     if (result != IdentityResult.Success)
                     {
                         ModelState.AddModelError(string.Empty, "The User could not be created");
@@ -164,6 +155,95 @@ namespace AirMiles.Master.Controllers
 
 
             var model = _converterHelper.ToDetailsViewModel(user, role);
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Edit(string email)
+        {
+            if (!(this.User.IsInRole("Admin") || this.User.Identity.Name == email))
+            {
+                return this.Unauthorized();
+            }
+
+            var user = await _userRepository.GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                return this.NotFound();
+            }
+
+            var role = await _userRepository.GetUserMainRoleAsync(user);
+            var model = _converterHelper.ToEditViewModel(user, role);
+            model.Roles = _userRepository.GetBackOfficeRoles();
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!(this.User.IsInRole("Admin") || this.User.Identity.Name == model.Email))
+                {
+                    return this.Unauthorized();
+                }
+
+                var user = await _userRepository.GetUserByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    return this.NotFound();
+                }
+
+                //initializes a new Path
+                string path;
+                if (model.Photo != null && model.Photo.Length > 0)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.Photo, "Users");
+                }
+                else
+                {
+                    //Defines the Photo as the default
+                    path = model.PhotoUrl;
+                }
+
+                //Updates the user roles
+                if (!(await _userRepository.IsUserInRoleAsync(user, model.Role)))
+                {
+                    var currentRole = await _userRepository.GetUserMainRoleAsync(user);
+                    var roleResult = await _userRepository.RemoveFromRole(user, currentRole);
+                    if (!roleResult.Succeeded)
+                    {
+                        ModelState.AddModelError(string.Empty, "Failed to update user Role");
+                        model.Roles = _userRepository.GetBackOfficeRoles();
+                        return View(model);
+                    }
+
+                    await _userRepository.AddUsertoRoleAsync(user, model.Role);                    
+                }
+
+                //Updates the user entity
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.BirthDate = model.BirthDate;
+                user.PhotoUrl = path;
+
+                var result = await _userRepository.UpdateUserAsync(user);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to update User");
+                    model.Roles = _userRepository.GetBackOfficeRoles();
+                    return View(model);
+                }
+
+
+                return RedirectToAction(nameof(Details), new { email = model.Email });
+
+            }
+
+            model.Roles = _userRepository.GetBackOfficeRoles();
             return View(model);
         }
         #endregion

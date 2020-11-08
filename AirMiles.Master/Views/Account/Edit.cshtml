@@ -91,25 +91,34 @@
             <!--BirthDateEnd-->
             <!--Role-->
 
-            <div class="form-group">
-                <label asp-for="Role" class=" form-control-label"></label>
-                <div class="input-group">
-                    <div class="input-group-addon"><i class="fa fa-tag"></i></div>
-                    <select asp-for="Role" asp-items="Model.Roles" class="form-control standartSelect">
-                    </select>
-                </div>
-            </div>
-
-            @if (ViewData.ModelState["Role"] != null && ViewData.ModelState["Role"].Errors.Any())
+            @if (this.User.IsInRole("Admin"))
             {
-                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                    <span class="badge badge-pill badge-danger">Error</span>
-                    <span asp-validation-for="Role"></span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="form-group">
+                    <label asp-for="Role" class=" form-control-label"></label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-tag"></i></div>
+                        <select asp-for="Role" asp-items="Model.Roles" class="form-control standartSelect">
+                        </select>
+                    </div>
                 </div>
+
+                @if (ViewData.ModelState["Role"] != null && ViewData.ModelState["Role"].Errors.Any())
+                {
+                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                        <span class="badge badge-pill badge-danger">Error</span>
+                        <span asp-validation-for="Role"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
             }
+            else
+            {
+                <input type="hidden" asp-for="Role" />
+            }
+
+
 
             <!--RoleEnd-->
             <!--Photo-->
@@ -146,7 +155,7 @@
                 <button type="submit" class="btn btn-primary btn-sm">
                     <i class="fa fa-dot-circle-o"></i> Submit
                 </button>
-                <button asp-action="Details" asp-route-email="@Model.Email" class="btn btn-danger btn-sm">
+                <button asp-action="Details" asp-route-email="@Model.Username" class="btn btn-danger btn-sm">
                     <i class="fa fa-ban"></i> Cancel
                 </button>
             </div>

@@ -49,5 +49,7 @@ namespace AirMiles.Master.Data.Repositories
 
         Task<IdentityResult> UpdateUserAsync(User user);
         Task<SignInResult> ValidatePasswordAsync(User user, string password);
+
+        Task<IdentityResult> RemoveFromRole(User user, string role);
     }
 }

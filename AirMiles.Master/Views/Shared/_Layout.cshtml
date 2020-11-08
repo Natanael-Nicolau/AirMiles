@@ -124,7 +124,7 @@
                         </a>
 
                         <div class="user-menu dropdown-menu">
-                            <a class="nav-link" asp-controller="Account" asp-action="Details"><i class="fa fa-user"></i> My Profile</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Details" asp-route-email="@this.User.Identity.Name"><i class="fa fa-user"></i> My Profile</a>
 
                             <a class="nav-link" asp-controller="Account" asp-action="ChangePassword"><i class="fa fa-cog"></i> Change Password</a>
 

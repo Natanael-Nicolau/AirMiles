@@ -12,5 +12,8 @@ namespace AirMiles.Master.Helpers
         IndexViewModel ToIndexViewModel(User user);
 
         DetailsViewModel ToDetailsViewModel(User user, string role);
+        User ToUserEntity(CreateViewModel model, string photoPath);
+
+        EditViewModel ToEditViewModel(User user, string role);
     }
 }

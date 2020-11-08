@@ -1,6 +1,7 @@
 ﻿using AirMiles.Master.CustomValidators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -31,7 +32,7 @@ namespace AirMiles.Master.Models.Account
 
         [Required]
         [Display(Name = "Birth Date", Prompt = "yyyy/mm/dd")]
-        public string BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required]
         [Display(Name = "Role")]
