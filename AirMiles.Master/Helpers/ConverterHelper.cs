@@ -9,6 +9,18 @@ namespace AirMiles.Master.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {
+        public DetailsViewModel ToDetailsViewModel(User user, string role)
+        {
+            return new DetailsViewModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                BirthDate = user.BirthDate.ToShortDateString(),
+                PhotoUrl = user.PhotoUrl,
+                Role = role,
+            };
+        }
+
         public IndexViewModel ToIndexViewModel(User user)
         {
             return new IndexViewModel

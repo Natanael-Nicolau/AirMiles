@@ -40,7 +40,8 @@ namespace AirMiles.Master.Data
                     LastName = "Jr.",
                     Email = "milhas@yopmail.com",
                     UserName = "milhas@yopmail.com",
-                    PhoneNumber = "223232323"
+                    PhoneNumber = "223232323",
+                    PhotoUrl = $"wwwroot\\images\\Users\\Default_User_Image.png"
                 };
 
                 var result = await _userRepository.AddUserAsync(user, "123123");

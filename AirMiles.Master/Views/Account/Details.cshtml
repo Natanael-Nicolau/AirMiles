@@ -1,0 +1,35 @@
+﻿@model AirMiles.Master.Models.Account.DetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+    ViewData["ViewName"] = "Account Details";
+}
+
+<aside class="profile-nav alt">
+    <section class="card">
+        <div class="card-header user-header alt bg-dark">
+            <div class="media">
+                <a href="#">
+                    <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="Image" src="@Url.Content(Model.PhotoUrl)">
+                </a>
+                <div class="media-body">
+                    <h2 class="text-light display-6">@Html.DisplayFor(model => model.FullName)</h2>
+                    <p>@Html.DisplayFor(model => model.Role)</p>
+                </div>
+            </div>
+        </div>
+
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <i class="fa fa-envelope-o"></i> @Html.DisplayNameFor(model => model.Email): @Html.DisplayFor(model => model.Email)
+            </li>
+            <li class="list-group-item">
+                <i class="fa fa-calendar"></i> @Html.DisplayNameFor(model => model.BirthDate): @Html.DisplayFor(model => model.BirthDate)
+            </li>
+        </ul>
+    </section>
+</aside>
+
+@section Scripts {
+    <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
+}

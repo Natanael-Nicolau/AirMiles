@@ -16,6 +16,8 @@ namespace AirMiles.Master.Data.Entities
         [Display(Name ="Last Name")]
         public string LastName { get; set; }
 
+        public DateTime BirthDate { get; set; }
+
         public string PhotoUrl { get; set; }
 
         [NotMapped]

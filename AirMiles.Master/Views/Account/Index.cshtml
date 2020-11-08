@@ -40,9 +40,9 @@
                                         <td>@Html.DisplayFor(modelUser => user.Position)</td>
                                         <td>@Html.DisplayFor(modelUser => user.IsEmailConfirmed)</td>
                                         <td>
-                                            <a asp-action="Edit" asp-route-id="@user.Username" class="btn btn-warning"><i class="fa fa-pencil"></i> Edit</a>
-                                            <a asp-action="Details" asp-route-id="@user.Username" class="btn btn-info"><i class="fa fa-info-circle"> Details</i></a>
-                                            <a asp-action="Delete" asp-route-id="@user.Username" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</a>
+                                            <a asp-action="Edit" asp-route-email="@user.Username" class="btn btn-warning"><i class="fa fa-pencil"></i> Edit</a>
+                                            <a asp-action="Details" asp-route-email="@user.Username" class="btn btn-info"><i class="fa fa-info-circle"> Details</i></a>
+                                            <a asp-action="Delete" asp-route-email="@user.Username" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</a>
                                         </td>
                                     </tr>
                                 }

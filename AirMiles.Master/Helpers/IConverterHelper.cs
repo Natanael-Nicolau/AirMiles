@@ -10,5 +10,7 @@ namespace AirMiles.Master.Helpers
     public interface IConverterHelper
     {
         IndexViewModel ToIndexViewModel(User user);
+
+        DetailsViewModel ToDetailsViewModel(User user, string role);
     }
 }

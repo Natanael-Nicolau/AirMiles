@@ -54,6 +54,10 @@ namespace AirMiles.Master.Controllers
             return View(modelList.OrderBy(m => m.FullName));
         }
 
+
+
+
+        #region CRUD
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
@@ -67,6 +71,8 @@ namespace AirMiles.Master.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateViewModel model)
         {
             // Seed the Roles again
@@ -140,6 +146,30 @@ namespace AirMiles.Master.Controllers
 
             return View(model);
         }
+
+        [Authorize]
+        public async Task<IActionResult> Details(string email)
+        {
+            if (!(this.User.IsInRole("Admin") || this.User.Identity.Name == email))
+            {
+                return this.Unauthorized();
+            }
+
+            var user = await _userRepository.GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                return this.NotFound();
+            }
+            var role = await _userRepository.GetUserMainRoleAsync(user);
+
+
+            var model = _converterHelper.ToDetailsViewModel(user, role);
+            return View(model);
+        }
+        #endregion
+
+
+
 
         public async Task<IActionResult> ConfirmAccount(string userId, string token)
         {
