@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AirMiles.Master.Data;
-using AirMiles.Master.Data.Entities;
-using AirMiles.Master.Data.Repositories;
 using AirMiles.Master.Helpers;
+using AIrMiles.WebApp.Common.Data;
+using AIrMiles.WebApp.Common.Data.Entities;
+using AIrMiles.WebApp.Common.Data.Repositories;
 using MailKit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\TempEntities\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
@@ -31,6 +27,10 @@
     <None Include="wwwroot\lib\bootstrap\vendors\bootstrap\.github\ISSUE_TEMPLATE\feature_request.md" />
     <None Include="wwwroot\lib\bootstrap\vendors\bootstrap\.github\SUPPORT.md" />
     <None Include="wwwroot\lib\bootstrap\vendors\jquery-validation-unobtrusive\.vsts-pipelines\builds\ci-public.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AIrMiles.WebApp.Common\AIrMiles.WebApp.Common.csproj" />
   </ItemGroup>
 
 </Project>

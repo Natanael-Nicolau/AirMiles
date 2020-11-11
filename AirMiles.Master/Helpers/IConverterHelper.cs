@@ -1,5 +1,5 @@
-﻿using AirMiles.Master.Data.Entities;
-using AirMiles.Master.Models.Account;
+﻿using AirMiles.Master.Models.Account;
+using AIrMiles.WebApp.Common.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

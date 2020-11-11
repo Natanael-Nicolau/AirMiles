@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirMiles.Master", "AirMiles.Master\AirMiles.Master.csproj", "{B3E6B222-BE44-4FDA-89B8-F3573DF9A283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirMiles.Master", "AirMiles.Master\AirMiles.Master.csproj", "{B3E6B222-BE44-4FDA-89B8-F3573DF9A283}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIrMiles.WebApp.Common", "AIrMiles.WebApp.Common\AIrMiles.WebApp.Common.csproj", "{FE8BE1AF-2068-4D2F-BDD3-0485E0979E80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B3E6B222-BE44-4FDA-89B8-F3573DF9A283}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3E6B222-BE44-4FDA-89B8-F3573DF9A283}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3E6B222-BE44-4FDA-89B8-F3573DF9A283}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8BE1AF-2068-4D2F-BDD3-0485E0979E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8BE1AF-2068-4D2F-BDD3-0485E0979E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8BE1AF-2068-4D2F-BDD3-0485E0979E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8BE1AF-2068-4D2F-BDD3-0485E0979E80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
