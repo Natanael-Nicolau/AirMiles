@@ -1,5 +1,4 @@
-﻿using AIrMiles.WebApp.Common.Data;
-using AIrMiles.WebApp.Common.Data.Entities;
+﻿using AIrMiles.WebApp.Common.Data.Entities;
 using AIrMiles.WebApp.Common.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System;
