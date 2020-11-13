@@ -41,7 +41,6 @@ namespace AirMiles.FrontEnd.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -97,6 +96,14 @@ namespace AirMiles.FrontEnd.Controllers
 
                 if (user == null)
                 {
+                    user = new User
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        UserName = model.Username,
+                        Email = model.Username
+
+                    };
 
                     // Adds the User to the DataBase
                     var result = await _userRepository.AddUserAsync(user, model.Password);
@@ -151,65 +158,26 @@ namespace AirMiles.FrontEnd.Controllers
 
             // Gets the User through its Id
             var user = await _userRepository.GetUserByIdAsync(userId);
+
             if (user == null)
             {
                 return this.NotFound();
             }
 
-            // Initializes a new Model, filling the fields 
-            var model = new ResetPasswordViewModel
+            var result = await _userRepository.ConfirmEmailAsync(user, token);
+
+            if (!result.Succeeded)
             {
-                UserName = user.UserName,
-                Token = token
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfirmAccount(ResetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userRepository.GetUserByEmailAsync(model.UserName);
-                if (user != null)
-                {
-                    // Confirms the Email
-                    var result = await _userRepository.ConfirmEmailAsync(user, model.Token);
-                    if (!result.Succeeded)
-                    {
-                        return this.NotFound();
-                    }
-
-                    // Changes the default password to the user chosen password"
-                    result = await _userRepository.ChangePasswordAsync(user, "Password", model.Password);
-
-                    if (result.Succeeded)
-                    {
-                        return this.RedirectToAction("Login");
-                    }
-                    else
-                    {
-                        this.ModelState.AddModelError(string.Empty, "Error while changing the password.");
-                        return View(model);
-                    }
-
-
-                }
-
-                this.ModelState.AddModelError(string.Empty, "User not found.");
-                return View(model);
+                return this.NotFound();
             }
 
-            return View(model);
+            return View();
         }
 
         #endregion
 
         #region PasswordManagement
 
-        [ValidateAntiForgeryToken]
         public IActionResult ForgotPassword()
         {
             return View();
