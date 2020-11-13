@@ -1,0 +1,200 @@
+﻿@model AirMiles.Master.Models.Flights.CreateViewModel
+@{
+    ViewData["Title"] = "Create Flight";
+    ViewData["ViewName"] = "Create Flight";
+}
+
+<div class="card">
+    <div class="card-body card-block">
+        <form method="post">
+
+            <!--StartAirport-->
+            <div class="form-group">
+                <label asp-for="StartAirportId" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-plane"></i></div>
+                    <select asp-for="StartAirportId" asp-items="Model.StartAirports" class="form-control standartSelect">
+                    </select>
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["StartAirportId"] != null && ViewData.ModelState["StartAirportId"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="StartAirportId"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--StartAirportEnd-->
+            <!--EndAirport-->
+
+            <div class="form-group">
+                <label asp-for="EndAirportId" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-plane"></i></div>
+                    <select asp-for="EndAirportId" asp-items="Model.EndAirports" class="form-control standartSelect">
+                    </select>
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["EndAirportId"] != null && ViewData.ModelState["EndAirportId"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="EndAirportId"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--EndAirportEnd-->
+            <!--FligthCompany-->
+
+            <div class="form-group">
+                <label asp-for="FlightCompanyId" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-briefcase"></i></div>
+                    <select asp-for="FlightCompanyId" asp-items="Model.FlightCompanies" class="form-control standartSelect">
+                    </select>
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["FlightCompanyId"] != null && ViewData.ModelState["FlightCompanyId"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="FlightCompanyId"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--FligthCompanyEnd-->
+            <!--FlightStart-->
+
+            <div class="form-group">
+                <label asp-for="FlightStart" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                    <input asp-for="FlightStart" class="form-control">
+                </div>
+            </div>
+
+
+            @if (ViewData.ModelState["FlightStart"] != null && ViewData.ModelState["FlightStart"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="FlightStart"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--FlightStartEnd-->
+            <!--FlightEnd-->
+
+            <div class="form-group">
+                <label asp-for="FlightEnd" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                    <input asp-for="FlightEnd" class="form-control">
+                </div>
+            </div>
+
+
+            @if (ViewData.ModelState["FlightEnd"] != null && ViewData.ModelState["FlightEnd"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="FlightEnd"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--FlightEndEnd-->
+            <!--BaseMilesPrice-->
+
+            <div class="form-group">
+                <label asp-for="BaseMilesPrice" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-money"></i></div>
+                    <input asp-for="BaseMilesPrice" class="form-control">
+                </div>
+            </div>
+
+
+            @if (ViewData.ModelState["BaseMilesPrice"] != null && ViewData.ModelState["BaseMilesPrice"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="BaseMilesPrice"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--BaseMilesPriceEnd-->
+            <!--Buttons-->
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <div class="card-footer form-group">
+
+                <div class="text-success">
+                    <p>
+                        @ViewBag.Message
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-dot-circle-o"></i> Submit
+                </button>
+                <button asp-action="Index" class="btn btn-danger btn-sm">
+                    <i class="fa fa-ban"></i> Cancel
+                </button>
+            </div>
+
+            <!--ButtonsEnd-->
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    await Html.RenderPartialAsync("_ValidationCurrencyPartial");}
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#StartAirportId").change(function () {
+                    $("#EndAirportId").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetEndAirports")',
+                        dataType: 'json',
+                        data: { startAirportId: $("#StartAirportId").val() },
+                        success: function (endAirports) {
+                            $.each(endAirports, function (i, airport) {
+                                $("#EndAirportId").append('<option value="'
+                                    + airport.Value + '">'
+                                    + airport.Text + '</option>');
+                            });
+                        },
+                        error: function (ex) {
+                            alert('Failed to retrieve Airports.' + ex);
+                        }
+                    });
+                    return false;
+                })
+            });
+    </script>
+}
