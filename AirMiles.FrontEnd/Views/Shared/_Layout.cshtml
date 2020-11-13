@@ -1,0 +1,52 @@
+﻿<!Doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@ViewData["Title"] - AirMiles</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/bootstrap.min.css">
+    <!-- font awesome CSS
+      ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/font-awesome.min.css">
+    <!-- animate CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/animate.css">
+    <!-- wave CSS
+       ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/wave/waves.min.css">
+    <!-- Notika icon CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/notika-custom-icon.css">
+    <!-- style CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/style.css">
+    <script src="~/lib/ClientTemplate/js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- bootstrap JS
+        ============================================ -->
+    <script src="~/lib/ClientTemplate/js/bootstrap.min.js"></script>
+    <!-- Login JS
+       ============================================ -->
+    <script src="~/lib/ClientTemplate/js/login/login-action.js"></script>
+</head>
+<body>
+    <div class="header-top-area" style="background-color:white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="logo-area">
+                        <a href="#"><img src="~/lib/ClientTemplate/img/logo/logo.png" alt="" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="renderBody">
+        @RenderBody()
+    </div>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

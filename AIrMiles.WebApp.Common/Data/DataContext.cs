@@ -1,10 +1,7 @@
 ﻿using AIrMiles.WebApp.Common.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AIrMiles.WebApp.Common.Data
 {
@@ -34,7 +31,7 @@ namespace AIrMiles.WebApp.Common.Data
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

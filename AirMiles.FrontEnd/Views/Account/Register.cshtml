@@ -1,0 +1,67 @@
+﻿@model AirMiles.FrontEnd.Models.Account.RegisterNewUserViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="login-content">
+    <!-- Register -->
+    <div class="nk-block toggled">
+        <form method="post" id="form">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="nk-form">
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-support"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" class="form-control" placeholder="First Name" asp-for="FirstName">
+                    </div>
+                </div>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                <div class="input-group">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-support"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" class="form-control" placeholder="Last Name" asp-for="LastName">
+                    </div>
+                </div>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+
+                <div class="input-group mg-t-15">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-mail"></i></span>
+                    <div class="nk-int-st">
+                        <input type="text" class="form-control" placeholder="Email Address" asp-for="Username">
+                    </div>
+                </div>
+                <span asp-validation-for="Username" class="text-danger"></span>
+
+                <div class="input-group mg-t-15">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-edit"></i></span>
+                    <div class="nk-int-st">
+                        <input type="password" class="form-control" placeholder="Password" asp-for="Password">
+                    </div>
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+                <div class="input-group mg-t-15">
+                    <span class="input-group-addon nk-ic-st-pro"><i class="notika-icon notika-edit"></i></span>
+                    <div class="nk-int-st">
+                        <input type="password" class="form-control" placeholder="Confirm Password" asp-for="ConfirmPassword">
+                    </div>
+                </div>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                <a href="javascript:$('#form').submit();" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
+            </div>
+
+            <div class="nk-navigation rg-ic-stl">
+                <a asp-action="Login" asp-controller="Account" data-ma-block="#l-login"><i class="notika-icon notika-right-arrow"></i> <span>Sign in</span></a>
+                <a asp-action="RecoverPassword" asp-controller="Account" data-ma-block="#l-forget-password"><i>?</i> <span>Forgot Password</span></a>
+            </div>
+            </form>
+    </div>
+    <div class="nk-navigation nk-lg-ic">
+        <a asp-action="Login" asp-controller="Account" data-ma-action="nk-login-switch" data-ma-block="#l-register"><i class="notika-icon notika-plus-symbol"></i> <span>Register</span></a>
+        <a asp-action="ForgotPassword" asp-controller="Account" data-ma-action="nk-login-switch" data-ma-block="#l-forget-password"><i>?</i> <span>Forgot Password</span></a>
+    </div>
+</div>
+

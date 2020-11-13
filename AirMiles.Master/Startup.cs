@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AirMiles.Master.Helpers;
+﻿using AirMiles.Master.Helpers;
 using AIrMiles.WebApp.Common.Data;
 using AIrMiles.WebApp.Common.Data.Entities;
 using AIrMiles.WebApp.Common.Data.Repositories;
-using MailKit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
