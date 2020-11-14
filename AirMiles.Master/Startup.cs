@@ -98,6 +98,8 @@ namespace AirMiles.Master
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
