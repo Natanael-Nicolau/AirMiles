@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirMiles.Master", "AirMiles
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIrMiles.WebApp.Common", "AIrMiles.WebApp.Common\AIrMiles.WebApp.Common.csproj", "{FE8BE1AF-2068-4D2F-BDD3-0485E0979E80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirMiles.FrontEnd", "AirMiles.FrontEnd\AirMiles.FrontEnd.csproj", "{7D90D675-83E0-483A-BA3B-595CA9CD8CBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirMiles.FrontOffice", "AirMiles.FrontOffice\AirMiles.FrontOffice.csproj", "{358812E7-4BA7-4786-A7CD-707A094C0B12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{FE8BE1AF-2068-4D2F-BDD3-0485E0979E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE8BE1AF-2068-4D2F-BDD3-0485E0979E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE8BE1AF-2068-4D2F-BDD3-0485E0979E80}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D90D675-83E0-483A-BA3B-595CA9CD8CBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D90D675-83E0-483A-BA3B-595CA9CD8CBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D90D675-83E0-483A-BA3B-595CA9CD8CBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D90D675-83E0-483A-BA3B-595CA9CD8CBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{358812E7-4BA7-4786-A7CD-707A094C0B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{358812E7-4BA7-4786-A7CD-707A094C0B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{358812E7-4BA7-4786-A7CD-707A094C0B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{358812E7-4BA7-4786-A7CD-707A094C0B12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

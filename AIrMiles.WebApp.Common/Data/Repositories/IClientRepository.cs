@@ -8,5 +8,6 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 {
     public interface IClientRepository : IGenericRepository<Client>
     {
+        Task<Client> GetByEmailAsync(string email);
     }
 }
