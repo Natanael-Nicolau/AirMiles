@@ -1,13 +1,17 @@
-﻿using AirMiles.Master.Models.Account;
+﻿using AirMiles.Master.Models.Miles;
 using AIrMiles.WebApp.Common.Data.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AirMiles.Master.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {
-        public DetailsViewModel ToDetailsViewModel(User user, string role)
+        public Models.Account.DetailsViewModel ToDetailsViewModel(User user, string role)
         {
-            return new DetailsViewModel
+            return new Models.Account.DetailsViewModel
             {
                 FullName = user.FullName,
                 Email = user.Email,
@@ -17,9 +21,9 @@ namespace AirMiles.Master.Helpers
             };
         }
 
-        public IndexViewModel ToIndexViewModel(User user)
+        public Models.Account.IndexViewModel ToIndexViewModel(User user)
         {
-            return new IndexViewModel
+            return new Models.Account.IndexViewModel
             {
                 FullName = user.FullName,
                 Username = user.UserName,
@@ -27,7 +31,7 @@ namespace AirMiles.Master.Helpers
             };
         }
 
-        public User ToUserEntity(CreateViewModel model, string photoPath)
+        public User ToUserEntity(Models.Account.CreateViewModel model, string photoPath)
         {
             return new User
             {
@@ -40,9 +44,9 @@ namespace AirMiles.Master.Helpers
             };
         }
 
-        public EditViewModel ToEditViewModel(User user, string role)
+        public Models.Account.EditViewModel ToEditViewModel(User user, string role)
         {
-            return new EditViewModel
+            return new Models.Account.EditViewModel
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -51,6 +55,33 @@ namespace AirMiles.Master.Helpers
                 Email = user.Email,
                 PhotoUrl = user.PhotoUrl,
                 Role = role
+            };
+        }
+
+        public Flight ToFlightEntity(Models.Flights.CreateViewModel model)
+        {
+            return new Flight
+            {
+                StartAirportId = model.StartAirportId,
+                EndAirportId = model.EndAirportId,
+                FlightCompanyId = model.FlightCompanyId,
+                FlightStart = model.FlightStart,
+                FlightEnd = model.FlightEnd,
+                BaseMilesPrice = model.BaseMilesPrice,
+                IsAproved = false,
+                IsDeleted = false
+            };
+        }
+
+        public RequestsIndexViewModel ToRequestsIndexViewModel(MilesRequest request)
+        {
+            return new RequestsIndexViewModel
+            {
+                ClientName = request.Client.User.FullName,
+                RequestCode = request.RequestCode,
+                MilesAmount = request.MilesAmount,
+                PartnerName = request.Partner.Name,
+                RequestId = request.Id
             };
         }
     }

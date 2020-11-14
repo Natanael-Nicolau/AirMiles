@@ -1,7 +1,10 @@
 ﻿using AIrMiles.WebApp.Common.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AIrMiles.WebApp.Common.Data
 {
@@ -14,6 +17,7 @@ namespace AIrMiles.WebApp.Common.Data
         public DbSet<Flight> Flights { get; set; }
         public DbSet<FlightClass> FlightClasses { get; set; }
         public DbSet<Mile> Miles { get; set; }
+        public DbSet<MilesRequest> MilesRequests { get; set; }
         public DbSet<MilesType> MilesTypes { get; set; }
         public DbSet<Partner> Partners { get; set; }
         public DbSet<Reservation> Reservations { get; set; }

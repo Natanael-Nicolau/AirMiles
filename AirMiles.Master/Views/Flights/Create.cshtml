@@ -171,8 +171,8 @@
 
 @section Scripts {
     <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
-@{await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    await Html.RenderPartialAsync("_ValidationCurrencyPartial");}
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_ValidationCurrencyPartial");}
     <script type="text/javascript">
             $(document).ready(function () {
                 $("#StartAirportId").change(function () {

@@ -79,7 +79,7 @@
                             <a asp-controller="Requests" asp-action="Client">Client</a>
                         </li>
                         <li>
-                            <a asp-controller="Requests" asp-action="Flight">Flight</a>
+                            <a asp-controller="Flights" asp-action="Index">Flight</a>
                         </li>
                         <li>
                             <a asp-controller="Requests" asp-action="Airport">Airport</a>
@@ -119,7 +119,7 @@
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="~/lib/bootstrap/images/admin.jpg" alt="User Avatar">
+                            <img class="user-avatar rounded-circle" style="width: 32px; height: 32px;" src="@(Context.Request.Cookies["userPicture"] == null ? "/images/Users/Default_User_Image.png" : Context.Request.Cookies["userPicture"])" alt="User Avatar">
                         </a>
 
                         <div class="user-menu dropdown-menu">

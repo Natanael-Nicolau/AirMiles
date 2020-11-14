@@ -8,5 +8,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 {
     public interface IFlightRepository : IGenericRepository<Flight>
     {
+
+        IQueryable<Flight> GetAllWithAirportsAndPartners();
     }
 }

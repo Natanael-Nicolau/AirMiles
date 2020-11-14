@@ -34,12 +34,12 @@ namespace AirMiles.Master.Controllers
 
         public IActionResult Index()
         {
-            
+
             if (this.User.IsInRole("Employee"))
             {
                 var list = _flightRepository.GetAllWithAirportsAndPartners()
                     .Where(f => f.IsAproved == true)
-                    .Select(f => new IndexViewModel 
+                    .Select(f => new IndexViewModel
                     {
                         Id = f.Id,
                         StartAirportName = f.StartAirport.Name,
@@ -81,7 +81,7 @@ namespace AirMiles.Master.Controllers
             }
         }
 
-        [Authorize(Roles ="Admin,Employee")]
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult Create()
         {
             var model = new CreateViewModel

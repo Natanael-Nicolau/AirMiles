@@ -10,7 +10,7 @@ namespace AirMiles.Master.Models.Miles
     {
         public int RequestId { get; set; }
 
-        [Display(Name ="Client")]
+        [Display(Name = "Client")]
         public string ClientName { get; set; }
 
         [Display(Name = "Code")]

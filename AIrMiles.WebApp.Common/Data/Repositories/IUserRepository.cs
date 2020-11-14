@@ -17,7 +17,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
         /// <returns></returns>
         Task<string> GetUserMainRoleAsync(User user);
 
-        ICollection<User> GetIndexList();
+        Task<IEnumerable<User>> GetIndexListAsync();
 
         IEnumerable<SelectListItem> GetBackOfficeRoles();
 

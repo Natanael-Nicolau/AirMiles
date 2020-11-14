@@ -1,5 +1,4 @@
-﻿using AirMiles.Master.Models.Account;
-using AIrMiles.WebApp.Common.Data.Entities;
+﻿using AIrMiles.WebApp.Common.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +8,14 @@ namespace AirMiles.Master.Helpers
 {
     public interface IConverterHelper
     {
-        IndexViewModel ToIndexViewModel(User user);
+        Models.Account.IndexViewModel ToIndexViewModel(User user);
+        Models.Miles.RequestsIndexViewModel ToRequestsIndexViewModel(MilesRequest request);
 
-        DetailsViewModel ToDetailsViewModel(User user, string role);
-        User ToUserEntity(CreateViewModel model, string photoPath);
+        Models.Account.DetailsViewModel ToDetailsViewModel(User user, string role);
+        User ToUserEntity(Models.Account.CreateViewModel model, string photoPath);
 
-        EditViewModel ToEditViewModel(User user, string role);
+        Models.Account.EditViewModel ToEditViewModel(User user, string role);
+
+        Flight ToFlightEntity(Models.Flights.CreateViewModel model);
     }
 }
