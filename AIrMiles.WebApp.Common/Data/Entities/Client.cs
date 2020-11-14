@@ -9,14 +9,14 @@ namespace AIrMiles.WebApp.Common.Data.Entities
 {
     public class Client : IEntity
     {
-        [DisplayFormat(DataFormatString ="{0:N9}")]
-        public int Id{ get; set; }
+        [DisplayFormat(DataFormatString = "{0:N9}")]
+        public int Id { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsAproved { get; set; }
 
 
 
-        [Display(Name ="Buy Cap")]
+        [Display(Name = "Buy Cap")]
         public int BoughtMiles { get; set; }
 
         [Display(Name = "Prolong Cap")]
@@ -25,16 +25,13 @@ namespace AIrMiles.WebApp.Common.Data.Entities
         [Display(Name = "Transfer Cap")]
         public int TransferedMiles { get; set; }
 
-        [Display(Name = "Birth Date")]
-        public int BirtDate { get; set; }
-
-        [Display(Name ="Revision Month")]
+        [Display(Name = "Revision Month")]
         public int RevisionMonth { get; set; }
 
         [NotMapped]
         [Display(Name = "Date of next Revision")]
         public DateTime NextRevision
-        { 
+        {
             get
             {
                 if (DateTime.Now.Month <= this.RevisionMonth)
@@ -53,7 +50,7 @@ namespace AIrMiles.WebApp.Common.Data.Entities
         public User User { get; set; }
 
         //For Gold Gifting
-        public int GifterId { get; set; }
+        public int? GifterId { get; set; }
         public Client Gifter { get; set; }
     }
 }

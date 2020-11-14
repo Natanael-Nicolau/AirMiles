@@ -46,7 +46,7 @@ namespace AirMiles.Master.Controllers
                 request.Client.User = await _userRepository.GetUserByIdAsync(request.Client.UserId);
                 request.Partner = await _partnerRepository.GetByIdAsync(request.PartnerId);
                 model.Add(_converterHelper.ToRequestsIndexViewModel(request));
-            }            
+            }
 
             return View(model);
         }

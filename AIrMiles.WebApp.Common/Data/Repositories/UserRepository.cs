@@ -25,11 +25,13 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
         }
 
 
-        public ICollection<User> GetIndexList()
+        public async Task<IEnumerable<User>> GetIndexListAsync()
         {
-            return _userManager.Users
-                .AsNoTracking()
-                .ToList();
+            IEnumerable<User> list = await _userManager.GetUsersInRoleAsync("Admin");
+            list = list.Concat(await _userManager.GetUsersInRoleAsync("Employee"));
+            list = list.Concat(await _userManager.GetUsersInRoleAsync("SuperEmployee"));
+
+            return list;
         }
 
         public IEnumerable<SelectListItem> GetBackOfficeRoles()
@@ -37,10 +39,10 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
             var list = _roleManager.Roles
                 .Where(r => r.Name == "Admin" || r.Name == "Employee" || r.Name == "SuperEmployee")
                 .Select(r => new SelectListItem
-            {
-                Text = r.Name,
-                Value = r.Name
-            }).ToList();
+                {
+                    Text = r.Name,
+                    Value = r.Name
+                }).ToList();
 
             list.Insert(0, new SelectListItem
             {
@@ -51,7 +53,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
             return list;
         }
 
-        
+
         public async Task<string> GetUserMainRoleAsync(User user)
         {
             var roles = await _userManager.GetRolesAsync(user);

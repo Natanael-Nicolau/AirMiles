@@ -1,4 +1,5 @@
 ﻿using AIrMiles.WebApp.Common.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,15 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
         public FlightRepository(DataContext context) : base(context)
         {
             _context = context;
+        }
+
+        public IQueryable<Flight> GetAllWithAirportsAndPartners()
+        {
+            return _context.Flights
+                .Include(f => f.StartAirport)
+                .Include(f => f.EndAirport)
+                .Include(f => f.FlightCompany)
+                .AsNoTracking();
         }
     }
 }

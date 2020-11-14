@@ -7,6 +7,7 @@ using AirMiles.Master.Helpers;
 using AirMiles.Master.Models.Account;
 using AIrMiles.WebApp.Common.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -35,10 +36,10 @@ namespace AirMiles.Master.Controllers
             _imageHelper = imageHelper;
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            var userList = _userRepository.GetIndexList();
+            var userList = await _userRepository.GetIndexListAsync();
 
 
             ICollection<IndexViewModel> modelList = new List<IndexViewModel>();
@@ -225,7 +226,7 @@ namespace AirMiles.Master.Controllers
                         return View(model);
                     }
 
-                    await _userRepository.AddUsertoRoleAsync(user, model.Role);                    
+                    await _userRepository.AddUsertoRoleAsync(user, model.Role);
                 }
 
                 //Updates the user entity
@@ -276,6 +277,16 @@ namespace AirMiles.Master.Controllers
                 var result = await _userRepository.LoginAsync(model.Username, model.Password, model.RememberMe);
                 if (result.Succeeded)
                 {
+                    var user = await _userRepository.GetUserByEmailAsync(model.Username);
+                    var cookieOptions = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddYears(1)
+                    };
+
+                    HttpContext.Response.Cookies.Append("userPicture", user.PhotoUrl.Replace("~", ""), cookieOptions);
+
+
+
                     if (this.Request.Query.Keys.Contains("ReturnUrl"))
                     {
                         //Direção de retorno
@@ -379,7 +390,7 @@ namespace AirMiles.Master.Controllers
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "The email doesn't correspond to a registered user.");
-                    return this.View(model);                    
+                    return this.View(model);
                 }
 
                 var myToken = await _userRepository.GeneratePasswordResetTokenAsync(user);
@@ -387,7 +398,8 @@ namespace AirMiles.Master.Controllers
                 var link = this.Url.Action(
                     "ResetPassword",
                     "Account",
-                    new { 
+                    new
+                    {
                         token = myToken,
                         userId = user.Id
                     }, protocol: HttpContext.Request.Scheme);
@@ -469,8 +481,6 @@ namespace AirMiles.Master.Controllers
         {
             return View();
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]

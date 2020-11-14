@@ -15,15 +15,15 @@ namespace AIrMiles.WebApp.Common.Data.Entities
         [Display(Name = "Price")]
         public decimal BasePrice { get; set; }
         [Display(Name = "Miles Price")]
-        public decimal BaseMilesPrice { get; set; }
+        public int BaseMilesPrice { get; set; }
 
         public int StartAirportId { get; set; }
         public int EndAirportId { get; set; }
-        
-        [Display(Name ="Start Time")]
+
+        [Display(Name = "Start Time")]
         public DateTime FlightStart { get; set; }
 
-        [Display(Name ="End Time")]
+        [Display(Name = "End Time")]
         public DateTime FlightEnd { get; set; }
 
         //Parter ID
