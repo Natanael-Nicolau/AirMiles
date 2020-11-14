@@ -51,8 +51,7 @@
                                                 @if (!item.IsAproved)
                                                 {
                                                     <a asp-action="Aprove" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-check"> Aprove</i></a>
-                                                }
-                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-info-circle"> Details</i></a>
+                                                }                                                
                                                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</a>
                                             }
                                         </td>
