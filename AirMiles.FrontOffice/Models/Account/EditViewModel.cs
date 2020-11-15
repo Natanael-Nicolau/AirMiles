@@ -2,8 +2,11 @@
 
 namespace AirMiles.FrontOffice.Models.Account
 {
-    public class DetailsViewModel
+    public class EditViewModel
     {
+        [DisplayFormat(DataFormatString ="{0:D9}")]
+        public int ClientID { get; set; }
+
         public string FullName { get; set; }
 
         [Required]
@@ -38,5 +41,7 @@ namespace AirMiles.FrontOffice.Models.Account
         [Required]
         [Display(Name = "Revision Month")]
         public string RevisionMonth { get; set; }
+
+        public string BackgroundPath { get; set; }
     }
 }

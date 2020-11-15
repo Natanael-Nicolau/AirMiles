@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,13 +18,17 @@ namespace AirMiles.FrontOffice.Controllers
         private readonly IMailHelper _mailHelper;
         private readonly IClientRepository _clientRepository;
         private readonly IConverterHelper _converterHelper;
+        private readonly ITransactionRepository _transactionRepository;
+        private readonly IMileRepository _mileRepository;
 
-        public AccountController(IUserRepository userRepository, IMailHelper mailHelper, IClientRepository clientRepository, IConverterHelper converterHelper)
+        public AccountController(IUserRepository userRepository, IMailHelper mailHelper, IClientRepository clientRepository, IConverterHelper converterHelper, ITransactionRepository transactionRepository, IMileRepository mileRepository)
         {
             _userRepository = userRepository;
             _mailHelper = mailHelper;
             _clientRepository = clientRepository;
             _converterHelper = converterHelper;
+            _transactionRepository = transactionRepository;
+            _mileRepository = mileRepository;
         }
 
         [Authorize(Roles = "Client")]
@@ -38,7 +43,7 @@ namespace AirMiles.FrontOffice.Controllers
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return this.RedirectToAction("Details", "Account");
+                return this.RedirectToAction("Edit", "Account");
             }
 
             return this.View();
@@ -61,7 +66,7 @@ namespace AirMiles.FrontOffice.Controllers
 
                         if (result.Succeeded)
                         {
-                            return this.RedirectToAction("Details", "Account");
+                            return this.RedirectToAction("Edit", "Account");
                         }
 
                         this.ModelState.AddModelError(string.Empty, "Failed to login.");
@@ -114,12 +119,14 @@ namespace AirMiles.FrontOffice.Controllers
                     // Creates a new Client
                     var client = new Client
                     {
+
                         User = new User
                         {
                             FirstName = model.FirstName,
                             LastName = model.LastName,
                             UserName = model.Username,
-                            Email = model.Username
+                            Email = model.Username,
+                            PhotoUrl = "~/images/Users/Default_User_Image.png"
                         }
                     };
 
@@ -157,7 +164,7 @@ namespace AirMiles.FrontOffice.Controllers
                         _mailHelper.SendMail(model.Username, "Account Confirmation", $"<h1>Account Confirmation</h1>" +
                        $"To finish your account registration, " +
                        $"please click this link:</br></br><a href = \"{tokenLink}\">Confirm Account</a>"
-                       + $"</br></br>Your Account ID is : {clientID:N9}");
+                       + $"</br></br>Your Account ID is : {clientID:D9}");
                         this.ViewBag.Message = "The instructions to confirm your account have been sent to the email.";
                     }
                     catch (Exception)
@@ -337,12 +344,8 @@ namespace AirMiles.FrontOffice.Controllers
         #region CRUD
 
         [Authorize]
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> Edit()
         {
-            if (!(this.User.IsInRole("Client") || this.User.Identity.IsAuthenticated))
-            {
-                return this.Unauthorized();
-            }
 
             var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
 
@@ -358,31 +361,22 @@ namespace AirMiles.FrontOffice.Controllers
                 return NotFound();
             }
 
-            var model = _converterHelper.ToDetailsViewModel(client, user);
+            var model = _converterHelper.ToEditViewModel(client, user);
 
+            if(this.User.IsInRole("Gold"))
+            {
+                model.BackgroundPath = "/lib/ClientTemplate/img/status/Gold.jpg";
+            }
+            else if (this.User.IsInRole("Silver"))
+            {
+                model.BackgroundPath = "/lib/ClientTemplate/img/status/Silver.jpg";
+            }
+            else if(this.User.IsInRole("Basic"))
+            {
+                model.BackgroundPath = "/lib/ClientTemplate/img/status/Basic.jpg";
+            }
             return View(model);
         }
-
-        //[Authorize]
-        //[HttpGet]
-        //public async Task<IActionResult> Edit(string email)
-        //{
-        //    if (!(this.User.IsInRole("Admin") || this.User.Identity.Name == email))
-        //    {
-        //        return this.Unauthorized();
-        //    }
-
-        //    var user = await _userRepository.GetUserByEmailAsync(email);
-        //    if (user == null)
-        //    {
-        //        return this.NotFound();
-        //    }
-
-        //    var role = await _userRepository.GetUserMainRoleAsync(user);
-        //    var model = _converterHelper.ToEditViewModel(user, role);
-        //    model.Roles = _userRepository.GetBackOfficeRoles();
-        //    return View(model);
-        //}
 
         //[Authorize]
         //[HttpPost]
@@ -452,6 +446,117 @@ namespace AirMiles.FrontOffice.Controllers
         //    return View(model);
         //}
 
+        #endregion
+
+        #region Miles&Go
+
+        public IActionResult BalanceMovements()
+        {
+            var client = _clientRepository.GetByEmailAsync(this.User.Identity.Name);
+
+            if(client == null)
+            {
+                return NotFound();
+            }
+
+            var transactions = _transactionRepository.GetAll().Where(t => t.ClientID == client.Id).ToList();
+
+            var model = _converterHelper.ToBalanceMovementsViewModel(transactions);
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region MilesStore
+
+        public IActionResult BuyMiles()
+        {
+            var models = new List<BuyMilesViewModel>();
+
+            var i = 1;
+
+            while(i < 6)
+            {
+               var mile =  new BuyMilesViewModel
+                {
+                    Amount = 2000 * i,
+                    Price = 70 * i,
+                    Selected = false
+                };
+
+                i++;
+
+                models.Add(mile);
+            }
+
+            return View(models);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BuyMiles(IList<BuyMilesViewModel> models)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = models.Where(m => m.Selected).FirstOrDefault();
+
+                if(model == null)
+                {
+                    this.ModelState.AddModelError(string.Empty, "Please select an ammount");
+                    return View(models);
+                }
+
+                var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
+
+                var boughtMiles = model.Amount + client.BoughtMiles;
+
+                if(boughtMiles > 20000)
+                {
+                    this.ModelState.AddModelError(string.Empty, "You can only buy a maximum of 20.000 Miles per Year");
+
+                    return View(models);
+                }
+
+                var mile = _converterHelper.ToMile(model, client.Id);
+
+                var transaction = _converterHelper.ToTransaction(model, mile);
+
+                try
+                {
+                    await _mileRepository.CreateAsync(mile);
+
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
+                    return View(models);
+                }
+
+                try
+                {
+                    await _transactionRepository.CreateAsync(transaction);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
+                    return View(model);
+                }
+
+                try
+                {
+                    client.BoughtMiles = boughtMiles;
+                    await _clientRepository.UpdateAsync(client);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
+                    return View(model);
+                }
+
+                ViewBag.Message = "Your purchase was successfull!";
+            }
+            return View(models);
+        }
         #endregion
     }
 }
