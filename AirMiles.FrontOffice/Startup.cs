@@ -48,6 +48,9 @@ namespace AirMiles.FrontEnd
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IMileRepository, MileRepository>();
+
 
 
             services.AddScoped<IMailHelper, MailHelper>();

@@ -1,0 +1,51 @@
+﻿@model IList<AirMiles.FrontOffice.Models.Account.BuyMilesViewModel>
+
+@{
+    ViewData["Title"] = "Buy Miles";
+    Layout = "_SubLayout";
+}
+
+<form method="post" action="/Account/BuyMiles" class="form-example-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-example-wrap">
+                    <div class="cmp-tb-hd">
+                        <h2>Buy Miles</h2>
+                        <p>
+                            Choose the Ammount you want to purchase.
+                        </p>
+                    </div>
+                    @for (var i = 0; i < Model.Count(); i++)
+                    {
+                        <input type="hidden" asp-for="@Model[i].Amount" />
+                        <input type="hidden" asp-for="@Model[i].Price" />
+
+                        <div class="form-example-int">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(model => model[i].Amount): @Html.DisplayFor(modelItem => modelItem[i].Amount)
+                            </div>
+                        </div>
+                        <div class="form-example-int mg-t-15">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(model => model[i].Price): @Html.DisplayFor(modelItem => modelItem[i].Price)€
+                                <div class="fm-checkbox">
+                                    <input type="radio" asp-for="@(Model[i].Selected)" value="true" class="i-checks">
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                <div class="text-success">
+                    @ViewBag.Message
+                </div>
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="form-example-int mg-t-15">
+                        <button type="submit" class="btn btn-success notika-btn-success">Buy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
