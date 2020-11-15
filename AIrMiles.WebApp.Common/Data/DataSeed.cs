@@ -24,6 +24,7 @@ namespace AIrMiles.WebApp.Common.Data
             await _context.Database.EnsureCreatedAsync();
 
 
+
             await _userRepository.CheckRoleAsync("Admin");
             await _userRepository.CheckRoleAsync("SuperEmployee");
             await _userRepository.CheckRoleAsync("Employee");
@@ -262,10 +263,10 @@ namespace AIrMiles.WebApp.Common.Data
             {
                 _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 25000 });
                 _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 25000 });
-                _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 65000 });
-                _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 65000 });
-                _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 50000 });
-                _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 50000 });
+                _context.Miles.Add(new Mile { ClientId = 2, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 65000 });
+                _context.Miles.Add(new Mile { ClientId = 2, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 65000 });
+                _context.Miles.Add(new Mile { ClientId = 3, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 50000 });
+                _context.Miles.Add(new Mile { ClientId = 3, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 50000 });
                 await _context.SaveChangesAsync();
             }
             if (_context.ReservationTypes.Count() == 0)
@@ -293,12 +294,18 @@ namespace AIrMiles.WebApp.Common.Data
                 _context.Partners.Add(new Partner { CreationDate = DateTime.Now, IsStarAlliance = false, Name = "Company 4", IsAproved = false });
                 await _context.SaveChangesAsync();
             }
+            if (_context.Airports.Count() == 0)
+            {
+                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "Francisco de Sá Carneiro Airport", IATA = "OPO", Latitude = 41.25m, Longitude = -8.68m, Country = "Portugal", City = "Porto" });
+                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "Humberto Delgado Airport (Lisbon Portela Airport)", IATA = "LIS", Latitude = 38.78m, Longitude = -9.14m, Country = "Portugal", City = "Lisbon" });
+                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "John F Kennedy International Airport", IATA = "JFK", Latitude = 40.64m, Longitude = -73.78m, Country = "United States", City = "New York" });
+            }
             if (_context.Flights.Count() == 0)
             {
-                _context.Flights.Add(new Flight { StartAirportId = 1222, EndAirportId = 1220, FlightStart = DateTime.Now.AddDays(2), FlightEnd = DateTime.Now.AddDays(2).AddMinutes(60), BaseMilesPrice = 500, FlightCompanyId = 1, IsAproved = true, IsDeleted = false });
-                _context.Flights.Add(new Flight { StartAirportId = 1220, EndAirportId = 1222, FlightStart = DateTime.Now.AddDays(3), FlightEnd = DateTime.Now.AddDays(3).AddMinutes(60), BaseMilesPrice = 500, FlightCompanyId = 1, IsAproved = false, IsDeleted = false });
-                _context.Flights.Add(new Flight { StartAirportId = 1222, EndAirportId = 2975, FlightStart = DateTime.Now.AddDays(2), FlightEnd = DateTime.Now.AddDays(2).AddMinutes(60), BaseMilesPrice = 1000, FlightCompanyId = 1, IsAproved = false, IsDeleted = false });
-                _context.Flights.Add(new Flight { StartAirportId = 2975, EndAirportId = 1222, FlightStart = DateTime.Now.AddDays(3), FlightEnd = DateTime.Now.AddDays(3).AddMinutes(60), BaseMilesPrice = 1000, FlightCompanyId = 1, IsAproved = true, IsDeleted = false });
+                _context.Flights.Add(new Flight { StartAirportId = 1, EndAirportId = 2, FlightStart = DateTime.Now.AddDays(2), FlightEnd = DateTime.Now.AddDays(2).AddMinutes(60), BaseMilesPrice = 500, FlightCompanyId = 1, IsAproved = true, IsDeleted = false });
+                _context.Flights.Add(new Flight { StartAirportId = 2, EndAirportId = 1, FlightStart = DateTime.Now.AddDays(3), FlightEnd = DateTime.Now.AddDays(3).AddMinutes(60), BaseMilesPrice = 500, FlightCompanyId = 1, IsAproved = false, IsDeleted = false });
+                _context.Flights.Add(new Flight { StartAirportId = 1, EndAirportId = 3, FlightStart = DateTime.Now.AddDays(2), FlightEnd = DateTime.Now.AddDays(2).AddMinutes(60), BaseMilesPrice = 1000, FlightCompanyId = 1, IsAproved = false, IsDeleted = false });
+                _context.Flights.Add(new Flight { StartAirportId = 3, EndAirportId = 1, FlightStart = DateTime.Now.AddDays(3), FlightEnd = DateTime.Now.AddDays(3).AddMinutes(60), BaseMilesPrice = 1000, FlightCompanyId = 1, IsAproved = true, IsDeleted = false });
                 await _context.SaveChangesAsync();
             }
             if (_context.Reservations.Count() == 0)
@@ -321,11 +328,6 @@ namespace AIrMiles.WebApp.Common.Data
             {
                 _context.MilesRequests.Add(new MilesRequest { ClientId = 1, IsAproved = false, IsDeleted = false, MilesAmount = 1000, PartnerId = 1, RequestCode = "cKqdprtsQr1" });
                 await _context.SaveChangesAsync();
-            }
-            if (_context.Airports.Count() == 0)
-            {
-                //TODO: Next thing
-                //throw new InsufficientExecutionStackException("Please load the airports in first!");
             }
         }
     }

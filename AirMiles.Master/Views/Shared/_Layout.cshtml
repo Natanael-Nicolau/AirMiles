@@ -76,19 +76,16 @@
                     {
                         <h3 class="menu-title">Approval Requests</h3><!-- /.menu-title -->
                         <li>
-                            <a asp-controller="Requests" asp-action="Client">Client</a>
+                            <a asp-controller="Clients" asp-action="Index">Client</a>
                         </li>
                         <li>
                             <a asp-controller="Flights" asp-action="Index">Flight</a>
                         </li>
                         <li>
-                            <a asp-controller="Requests" asp-action="Airport">Airport</a>
+                            <a asp-controller="Airports" asp-action="Index">Airport</a>
                         </li>
                         <li>
-                            <a asp-controller="Requests" asp-action="Partner">Partner</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Requests" asp-action="Urgent">Urgent</a>
+                            <a asp-controller="Partners" asp-action="Index">Partner</a>
                         </li>
                     }
                     @if (this.User.IsInRole("Admin"))

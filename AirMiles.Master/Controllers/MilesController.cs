@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AirMiles.Master.Helpers;
 using AirMiles.Master.Models.Miles;
+using AIrMiles.WebApp.Common.Data.Entities;
 using AIrMiles.WebApp.Common.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,8 @@ namespace AirMiles.Master.Controllers
     {
         private readonly IMilesRequestRepository _milesRequestRepository;
         private readonly IClientRepository _clientRepository;
+        private readonly IMileRepository _mileRepository;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly IPartnerRepository _partnerRepository;
         private readonly IUserRepository _userRepository;
         private readonly IConverterHelper _converterHelper;
@@ -20,12 +23,16 @@ namespace AirMiles.Master.Controllers
         public MilesController(
             IMilesRequestRepository milesRequestRepository,
             IClientRepository clientRepository,
+            IMileRepository mileRepository,
+            ITransactionRepository transactionRepository,
             IPartnerRepository partnerRepository,
             IUserRepository userRepository,
             IConverterHelper converterHelper)
         {
             _milesRequestRepository = milesRequestRepository;
             _clientRepository = clientRepository;
+            _mileRepository = mileRepository;
+            _transactionRepository = transactionRepository;
             _partnerRepository = partnerRepository;
             _userRepository = userRepository;
             _converterHelper = converterHelper;
@@ -63,9 +70,43 @@ namespace AirMiles.Master.Controllers
             {
                 return NotFound();
             }
-
             request.IsAproved = true;
             await _milesRequestRepository.UpdateAsync(request);
+
+            await _transactionRepository.CreateAsync(new Transaction {
+                ClientID = request.ClientId,
+                Description = "Request Aproval",
+                IsAproved = true,
+                IsCreditCard = false,
+                Price = 0,
+                TransactionDate = DateTime.Now,
+                IsDeleted = false,
+                Value = request.MilesAmount
+            });
+
+            await _mileRepository.CreateAsync(new Mile {
+                ClientId = request.ClientId,
+                ExpirationDate = DateTime.Now.AddYears(3),
+
+                IsAproved = true,
+                MilesTypeId = 2,
+                Qtd = request.MilesAmount,
+                IsDeleted = false
+            });
+            var partner = await _partnerRepository.GetByIdAsync(request.PartnerId);
+            if (partner.IsStarAlliance)
+            {
+                await _mileRepository.CreateAsync(new Mile
+                {
+                    ClientId = request.ClientId,
+                    ExpirationDate = DateTime.Now.AddYears(3),
+                    IsAproved = true,
+                    MilesTypeId = 1,
+                    Qtd = request.MilesAmount,
+                    IsDeleted = false
+                });
+            }
+
             return RedirectToAction(nameof(RequestsIndex));
         }
 

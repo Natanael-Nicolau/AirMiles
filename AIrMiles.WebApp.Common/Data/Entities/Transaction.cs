@@ -22,7 +22,7 @@ namespace AIrMiles.WebApp.Common.Data.Entities
 
 
         public bool IsCreditCard { get; set; }
-        public int CreditCardId { get; set; }
+        public int? CreditCardId { get; set; }
         public CreditCard CreditCard { get; set; }
         public decimal Price { get; set; }
 
