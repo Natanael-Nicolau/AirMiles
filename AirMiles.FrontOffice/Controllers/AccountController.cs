@@ -366,7 +366,10 @@ namespace AirMiles.FrontOffice.Controllers
 
             var model = _converterHelper.ToEditViewModel(client, user);
 
-            if(this.User.IsInRole("Gold"))
+            model.StatusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 1 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
+            model.BonusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 2 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
+
+            if (this.User.IsInRole("Gold"))
             {
                 model.BackgroundPath = "/lib/ClientTemplate/img/status/Gold.jpg";
             }
@@ -389,6 +392,9 @@ namespace AirMiles.FrontOffice.Controllers
             var user = await _userRepository.GetUserByIdAsync(client.UserId);
 
             var beforeModel = _converterHelper.ToEditViewModel(client, user);
+
+            beforeModel.StatusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 1 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
+            beforeModel.BonusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 2 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
 
             if (this.User.IsInRole("Gold"))
             {
@@ -428,6 +434,9 @@ namespace AirMiles.FrontOffice.Controllers
 
                 return View(beforeModel);
             }
+
+            updatedModel.StatusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 1 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
+            updatedModel.BonusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 2 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
 
             if (this.User.IsInRole("Gold"))
             {

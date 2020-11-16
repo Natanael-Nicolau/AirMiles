@@ -27,6 +27,14 @@ namespace AirMiles.FrontOffice.Models.Account
         public string Role { get; set; }
 
         [Required]
+        [Display(Name = "Status Miles")]
+        public string StatusMiles { get; set; }
+
+        [Required]
+        [Display(Name = "Bonus Miles")]
+        public string BonusMiles { get; set; }
+
+        [Required]
         [Display(Name = "Bought Miles")]
         public string BoughtMiles { get; set; }
 
