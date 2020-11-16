@@ -24,19 +24,15 @@
    ============================================ -->
 <script src="~/lib/ClientTemplate/js/login/login-action.js"></script>
 
+<script src="../lib/ClientTemplate/js/checkBoxValidation.js"></script>
+
 <div class="main-menu-area mg-tb-40">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
                     <li>
-                        <a href="/Account/Details"><i class="notika-icon notika-house"></i> Home</a>
-                    </li>
-                    <li>
-                        <a href="/Account/Reservations"><i class="notika-icon notika-calendar"></i> Reservations</a>
-                    </li>
-                    <li>
-                        <a href="/Account/Notifications"><i class="notika-icon notika-alarm"></i> Notifications</a>
+                        <a href="/Account/Edit"><i class="notika-icon notika-house"></i> Home</a>
                     </li>
                     <li>
                         <a data-toggle="tab" href="#MilesGo"><i class="notika-icon notika-travel"></i> Cinel Miles&Go</a>
@@ -60,27 +56,12 @@
                             <li>
                                 <a href="/Account/BalanceMovements">Balance and Movements</a>
                             </li>
-                            <li>
-                                <a href="/Account/MilesCredit">Miles Credit</a>
-                            </li>
-                            <li>
-                                <a href="/Account/MilesCredit">Upgrade with Miles</a>
-                            </li>
-                            <li>
-                                <a href="/Account/MilesCredit">Partners</a>
-                            </li>
                         </ul>
                     </div>
                     <div id="MilesStore" class="tab-pane notika-tab-menu-bg animated flipInX">
                         <ul class="notika-main-menu-dropdown">
                             <li>
                                 <a href="/Account/BuyMiles">Buy Miles</a>
-                            </li>
-                            <li>
-                                <a href="/Account/ExtendMiles"> Extend Miles</a>
-                            </li>
-                            <li>
-                                <a href="/Account/ConvertMiles">Convert Miles</a>
                             </li>
                             <li>
                                 <a href="/Account/TransferMiles">Transfer Miles</a>
@@ -95,5 +76,4 @@
 <div>
     @RenderBody()
 </div>
-@RenderSection("scripts", required: false)
 

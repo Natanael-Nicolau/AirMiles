@@ -1,0 +1,45 @@
+﻿@model AirMiles.FrontOffice.Models.Account.TransferMilesViewModel
+
+@{
+    ViewData["Title"] = "Transfer Miles";
+    Layout = "_SubLayout";
+}
+
+<form method="post" action="/Account/TransferMiles" class="form-example-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-example-wrap">
+                    <div class="cmp-tb-hd">
+                        <h1>Buy Miles</h1>
+                        <br />
+                        <p style="font-size:large">
+                            Choose the Client you want to transfer to.
+                        </p>
+                        <hr />
+                    </div>
+                    <input type="hidden" asp-for="Amount" />
+                    <div class="form-example-int">
+                        <div class="form-group" style="font-size:medium">
+                            @Html.DisplayNameFor(model => model.Amount): @Html.DisplayFor(model => model.Amount)
+                            <input type="radio" checked="checked" class="i-checks">
+                        </div>
+                    </div>
+                    <div class="form-example-int mg-t-15">
+                        <div class="form-group" style="font-size:medium">
+                            @Html.DisplayNameFor(model => model.GiftedClientID): <input type="text" placeholder="Ex: 000000000" asp-for="GiftedClientID"/>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="text-success">
+                        @ViewBag.Message
+                    </div>
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="form-example-int mg-t-15">
+                        <button type="submit" class="btn btn-success notika-btn-success">Transfer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

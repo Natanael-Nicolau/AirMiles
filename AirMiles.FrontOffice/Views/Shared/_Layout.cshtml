@@ -44,9 +44,24 @@
             </div>
         </div>
     </div>
-        <div id="renderBody">
-            @RenderBody()
+    <div id="renderBody">
+        @RenderBody()
+    </div>
+    <!-- Start Footer area-->
+    <div class="footer-copyright-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="footer-copy-right" style="">
+                        <p>
+                            Copyright © 2018
+                            . All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        @RenderSection("Scripts", required: false)
+    </div>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

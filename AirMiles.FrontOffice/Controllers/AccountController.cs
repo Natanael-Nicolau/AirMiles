@@ -31,7 +31,6 @@ namespace AirMiles.FrontOffice.Controllers
             _mileRepository = mileRepository;
         }
 
-        [Authorize(Roles = "Client")]
         public IActionResult Index()
         {
             return View();
@@ -450,9 +449,9 @@ namespace AirMiles.FrontOffice.Controllers
 
         #region Miles&Go
 
-        public IActionResult BalanceMovements()
+        public async Task<IActionResult> BalanceMovements()
         {
-            var client = _clientRepository.GetByEmailAsync(this.User.Identity.Name);
+            var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
 
             if(client == null)
             {
@@ -502,7 +501,7 @@ namespace AirMiles.FrontOffice.Controllers
 
                 if(model == null)
                 {
-                    this.ModelState.AddModelError(string.Empty, "Please select an ammount");
+                    this.ModelState.AddModelError(string.Empty, "Please select an amount");
                     return View(models);
                 }
 
@@ -519,7 +518,7 @@ namespace AirMiles.FrontOffice.Controllers
 
                 var mile = _converterHelper.ToMile(model, client.Id);
 
-                var transaction = _converterHelper.ToTransaction(model, mile);
+                var transaction =  _converterHelper.ToTransaction(model, mile);
 
                 try
                 {
@@ -539,7 +538,7 @@ namespace AirMiles.FrontOffice.Controllers
                 catch (Exception)
                 {
                     this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
-                    return View(model);
+                    return View(models);
                 }
 
                 try
@@ -550,13 +549,184 @@ namespace AirMiles.FrontOffice.Controllers
                 catch (Exception)
                 {
                     this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
-                    return View(model);
+                    return View(models);
                 }
 
-                ViewBag.Message = "Your purchase was successfull!";
+                ViewBag.Message = "Your purchase was successful!";
             }
             return View(models);
         }
+
+        public IActionResult TransferMiles()
+        {
+            var model = new TransferMilesViewModel
+            {
+                Amount = 2000,
+                GiftedClientID = string.Empty
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TransferMiles(TransferMilesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Gets the current Client
+                var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
+
+                // Gets the client to gift Miles
+                var giftedClient = await _clientRepository.GetByIdAsync(Convert.ToInt32(model.GiftedClientID));
+
+                // Checks if the giftedClient exists
+                if(giftedClient == null)
+                {
+                    this.ModelState.AddModelError(string.Empty, "The selected Client does not exist. Please try again!");
+                    return View(model);
+                }
+
+                //Checks if the maximum value of transfered miles has been reached
+                var transferMiles = model.Amount + client.TransferedMiles;
+
+                if (transferMiles > 20000)
+                {
+                    this.ModelState.AddModelError(string.Empty, "You can only transfer a maximum of 20.000 Miles per Year");
+
+                    return View(model);
+                }
+
+                var clientMiles = _mileRepository.GetAll().Where(m => m.ClientId == client.Id && !m.IsDeleted && m.MilesTypeId == 2).OrderBy(m => m.ExpirationDate).ToList();
+
+                var clientTotalMiles = 0;
+
+                foreach (var x in clientMiles)
+                {
+                    clientTotalMiles += x.Qtd;
+                }
+
+                if(clientTotalMiles < model.Amount)
+                {
+                    this.ModelState.AddModelError(string.Empty, "You dont have the necessary Miles to perform this transfer. Please try again with a lower value!");
+
+                    return View(model);
+                }
+
+                // Creates a new Mile Object for the giftedClient
+                var mile = new Mile
+                {
+                    ClientId = giftedClient.Id,
+                    Qtd = model.Amount,
+                    MilesTypeId = 2,
+                    ExpirationDate = DateTime.Now.AddYears(3),
+                    IsAproved = true,
+                    IsDeleted = false,
+                };
+
+                // Creates the Transaction on the giftedClient end
+                var receivedMiles = new Transaction
+                {
+                    Description = "Transfered",
+                    Value = mile.Qtd,
+                    TransactionDate = DateTime.Now,
+                    Price = 0,
+                    ClientID = giftedClient.Id,
+                    IsAproved = true,
+                    IsCreditCard = false
+                };
+
+                // Creates the Transaction on the Client that will transfer miles end
+                var giftedMiles = new Transaction
+                {
+                    Description = "Transfered",
+                    Value = - mile.Qtd,
+                    TransactionDate = DateTime.Now,
+                    Price = 0,
+                    ClientID = client.Id,
+                    IsAproved = true,
+                    IsCreditCard = false
+                };
+
+                // 
+                try
+                {
+                    await _mileRepository.CreateAsync(mile);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your transfer.Please try again later");
+                    return View(model);
+                }
+
+                try
+                {
+                    await _transactionRepository.CreateAsync(receivedMiles);
+                    await _transactionRepository.CreateAsync(giftedMiles);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your transfer.Please try again later");
+                    return View(model);
+                }
+                try
+                {
+                    for(int i = transferMiles, j = 0; i != 0; j++)
+                    {
+                        if(i < 0)
+                        {
+                            throw new Exception();
+                        }
+
+                        var currentMile = clientMiles[j];
+
+                        if(currentMile.Qtd >= i)
+                        {
+                            i = 0;
+                            currentMile.Qtd -= i;
+                        }
+                        else
+                        {
+                            i -= currentMile.Qtd;
+                            currentMile.Qtd = 0;
+                        }
+
+                        if(currentMile.Qtd == 0)
+                        {
+                            await _mileRepository.DeleteAsync(currentMile);
+                        }
+                        else
+                        {
+                            await _mileRepository.UpdateAsync(currentMile);
+                        }
+                           
+                    }
+                }
+                catch (Exception)
+                {
+
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your transfer.Please try again later");
+                    return View(model);
+                }
+
+                try
+                {
+                    client.TransferedMiles = transferMiles;
+                    await _clientRepository.UpdateAsync(client);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your transfer.Please try again later");
+                    return View(model);
+                }
+
+                ViewBag.Message = "Your transfer was successfull!";
+                return View();
+            }
+            
+            this.ModelState.AddModelError(string.Empty, "Please select a valid Client Id");
+            return View(model);
+        }
+
         #endregion
     }
 }
