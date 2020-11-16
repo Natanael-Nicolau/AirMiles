@@ -52,7 +52,9 @@
 
                 <a href="javascript:$('#form').submit();" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
             </div>
-
+            <div>
+                @ViewBag.Message
+            </div>
             <div class="nk-navigation rg-ic-stl">
                 <a asp-action="Login" asp-controller="Account" data-ma-block="#l-login"><i class="notika-icon notika-right-arrow"></i> <span>Sign in</span></a>
                 <a asp-action="ForgotPassword" asp-controller="Account" data-ma-block="#l-forget-password"><i>?</i> <span>Forgot Password</span></a>

@@ -122,9 +122,12 @@ namespace AirMiles.FrontOffice.Controllers
                     // Creates a new Client
                     var client = new Client
                     {
-
+                        RevisionMonth = DateTime.Now.Month,
+                        IsAproved = true,
+                        IsDeleted = false,
                         User = new User
                         {
+                            BirthDate = new DateTime(1990, 2, 15),
                             FirstName = model.FirstName,
                             LastName = model.LastName,
                             UserName = model.Username,
@@ -134,8 +137,7 @@ namespace AirMiles.FrontOffice.Controllers
                     };
 
                     // Adds the User to the DataBase
-                    var result = await _userRepository.AddUserAsync(user, model.Password);
-
+                    var result = await _userRepository.AddUserAsync(client.User, model.Password);
                     if (result != IdentityResult.Success)
                     {
                         ModelState.AddModelError(string.Empty, "The User could not be created");
@@ -143,8 +145,8 @@ namespace AirMiles.FrontOffice.Controllers
                     }
 
                     // Add user to Role
-                    await _userRepository.AddUsertoRoleAsync(user, "Client");
-
+                    await _userRepository.AddUsertoRoleAsync(client.User, "Client");
+                    await _userRepository.AddUsertoRoleAsync(client.User, "Basic");
                     // Adds the Client to the DataBase
                     await _clientRepository.CreateAsync(client);
 
@@ -152,12 +154,13 @@ namespace AirMiles.FrontOffice.Controllers
                     var clientID = await _clientRepository.GetByEmailAsync(model.Username);
 
                     // Creates a Token in order to confirm the email
-                    var myToken = await _userRepository.GenerateEmailConfirmationTokenAsync(user);
+                    
+                    var myToken = await _userRepository.GenerateEmailConfirmationTokenAsync(client.User);
 
                     // Defines the Link with its properties to be sent in the email
                     var tokenLink = this.Url.Action("ConfirmAccount", "Account", new
                     {
-                        userid = user.Id,
+                        userid = client.User.Id,
                         token = myToken,
                     }, protocol: HttpContext.Request.Scheme);
 
@@ -166,8 +169,8 @@ namespace AirMiles.FrontOffice.Controllers
                     {
                         _mailHelper.SendMail(model.Username, "Account Confirmation", $"<h1>Account Confirmation</h1>" +
                        $"To finish your account registration, " +
-                       $"please click this link:</br></br><a href = \"{tokenLink}\">Confirm Account</a>"
-                       + $"</br></br>Your Account ID is : {clientID:D9}");
+                       $"please click this link: <a href = \"{tokenLink}\">Confirm Account</a>"
+                       + $"<br/><br/>Your Account ID is: {clientID.Id:D9}");
                         this.ViewBag.Message = "The instructions to confirm your account have been sent to the email.";
                     }
                     catch (Exception)
