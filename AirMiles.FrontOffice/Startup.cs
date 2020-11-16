@@ -42,7 +42,8 @@ namespace AirMiles.FrontEnd
 
             services.AddDbContext<DataContext>(cfg =>
             {
-                cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
+                //cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
+                cfg.UseSqlServer(this.Configuration.GetConnectionString("SQLPublishConnection"));
             });
             services.AddTransient<DataSeed>();
 
