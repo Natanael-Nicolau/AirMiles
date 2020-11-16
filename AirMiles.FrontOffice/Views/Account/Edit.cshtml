@@ -12,9 +12,11 @@
             <div class="view-mail-list sm-res-mg-t-30">
                 <!-- Contact area Start-->
                 <div class="contact-area">
+                    <input type="file" id="upload" style="display:none" />
+                    <input type="hidden" id="clientID" asp-for="ClientID" />
                     <div class="contact-win" style="background-image: url(@Model.BackgroundPath)">
                         <div class="contact-img" style="padding-left:20px">
-                            <img src="@Url.Content(Model.PhotoUrl)" style="width:150px" alt="User Image" />
+                            <img id="user_photo" src="@Url.Content(Model.PhotoUrl)" style="width:150px; cursor:pointer" alt="User Image" />
                             <h2 style="color:lightseagreen">@Html.DisplayFor(model => model.FullName)</h2>
                         </div>
                         <div class="conct-sc-ic">
@@ -57,3 +59,36 @@
     </div>
 </div>
 <!-- Inbox area End-->
+<script type="text/javascript">
+    var uploader = document.getElementById("upload");
+    document.getElementById("user_photo").addEventListener('click', function (event)
+    {
+        uploader.click();
+
+        event.preventDefault;
+    });
+    uploader.onchange = function () {
+
+        var formData = new FormData();
+        formData.append('photo', $('#upload')[0].files[0]); // myFile is the input type="file" control
+
+        formData.append('clientID', $("#clientID").val());
+
+        var _url = '@Url.Action("Edit", "Account")';
+
+        $.ajax({
+            url: _url,
+            type: 'POST',
+            data: formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function (result) {
+                window.location.reload();
+            },
+            error: function (jqXHR) {
+            },
+            complete: function (jqXHR, status) {
+            }
+        });
+            };
+</script>

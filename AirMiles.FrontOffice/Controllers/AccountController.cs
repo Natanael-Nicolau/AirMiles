@@ -3,10 +3,12 @@ using AirMiles.FrontOffice.Models.Account;
 using AIrMiles.WebApp.Common.Data.Entities;
 using AIrMiles.WebApp.Common.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,8 +22,9 @@ namespace AirMiles.FrontOffice.Controllers
         private readonly IConverterHelper _converterHelper;
         private readonly ITransactionRepository _transactionRepository;
         private readonly IMileRepository _mileRepository;
+        private readonly IImageHelper _imageHelper;
 
-        public AccountController(IUserRepository userRepository, IMailHelper mailHelper, IClientRepository clientRepository, IConverterHelper converterHelper, ITransactionRepository transactionRepository, IMileRepository mileRepository)
+        public AccountController(IUserRepository userRepository, IMailHelper mailHelper, IClientRepository clientRepository, IConverterHelper converterHelper, ITransactionRepository transactionRepository, IMileRepository mileRepository, IImageHelper imageHelper)
         {
             _userRepository = userRepository;
             _mailHelper = mailHelper;
@@ -29,6 +32,7 @@ namespace AirMiles.FrontOffice.Controllers
             _converterHelper = converterHelper;
             _transactionRepository = transactionRepository;
             _mileRepository = mileRepository;
+            _imageHelper = imageHelper;
         }
 
         public IActionResult Index()
@@ -377,73 +381,69 @@ namespace AirMiles.FrontOffice.Controllers
             return View(model);
         }
 
-        //[Authorize]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(EditViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (!(this.User.IsInRole("Admin") || this.User.Identity.Name == model.Email))
-        //        {
-        //            return this.Unauthorized();
-        //        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(IFormFile photo, int clientID)
+        {
+            var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
 
-        //        var user = await _userRepository.GetUserByEmailAsync(model.Email);
-        //        if (user == null)
-        //        {
-        //            return this.NotFound();
-        //        }
+            var user = await _userRepository.GetUserByIdAsync(client.UserId);
 
-        //        //initializes a new Path
-        //        string path;
-        //        if (model.Photo != null && model.Photo.Length > 0)
-        //        {
-        //            path = await _imageHelper.UploadImageAsync(model.Photo, "Users");
-        //        }
-        //        else
-        //        {
-        //            //Defines the Photo as the default
-        //            path = model.PhotoUrl;
-        //        }
+            var beforeModel = _converterHelper.ToEditViewModel(client, user);
 
-        //        //Updates the user roles
-        //        if (!(await _userRepository.IsUserInRoleAsync(user, model.Role)))
-        //        {
-        //            var currentRole = await _userRepository.GetUserMainRoleAsync(user);
-        //            var roleResult = await _userRepository.RemoveFromRole(user, currentRole);
-        //            if (!roleResult.Succeeded)
-        //            {
-        //                ModelState.AddModelError(string.Empty, "Failed to update user Role");
-        //                model.Roles = _userRepository.GetBackOfficeRoles();
-        //                return View(model);
-        //            }
-
-        //            await _userRepository.AddUsertoRoleAsync(user, model.Role);
-        //        }
-
-        //        //Updates the user entity
-        //        user.FirstName = model.FirstName;
-        //        user.LastName = model.LastName;
-        //        user.BirthDate = model.BirthDate;
-        //        user.PhotoUrl = path;
-
-        //        var result = await _userRepository.UpdateUserAsync(user);
-        //        if (!result.Succeeded)
-        //        {
-        //            ModelState.AddModelError(string.Empty, "Failed to update User");
-        //            model.Roles = _userRepository.GetBackOfficeRoles();
-        //            return View(model);
-        //        }
+            if (this.User.IsInRole("Gold"))
+            {
+                beforeModel.BackgroundPath = "/lib/ClientTemplate/img/status/Gold.jpg";
+            }
+            else if (this.User.IsInRole("Silver"))
+            {
+                beforeModel.BackgroundPath = "/lib/ClientTemplate/img/status/Silver.jpg";
+            }
+            else if (this.User.IsInRole("Basic"))
+            {
+                beforeModel.BackgroundPath = "/lib/ClientTemplate/img/status/Basic.jpg";
+            }
 
 
-        //        return RedirectToAction(nameof(Details), new { email = model.Email });
+            if (photo != null && photo.Length > 0)
+            {
+                string path = await _imageHelper.UploadImageAsync(photo, "Users", clientID);
+                user.PhotoUrl = path;
+            }
+            else
+            {
+                return View(beforeModel);
+            }
 
-        //    }
+            // Photo was updated correctly
+            var updatedModel = _converterHelper.ToEditViewModel(client, user);
 
-        //    model.Roles = _userRepository.GetBackOfficeRoles();
-        //    return View(model);
-        //}
+
+            try
+            {
+                await _userRepository.UpdateUserAsync(user);
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, "An error occured while updating your information.");
+
+                return View(beforeModel);
+            }
+
+            if (this.User.IsInRole("Gold"))
+            {
+                updatedModel.BackgroundPath = "/lib/ClientTemplate/img/status/Gold.jpg";
+            }
+            else if (this.User.IsInRole("Silver"))
+            {
+                updatedModel.BackgroundPath = "/lib/ClientTemplate/img/status/Silver.jpg";
+            }
+            else if (this.User.IsInRole("Basic"))
+            {
+                updatedModel.BackgroundPath = "/lib/ClientTemplate/img/status/Basic.jpg";
+            }
+
+            return View(updatedModel);
+        }
 
         #endregion
 
