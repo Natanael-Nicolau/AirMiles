@@ -22,6 +22,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
         {
             var list = _context.Airports
                 .Where(a => a.Id != StartAirportId)
+                .OrderBy( a => a.Name)
                 .Select(a => new SelectListItem
                 {
                     Text = a.Name,
@@ -42,11 +43,13 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 
         public IEnumerable<SelectListItem> GetStartingAirports()
         {
-            var list = _context.Airports.Select(a => new SelectListItem
-            {
-                Text = a.Name,
-                Value = a.Id.ToString()
-            })
+            var list = _context.Airports
+                .OrderBy(a => a.Name)
+                .Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.Id.ToString()
+                })
                 .AsNoTracking()
                 .ToList();
 

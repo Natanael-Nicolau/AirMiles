@@ -46,9 +46,15 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 
         public IQueryable<T> GetAll()
         {
-            return _context.Set<T>().AsNoTracking();
+            return _context.Set<T>()
+                .Where(e => !e.IsDeleted)
+                .AsNoTracking();
         }
 
+        public IQueryable<T> GetAllWithDeleted()
+        {
+            return _context.Set<T>().AsNoTracking();
+        }
 
         public async Task<T> GetByIdAsync(int id)
         {

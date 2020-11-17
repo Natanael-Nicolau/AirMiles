@@ -151,6 +151,11 @@ namespace AirMiles.Master.Controllers
                 return this.Unauthorized();
             }
 
+            if (string.IsNullOrEmpty(email))
+            {
+                return NotFound();
+            }
+
             var user = await _userRepository.GetUserByEmailAsync(email);
             if (user == null)
             {
@@ -255,8 +260,6 @@ namespace AirMiles.Master.Controllers
 
 
 
-
-
         #region Login
         public IActionResult Login()
         {
@@ -274,28 +277,38 @@ namespace AirMiles.Master.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _userRepository.LoginAsync(model.Username, model.Password, model.RememberMe);
-                if (result.Succeeded)
+                var user = await _userRepository.GetUserByEmailAsync(model.Username);
+                if (user != null)
                 {
-                    var user = await _userRepository.GetUserByEmailAsync(model.Username);
-                    var cookieOptions = new CookieOptions
+                    var test = await _userRepository.IsUserInRoleAsync(user, "Client");
+                    if (test)
                     {
-                        Expires = DateTime.Now.AddYears(1)
-                    };
-
-                    HttpContext.Response.Cookies.Append("userPicture", user.PhotoUrl.Replace("~", ""), cookieOptions);
-
-
-
-                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
-                    {
-                        //Direção de retorno
-                        return this.Redirect(this.Request.Query["ReturnUrl"].First());
+                        this.ModelState.AddModelError(string.Empty, "Access Denied.");
+                        return this.View(model);
                     }
 
-                    return this.RedirectToAction("Index", "Home");
-                }
+                    var result = await _userRepository.LoginAsync(model.Username, model.Password, model.RememberMe);
+                    if (result.Succeeded)
+                    {
 
+                        var cookieOptions = new CookieOptions
+                        {
+                            Expires = DateTime.Now.AddYears(1)
+                        };
+
+                        HttpContext.Response.Cookies.Append("userPicture", user.PhotoUrl.Replace("~", ""), cookieOptions);
+
+
+
+                        if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                        {
+                            //Direção de retorno
+                            return this.Redirect(this.Request.Query["ReturnUrl"].First());
+                        }
+
+                        return this.RedirectToAction("Index", "Home");
+                    }
+                }
             }
 
             this.ModelState.AddModelError(string.Empty, "Failed to login.");

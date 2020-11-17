@@ -57,7 +57,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Clients</a>
                             <ul class="sub-menu children dropdown-menu">
                                 <li><i class="fa fa-table"></i><a asp-controller="Clients" asp-action="Index">Index</a></li>
-                                <li><i class="fa fa-table"></i><a asp-controller="Miles" asp-action="RequestsIndex">Miles Requests</a></li>
+                                <li><i class="fa fa-table"></i><a asp-controller="Miles" asp-action="Requests">Miles Requests</a></li>
 
                             </ul>
                         </li>
@@ -76,16 +76,16 @@
                     {
                         <h3 class="menu-title">Approval Requests</h3><!-- /.menu-title -->
                         <li>
-                            <a asp-controller="Clients" asp-action="Index">Client</a>
+                            <a asp-controller="Ticket" asp-action="Requests">Ticket</a>
                         </li>
                         <li>
-                            <a asp-controller="Flights" asp-action="Index">Flight</a>
+                            <a asp-controller="Flights" asp-action="Requests">Flight</a>
                         </li>
                         <li>
-                            <a asp-controller="Airports" asp-action="Index">Airport</a>
+                            <a asp-controller="Airports" asp-action="Requests">Airport</a>
                         </li>
                         <li>
-                            <a asp-controller="Partners" asp-action="Index">Partner</a>
+                            <a asp-controller="Partners" asp-action="Requests">Partner</a>
                         </li>
                     }
                     @if (this.User.IsInRole("Admin"))
@@ -149,6 +149,7 @@
         </div>
         <!-- /#right-panel -->
         <!-- Right Panel -->
+        <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/vendors/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/vendors/popper.js/dist/umd/popper.min.js"></script>
         <script src="~/lib/bootstrap/vendors/bootstrap/dist/js/bootstrap.min.js"></script>

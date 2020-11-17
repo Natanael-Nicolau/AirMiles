@@ -6,6 +6,7 @@ using AirMiles.Master.Helpers;
 using AirMiles.Master.Models.Miles;
 using AIrMiles.WebApp.Common.Data.Entities;
 using AIrMiles.WebApp.Common.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AirMiles.Master.Controllers
@@ -42,9 +43,11 @@ namespace AirMiles.Master.Controllers
 
 
         #region BackOffice
-        public async Task<IActionResult> RequestsIndex()
+
+        [Authorize(Roles = "Employee,Admin")]
+        public async Task<IActionResult> Requests()
         {
-            var list = _milesRequestRepository.GetAll().Where(r => !r.IsDeleted && !r.IsAproved).ToList();
+            var list = _milesRequestRepository.GetAll().Where(r => !r.IsAproved).ToList();
 
             var model = new List<RequestsIndexViewModel>();
             foreach (var request in list)
@@ -107,7 +110,7 @@ namespace AirMiles.Master.Controllers
                 });
             }
 
-            return RedirectToAction(nameof(RequestsIndex));
+            return RedirectToAction(nameof(Requests));
         }
 
         public async Task<IActionResult> Reject(int? id)
@@ -125,7 +128,7 @@ namespace AirMiles.Master.Controllers
 
             request.IsDeleted = true;
             await _milesRequestRepository.UpdateAsync(request);
-            return RedirectToAction(nameof(RequestsIndex));
+            return RedirectToAction(nameof(Requests));
         }
 
         #endregion

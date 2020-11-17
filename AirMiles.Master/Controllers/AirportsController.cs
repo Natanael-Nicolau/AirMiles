@@ -23,12 +23,13 @@ namespace AirMiles.Master.Controllers
             _airportRepository = airportRepository;
         }
 
+        
+
+        [Authorize(Roles = "Employee,Admin")]
         public IActionResult Index()
         {
-            if (this.User.IsInRole("Employee"))
-            {
-                var list = _airportRepository.GetAll()
-                    .Where(a => a.IsAproved && !a.IsDeleted)
+            var list = _airportRepository.GetAll()
+                    .Where(a => a.IsAproved)
                     .Select(a => new IndexViewModel
                     {
                         Id = a.Id,
@@ -37,42 +38,38 @@ namespace AirMiles.Master.Controllers
                         Name = a.Name,
                         IsAproved = a.IsAproved
                     });
-                return View(list);
-            }
-            else if (this.User.IsInRole("SuperEmployee"))
-            {
-                var list = _airportRepository.GetAll()
-                    .Where(a => !a.IsAproved && !a.IsDeleted)
-                    .Select(a => new IndexViewModel
-                    {
-                        Id = a.Id,
-                        IATA = a.IATA,
-                        FullLocation = a.FullLocation,
-                        Name = a.Name,
-                        IsAproved = a.IsAproved
-                    });
-                return View(list);
-            }
-            else
-            {
-                var list = _airportRepository.GetAll()
-                    .Where(a => !a.IsDeleted)
-                    .Select(a => new IndexViewModel
-                    {
-                        Id = a.Id,
-                        IATA = a.IATA,
-                        FullLocation = a.FullLocation,
-                        Name = a.Name,
-                        IsAproved = a.IsAproved
-                    });
-                return View(list);
-            }
+
+            return View(list);
+
         }
 
-        [Authorize(Roles = "Admin,SuperEmployee")]
-        public async Task<IActionResult> Aprove(int id)
+
+        [Authorize(Roles = "SuperEmployee,Admin")]
+        public IActionResult Requests()
         {
-            var partner = await _airportRepository.GetByIdAsync(id);
+            var list = _airportRepository.GetAll()
+                    .Where(a => !a.IsAproved)
+                    .Select(a => new IndexViewModel
+                    {
+                        Id = a.Id,
+                        IATA = a.IATA,
+                        FullLocation = a.FullLocation,
+                        Name = a.Name,
+                        IsAproved = a.IsAproved
+                    });
+            return View(list);
+        }
+
+
+        [Authorize(Roles = "Admin,SuperEmployee")]
+        public async Task<IActionResult> Aprove(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var partner = await _airportRepository.GetByIdAsync(id.Value);
             if (partner == null)
             {
                 return this.NotFound();

@@ -184,9 +184,10 @@
                         data: { startAirportId: $("#StartAirportId").val() },
                         success: function (endAirports) {
                             $.each(endAirports, function (i, airport) {
+                                console.log(endAirports);
                                 $("#EndAirportId").append('<option value="'
-                                    + airport.Value + '">'
-                                    + airport.Text + '</option>');
+                                    + airport.value + '">'
+                                    + airport.text + '</option>');
                             });
                         },
                         error: function (ex) {

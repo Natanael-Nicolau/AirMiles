@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AirMiles.Master.Helpers;
+﻿using AirMiles.Master.Helpers;
 using AirMiles.Master.Models.Partners;
 using AIrMiles.WebApp.Common.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AirMiles.Master.Controllers
 {
@@ -23,56 +21,49 @@ namespace AirMiles.Master.Controllers
             _partnerRepository = partnerRepository;
         }
 
+        [Authorize(Roles = "Employee,Admin")]
         public IActionResult Index()
         {
-            if (this.User.IsInRole("Employee"))
-            {
-                var list = _partnerRepository.GetAll()
-                    .Where(p => p.IsAproved && !p.IsDeleted)
-                    .Select(p => new IndexViewModel
-                    {
-                        Id = p.Id,
-                        IsStarAlliance = p.IsStarAlliance,
-                        CreationDate = p.CreationDate,
-                        Name = p.Name,
-                        IsAproved = p.IsAproved
-                    });
-                return View(list);
-            }
-            else if (this.User.IsInRole("SuperEmployee"))
-            {
-                var list = _partnerRepository.GetAll()
-                    .Where(p => !p.IsAproved && !p.IsDeleted)
-                    .Select(p => new IndexViewModel
-                    {
-                        Id = p.Id,
-                        IsStarAlliance = p.IsStarAlliance,
-                        CreationDate = p.CreationDate,
-                        Name = p.Name,
-                        IsAproved = p.IsAproved
-                    });
-                return View(list);
-            }
-            else
-            {
-                var list = _partnerRepository.GetAll()
-                    .Where(p => !p.IsDeleted)
-                    .Select(p => new IndexViewModel
-                    {
-                        Id = p.Id,
-                        IsStarAlliance = p.IsStarAlliance,
-                        CreationDate = p.CreationDate,
-                        Name = p.Name,
-                        IsAproved = p.IsAproved
-                    });
-                return View(list);
-            }
+            var list = _partnerRepository.GetAll()
+                .Where(p => p.IsAproved)
+                .Select(p => new IndexViewModel
+                {
+                    Id = p.Id,
+                    IsStarAlliance = p.IsStarAlliance,
+                    CreationDate = p.CreationDate,
+                    Name = p.Name,
+                    IsAproved = p.IsAproved
+                });
+            return View(list);
         }
 
-        [Authorize(Roles = "Admin,SuperEmployee")]
-        public async Task<IActionResult> Aprove(int id)
+
+        [Authorize(Roles = "SuperEmployee,Admin")]
+        public IActionResult Requests()
         {
-            var partner = await _partnerRepository.GetByIdAsync(id);
+            var list = _partnerRepository.GetAll()
+                    .Where(p => !p.IsAproved)
+                    .Select(p => new IndexViewModel
+                    {
+                        Id = p.Id,
+                        IsStarAlliance = p.IsStarAlliance,
+                        CreationDate = p.CreationDate,
+                        Name = p.Name,
+                        IsAproved = p.IsAproved
+                    });
+            return View(list);
+        }
+
+
+        [Authorize(Roles = "Admin,SuperEmployee")]
+        public async Task<IActionResult> Aprove(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var partner = await _partnerRepository.GetByIdAsync(id.Value);
             if (partner == null)
             {
                 return this.NotFound();

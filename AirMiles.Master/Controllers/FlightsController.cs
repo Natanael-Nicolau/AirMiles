@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AirMiles.Master.Helpers;
+﻿using AirMiles.Master.Helpers;
 using AirMiles.Master.Models.Flights;
 using AIrMiles.WebApp.Common.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AirMiles.Master.Controllers
 {
@@ -34,25 +31,23 @@ namespace AirMiles.Master.Controllers
 
         public IActionResult Index()
         {
+            var list = _flightRepository.GetAllWithAirportsAndPartners()
+                .Where(f => f.IsAproved == true)
+                .Select(f => new IndexViewModel
+                {
+                    Id = f.Id,
+                    StartAirportName = f.StartAirport.Name,
+                    EndAirportName = f.EndAirport.Name,
+                    FlightStart = f.FlightStart,
+                    FlightCompanyName = f.FlightCompany.Name,
+                    IsAproved = f.IsAproved
+                });
+            return View(list);
+        }
 
-            if (this.User.IsInRole("Employee"))
-            {
-                var list = _flightRepository.GetAllWithAirportsAndPartners()
-                    .Where(f => f.IsAproved == true)
-                    .Select(f => new IndexViewModel
-                    {
-                        Id = f.Id,
-                        StartAirportName = f.StartAirport.Name,
-                        EndAirportName = f.EndAirport.Name,
-                        FlightStart = f.FlightStart,
-                        FlightCompanyName = f.FlightCompany.Name,
-                        IsAproved = f.IsAproved
-                    });
-                return View(list);
-            }
-            else if (this.User.IsInRole("SuperEmployee"))
-            {
-                var list = _flightRepository.GetAllWithAirportsAndPartners()
+        public IActionResult Requests()
+        {
+            var list = _flightRepository.GetAllWithAirportsAndPartners()
                     .Where(f => f.IsAproved == false)
                     .Select(f => new IndexViewModel
                     {
@@ -63,22 +58,7 @@ namespace AirMiles.Master.Controllers
                         FlightCompanyName = f.FlightCompany.Name,
                         IsAproved = f.IsAproved
                     });
-                return View(list);
-            }
-            else
-            {
-                var list = _flightRepository.GetAllWithAirportsAndPartners()
-                    .Select(f => new IndexViewModel
-                    {
-                        Id = f.Id,
-                        StartAirportName = f.StartAirport.Name,
-                        EndAirportName = f.EndAirport.Name,
-                        FlightStart = f.FlightStart,
-                        FlightCompanyName = f.FlightCompany.Name,
-                        IsAproved = f.IsAproved
-                    });
-                return View(list);
-            }
+            return View(list);
         }
 
         [Authorize(Roles = "Admin,Employee")]
@@ -126,18 +106,21 @@ namespace AirMiles.Master.Controllers
                 ViewBag.Message = "Flight successfuly created and awaiting aproval";
             }
 
-
             model.StartAirports = _airportRepository.GetStartingAirports();
             model.EndAirports = _airportRepository.GetEndAirports(model.StartAirportId);
             model.FlightCompanies = _partnerRepository.GetAllFlightCompanies();
             return View(model);
         }
 
-
         [Authorize(Roles = "Admin,SuperEmployee")]
-        public async Task<IActionResult> Aprove(int id)
+        public async Task<IActionResult> Aprove(int? id)
         {
-            var flight = await _flightRepository.GetByIdAsync(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var flight = await _flightRepository.GetByIdAsync(id.Value);
             if (flight == null)
             {
                 return this.NotFound();
@@ -149,12 +132,11 @@ namespace AirMiles.Master.Controllers
             return this.RedirectToAction(nameof(Index));
         }
 
-
         [HttpPost]
-        public JsonResult GetEndAirports(int startAirportId)
+        public async Task<JsonResult> GetEndAirports(int? startAirportId)
         {
-            var airports = _airportRepository.GetEndAirports(startAirportId);
-            return this.Json(airports.OrderBy(a => a.Text));
+            var airports = await Task.Run(() => _airportRepository.GetEndAirports(startAirportId.Value));
+            return this.Json(airports);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 
         IQueryable<T> GetAll();
 
+        IQueryable<T> GetAllWithDeleted();
 
         Task<T> GetByIdAsync(int id);
 
