@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -225,7 +224,10 @@ namespace AirMiles.FrontOffice.Controllers
         {
             if (this.ModelState.IsValid)
             {
+                // Gets the user
                 var user = await _userRepository.GetUserByEmailAsync(model.Email);
+
+                // Reports back an error if the user does not exist
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "The email doesn't correspond to a registered user.");
@@ -233,16 +235,20 @@ namespace AirMiles.FrontOffice.Controllers
 
                 }
 
+                // Generates a token
                 var myToken = await _userRepository.GeneratePasswordResetTokenAsync(user);
 
+                // Builds a link which has the generated token
                 var link = this.Url.Action(
                     "ResetPassword",
                     "Account",
                     new { token = myToken }, protocol: HttpContext.Request.Scheme);
 
-                _mailHelper.SendMail(model.Email, "Shop Password Reset", $"<h1>Shop Password Reset</h1>" +
+                // Sends an email with a custom message to the client email with the instruction to recover his account
+                _mailHelper.SendMail(model.Email, "Cinel Air Miles Password Reset", $"<h1>Password Reset</h1>" +
                 $"To reset the password click in this link:</br></br>" +
                 $"<a href = \"{link}\">Reset Password</a>");
+
                 ViewData["Message"] = "The instructions to recover your password have been sent!";
                 return this.View();
 
@@ -349,38 +355,30 @@ namespace AirMiles.FrontOffice.Controllers
         [Authorize]
         public async Task<IActionResult> Edit()
         {
-
+            // Gets the authenticated client
             var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
 
+            // Extra Security
             if (client == null)
             {
                 return NotFound();
             }
 
+            // Gets the object user that belongs to the authenticated client
             var user = await _userRepository.GetUserByIdAsync(client.UserId);
 
-            if(user == null)
+            // Extra Security
+            if (user == null)
             {
                 return NotFound();
             }
 
-            var model = _converterHelper.ToEditViewModel(client, user);
+            // Converts to an EditViewModel, with the parameters being the objects client and user
+            var model = _converterHelper.ToEditViewModel(client, user, AssignEditModelBackgroundPath());
 
-            model.StatusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 1 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
-            model.BonusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 2 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
+            model.StatusMiles = _mileRepository.GetClientTotalStatusMiles(client.Id).ToString();
+            model.BonusMiles = _mileRepository.GetClientTotalBonusMiles(client.Id).ToString();
 
-            if (this.User.IsInRole("Gold"))
-            {
-                model.BackgroundPath = "/lib/ClientTemplate/img/status/Gold.jpg";
-            }
-            else if (this.User.IsInRole("Silver"))
-            {
-                model.BackgroundPath = "/lib/ClientTemplate/img/status/Silver.jpg";
-            }
-            else if(this.User.IsInRole("Basic"))
-            {
-                model.BackgroundPath = "/lib/ClientTemplate/img/status/Basic.jpg";
-            }
             return View(model);
         }
 
@@ -391,24 +389,10 @@ namespace AirMiles.FrontOffice.Controllers
 
             var user = await _userRepository.GetUserByIdAsync(client.UserId);
 
-            var beforeModel = _converterHelper.ToEditViewModel(client, user);
+            var beforeModel = _converterHelper.ToEditViewModel(client, user, AssignEditModelBackgroundPath());
 
-            beforeModel.StatusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 1 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
-            beforeModel.BonusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 2 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
-
-            if (this.User.IsInRole("Gold"))
-            {
-                beforeModel.BackgroundPath = "/lib/ClientTemplate/img/status/Gold.jpg";
-            }
-            else if (this.User.IsInRole("Silver"))
-            {
-                beforeModel.BackgroundPath = "/lib/ClientTemplate/img/status/Silver.jpg";
-            }
-            else if (this.User.IsInRole("Basic"))
-            {
-                beforeModel.BackgroundPath = "/lib/ClientTemplate/img/status/Basic.jpg";
-            }
-
+            beforeModel.StatusMiles = _mileRepository.GetClientTotalStatusMiles(client.Id).ToString();
+            beforeModel.BonusMiles = _mileRepository.GetClientTotalBonusMiles(client.Id).ToString();
 
             if (photo != null && photo.Length > 0)
             {
@@ -421,8 +405,7 @@ namespace AirMiles.FrontOffice.Controllers
             }
 
             // Photo was updated correctly
-            var updatedModel = _converterHelper.ToEditViewModel(client, user);
-
+            var updatedModel = _converterHelper.ToEditViewModel(client, user, AssignEditModelBackgroundPath());
 
             try
             {
@@ -435,21 +418,8 @@ namespace AirMiles.FrontOffice.Controllers
                 return View(beforeModel);
             }
 
-            updatedModel.StatusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 1 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
-            updatedModel.BonusMiles = _mileRepository.GetAll().Where(m => m.MilesTypeId == 2 && m.ClientId == client.Id && !m.IsDeleted).Sum(m => m.Qtd).ToString();
-
-            if (this.User.IsInRole("Gold"))
-            {
-                updatedModel.BackgroundPath = "/lib/ClientTemplate/img/status/Gold.jpg";
-            }
-            else if (this.User.IsInRole("Silver"))
-            {
-                updatedModel.BackgroundPath = "/lib/ClientTemplate/img/status/Silver.jpg";
-            }
-            else if (this.User.IsInRole("Basic"))
-            {
-                updatedModel.BackgroundPath = "/lib/ClientTemplate/img/status/Basic.jpg";
-            }
+            updatedModel.StatusMiles = _mileRepository.GetClientTotalStatusMiles(client.Id).ToString();
+            updatedModel.BonusMiles = _mileRepository.GetClientTotalBonusMiles(client.Id).ToString();
 
             return View(updatedModel);
         }
@@ -462,12 +432,12 @@ namespace AirMiles.FrontOffice.Controllers
         {
             var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
 
-            if(client == null)
+            if (client == null)
             {
                 return NotFound();
             }
 
-            var transactions = _transactionRepository.GetAll().Where(t => t.ClientID == client.Id).ToList();
+            var transactions = _transactionRepository.GetAllByClientId(client.Id);
 
             var model = _converterHelper.ToBalanceMovementsViewModel(transactions);
 
@@ -480,13 +450,16 @@ namespace AirMiles.FrontOffice.Controllers
 
         public IActionResult BuyMiles()
         {
+            // Generates a new instance of BuyMilesViewModel
             var models = new List<BuyMilesViewModel>();
 
+            // Creates a new integer to use in the while 
             var i = 1;
 
-            while(i < 6)
+            // Assigns values to the new BuyMilesViewModel
+            while (i < 6)
             {
-               var mile =  new BuyMilesViewModel
+                var mile = new BuyMilesViewModel
                 {
                     Amount = 2000 * i,
                     Price = 70 * i,
@@ -506,29 +479,38 @@ namespace AirMiles.FrontOffice.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Selects the value selected by the client
                 var model = models.Where(m => m.Selected).FirstOrDefault();
 
-                if(model == null)
+                // Returns an error in case no value was selected
+                if (model == null)
                 {
                     this.ModelState.AddModelError(string.Empty, "Please select an amount");
                     return View(models);
                 }
 
+                // Gets the client by Email
                 var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
 
+                // Adds the value of the selected value amount with the pre-existing client Bought Miles and assigns it to a variable
                 var boughtMiles = model.Amount + client.BoughtMiles;
 
-                if(boughtMiles > 20000)
+                // Checks if the value is bigger than 20000 and if true, returns an error
+                if (boughtMiles > 20000)
                 {
                     this.ModelState.AddModelError(string.Empty, "You can only buy a maximum of 20.000 Miles per Year");
 
                     return View(models);
                 }
 
+
+                // Converts the selected value to a Mile Object
                 var mile = _converterHelper.ToMile(model, client.Id);
 
-                var transaction =  _converterHelper.ToTransaction(model, mile);
+                // Converts the selected value and the new Mile Object to a Transaction Object 
+                var transaction = _converterHelper.ToTransaction(model, mile);
 
+                // Creates a new Mile in the DataBase
                 try
                 {
                     await _mileRepository.CreateAsync(mile);
@@ -540,6 +522,7 @@ namespace AirMiles.FrontOffice.Controllers
                     return View(models);
                 }
 
+                // Creates a new Transaction in the DataBase
                 try
                 {
                     await _transactionRepository.CreateAsync(transaction);
@@ -550,6 +533,7 @@ namespace AirMiles.FrontOffice.Controllers
                     return View(models);
                 }
 
+                // Updates the client
                 try
                 {
                     client.BoughtMiles = boughtMiles;
@@ -560,7 +544,7 @@ namespace AirMiles.FrontOffice.Controllers
                     this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
                     return View(models);
                 }
-
+                // Returns a message if the operation was valid
                 ViewBag.Message = "Your purchase was successful!";
             }
             return View(models);
@@ -568,6 +552,7 @@ namespace AirMiles.FrontOffice.Controllers
 
         public IActionResult TransferMiles()
         {
+            // Generates a new instance of TransferMilesViewModel
             var model = new TransferMilesViewModel
             {
                 Amount = 2000,
@@ -589,7 +574,7 @@ namespace AirMiles.FrontOffice.Controllers
                 var giftedClient = await _clientRepository.GetByIdAsync(Convert.ToInt32(model.GiftedClientID));
 
                 // Checks if the giftedClient exists
-                if(giftedClient == null)
+                if (giftedClient == null)
                 {
                     this.ModelState.AddModelError(string.Empty, "The selected Client does not exist. Please try again!");
                     return View(model);
@@ -605,16 +590,14 @@ namespace AirMiles.FrontOffice.Controllers
                     return View(model);
                 }
 
-                var clientMiles = _mileRepository.GetAll().Where(m => m.ClientId == client.Id && !m.IsDeleted && m.MilesTypeId == 2).OrderBy(m => m.ExpirationDate).ToList();
+                // Gets a list of the client Bonus Miles
+                var clientMiles = _mileRepository.GetAllBonusMiles(client.Id);
 
-                var clientTotalMiles = 0;
+                // Creates a new var to hold the client Total Bonus Miles
+                var clientTotalMiles = _mileRepository.GetClientTotalBonusMiles(client.Id);
 
-                foreach (var x in clientMiles)
-                {
-                    clientTotalMiles += x.Qtd;
-                }
-
-                if(clientTotalMiles < model.Amount)
+                // Checks if the client has enough Miles to perform the Transfer Operation
+                if (clientTotalMiles < model.Amount)
                 {
                     this.ModelState.AddModelError(string.Empty, "You dont have the necessary Miles to perform this transfer. Please try again with a lower value!");
 
@@ -622,41 +605,17 @@ namespace AirMiles.FrontOffice.Controllers
                 }
 
                 // Creates a new Mile Object for the giftedClient
-                var mile = new Mile
-                {
-                    ClientId = giftedClient.Id,
-                    Qtd = model.Amount,
-                    MilesTypeId = 2,
-                    ExpirationDate = DateTime.Now.AddYears(3),
-                    IsAproved = true,
-                    IsDeleted = false,
-                };
-
+                var mile = _converterHelper.ToMile(model.Amount, giftedClient.Id);
+                    
                 // Creates the Transaction on the giftedClient end
-                var receivedMiles = new Transaction
-                {
-                    Description = "Transfered",
-                    Value = mile.Qtd,
-                    TransactionDate = DateTime.Now,
-                    Price = 0,
-                    ClientID = giftedClient.Id,
-                    IsAproved = true,
-                    IsCreditCard = false
-                };
+                var receivedMiles = _converterHelper.ToTransaction(giftedClient.Id, mile.Qtd);
 
                 // Creates the Transaction on the Client that will transfer miles end
-                var giftedMiles = new Transaction
-                {
-                    Description = "Transfered",
-                    Value = - mile.Qtd,
-                    TransactionDate = DateTime.Now,
-                    Price = 0,
-                    ClientID = client.Id,
-                    IsAproved = true,
-                    IsCreditCard = false
-                };
+                // IMPORTANT NOTE:
+                // SUBTRACT THE MILES QUANTITY
+                var giftedMiles = _converterHelper.ToTransaction(giftedClient.Id, -mile.Qtd);
 
-                // 
+                // Creates a new Mile on the DataBase
                 try
                 {
                     await _mileRepository.CreateAsync(mile);
@@ -667,6 +626,8 @@ namespace AirMiles.FrontOffice.Controllers
                     return View(model);
                 }
 
+                // Creates two transaction on the Database
+                // One for the gifter and another for the receiver
                 try
                 {
                     await _transactionRepository.CreateAsync(receivedMiles);
@@ -677,46 +638,18 @@ namespace AirMiles.FrontOffice.Controllers
                     this.ModelState.AddModelError(string.Empty, "There was an error processing your transfer.Please try again later");
                     return View(model);
                 }
-                try
-                {
-                    for(int i = transferMiles, j = 0; i != 0; j++)
-                    {
-                        if(i < 0)
-                        {
-                            throw new Exception();
-                        }
 
-                        var currentMile = clientMiles[j];
+                // Transfers the Miles
+                var transferSuccess = await _mileRepository.TransferMilesAsync(clientMiles, transferMiles);
 
-                        if(currentMile.Qtd >= i)
-                        {
-                            i = 0;
-                            currentMile.Qtd -= i;
-                        }
-                        else
-                        {
-                            i -= currentMile.Qtd;
-                            currentMile.Qtd = 0;
-                        }
-
-                        if(currentMile.Qtd == 0)
-                        {
-                            await _mileRepository.DeleteAsync(currentMile);
-                        }
-                        else
-                        {
-                            await _mileRepository.UpdateAsync(currentMile);
-                        }
-                           
-                    }
-                }
-                catch (Exception)
+                if(!transferSuccess)
                 {
 
-                    this.ModelState.AddModelError(string.Empty, "There was an error processing your transfer.Please try again later");
+                    this.ModelState.AddModelError(string.Empty, "There was a critical error with the transfer algorithm. Please contact the Administrator as soon as possible");
                     return View(model);
                 }
 
+                // Updates the client Transfer Miles on the DataBase
                 try
                 {
                     client.TransferedMiles = transferMiles;
@@ -728,12 +661,32 @@ namespace AirMiles.FrontOffice.Controllers
                     return View(model);
                 }
 
-                ViewBag.Message = "Your transfer was successfull!";
+                ViewBag.Message = "Your transfer was successful!";
                 return View();
             }
-            
+
             this.ModelState.AddModelError(string.Empty, "Please select a valid Client Id");
             return View(model);
+        }
+
+        #endregion
+
+        #region AdditionalMethods
+
+        public string AssignEditModelBackgroundPath()
+        {
+            if (this.User.IsInRole("Gold"))
+            {
+                return "/lib/ClientTemplate/img/status/Gold.jpg";
+            }
+            else if (this.User.IsInRole("Silver"))
+            {
+                return "/lib/ClientTemplate/img/status/Silver.jpg";
+            }
+            else
+            {
+               return "/lib/ClientTemplate/img/status/Basic.jpg";
+            }
         }
 
         #endregion
