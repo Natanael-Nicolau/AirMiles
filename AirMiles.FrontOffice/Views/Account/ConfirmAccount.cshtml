@@ -1,14 +1,84 @@
 ﻿@{
-    ViewData["Title"] = "Confirm Account";
+    Layout = null;
 }
 
-<div class="login-content">
-    <!-- Forgot Password -->
-    <div class="nk-block toggled">
-        <form method="post" class="nk-form" id="form">
-            <p class="text-left">Your account has been confirmed! Click the arrow to login.</p>
+<!Doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>ForgotPassword - AirMiles</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/bootstrap.min.css">
+    <!-- font awesome CSS
+      ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/font-awesome.min.css">
+    <!-- animate CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/animate.css">
+    <!-- wave CSS
+       ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/wave/waves.min.css">
+    <!-- Notika icon CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/notika-custom-icon.css">
+    <!-- style CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/style.css">
+    <script src="~/lib/ClientTemplate/js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- bootstrap JS
+        ============================================ -->
+    <script src="~/lib/ClientTemplate/js/bootstrap.min.js"></script>
+    <!-- Login JS
+       ============================================ -->
+    <script src="~/lib/ClientTemplate/js/login/login-action.js"></script>
+    <!-- Validate CheckBox Selection JS
+       ============================================ -->
+    <script src="../lib/ClientTemplate/js/checkBoxValidation.js"></script>
 
-            <a href="/Account/Login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
-        </form>
+</head>
+<body>
+    <div class="header-top-area" style="background-color:white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="logo-area">
+                        <a href="#"><img src="~/lib/ClientTemplate/img/logo/logo.png" alt="" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
+    <div class="login-content">
+        <!-- Forgot Password -->
+        <div class="nk-block toggled">
+            <form method="post" class="nk-form" id="form">
+                <p class="text-left">Your account has been confirmed! Click the arrow to login.</p>
+
+                <a href="/Account/Login" class="btn btn-login btn-success btn-float"><i class="notika-icon notika-right-arrow"></i></a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Start Footer area-->
+    <div class="footer-copyright-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="footer-copy-right" style="">
+                        <p>
+                            Copyright © 2018
+                            . All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

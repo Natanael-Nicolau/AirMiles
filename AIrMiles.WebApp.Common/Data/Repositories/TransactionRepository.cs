@@ -14,5 +14,10 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
         {
             _context = context;
         }
+
+        public List<Transaction> GetAllByClientId(int clientID)
+        {
+            return _context.Transactions.Where(t => t.ClientID == clientID).ToList();
+        }
     }
 }
