@@ -8,8 +8,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using iText.Kernel.Colors;
 
 namespace AirMiles.FrontOffice.Controllers
 {
@@ -427,6 +433,63 @@ namespace AirMiles.FrontOffice.Controllers
             return View(updatedModel);
         }
 
+        [HttpPost]
+        public IActionResult EditInfo(string name, string email, string birthDate)
+        {
+            return StatusCode(422,"Email");
+        }
+
+        #endregion
+
+        #region MilesCard
+
+        public async Task<IActionResult> MilesCard(MilesCardViewModel model)
+        {
+            // Gets the authenticated client
+            var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
+
+            // Extra Security
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            // Gets the object user that belongs to the authenticated client
+            var user = await _userRepository.GetUserByIdAsync(client.UserId);
+
+            // Extra Security
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            model = _converterHelper.ToMilesCardViewModel(client, user);
+
+            if (User.IsInRole("Basic"))
+            {
+                model.Status = "Basic";
+                model.BackColor = "#00c292";
+                model.StatusPhoto = "/lib/ClientTemplate/img/card/plane_basic.png";
+            }
+            else if (User.IsInRole("Silver"))
+            {
+                model.Status = "Silver";
+                model.BackColor = "silver";
+                model.StatusPhoto = "/lib/ClientTemplate/img/card/plane_silver.png";
+            }
+            else if (User.IsInRole("Gold"))
+            {
+                model.Status = "Gold";
+                model.BackColor = "#FFDF01";
+                model.StatusPhoto = "/lib/ClientTemplate/img/card/plane_gold.png";
+            }
+
+            model.StatusMiles = _mileRepository.GetClientTotalStatusMiles(client.Id).ToString();
+            model.BonusMiles = _mileRepository.GetClientTotalBonusMiles(client.Id).ToString();
+
+            return View(model);
+        }
+
         #endregion
 
         #region Miles&Go
@@ -440,11 +503,66 @@ namespace AirMiles.FrontOffice.Controllers
                 return NotFound();
             }
 
-            var transactions = _transactionRepository.GetAllByClientId(client.Id);
+            var transactions = _transactionRepository.GetAllByClientId(client.Id).OrderByDescending(t => t.TransactionDate).ToList();
+
 
             var model = _converterHelper.ToBalanceMovementsViewModel(transactions);
 
             return View(model);
+        }
+
+        public IActionResult DownloadBalanceMovementsPDF()
+        {
+            var data = Request.Query["info"].ToString();
+
+            var lines = data.Split(",");
+
+            var headers = Request.Query["headers"].ToString();
+
+            var columns = headers.Split(",");
+
+            var rows = lines.Length / columns.Length;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (PdfWriter writer = new PdfWriter(ms))
+                {
+                    writer.SetCloseStream(false);
+                    PdfDocument pdf = new PdfDocument(writer);
+                    Document document = new Document(pdf);
+                    Table table = new Table(new float[10]).UseAllAvailableWidth();
+
+
+                    foreach (var value in columns)
+                    {
+                        Cell header = new Cell().Add(new Paragraph(value));
+                        header.SetTextAlignment(TextAlignment.CENTER);
+                        header.SetBackgroundColor(new DeviceRgb(0, 194, 146));
+                        table.AddHeaderCell(header);
+                    }
+
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        Cell cell = new Cell().Add(new Paragraph(lines[i]));
+                        cell.SetTextAlignment(TextAlignment.CENTER);
+                        table.AddCell(cell);
+
+                        if ((i+1) % columns.Length == 0 && i != 0)
+                        {
+                            table.StartNewRow();
+                        }
+                    }
+
+                    document.Add(table);
+                    document.Close();
+
+                    byte[] file = ms.ToArray();
+                    ms.Write(file, 0, file.Length);
+                    ms.Position = 0;
+
+                    return File(file, "application/pdf", "Balance&Movements.pdf");
+                }
+            }
         }
 
         #endregion
@@ -460,7 +578,7 @@ namespace AirMiles.FrontOffice.Controllers
             var i = 1;
 
             // Assigns values to the new BuyMilesViewModel
-            while (i < 6)
+            while (i < 11)
             {
                 var mile = new BuyMilesViewModel
                 {
@@ -508,7 +626,7 @@ namespace AirMiles.FrontOffice.Controllers
 
 
                 // Converts the selected value to a Mile Object
-                var mile = _converterHelper.ToMile(model, client.Id);
+                var mile = _converterHelper.ToMile(model, client.Id, 1);
 
                 // Converts the selected value and the new Mile Object to a Transaction Object 
                 var transaction = _converterHelper.ToTransaction(model, mile);
@@ -608,7 +726,7 @@ namespace AirMiles.FrontOffice.Controllers
                 }
 
                 // Creates a new Mile Object for the giftedClient
-                var mile = _converterHelper.ToMile(model.Amount, giftedClient.Id);
+                var mile = _converterHelper.ToMile(model.Amount, giftedClient.Id, 1);
                     
                 // Creates the Transaction on the giftedClient end
                 var receivedMiles = _converterHelper.ToTransaction(giftedClient.Id, mile.Qtd);
@@ -643,7 +761,7 @@ namespace AirMiles.FrontOffice.Controllers
                 }
 
                 // Transfers the Miles
-                var transferSuccess = await _mileRepository.TransferMilesAsync(clientMiles, transferMiles);
+                var transferSuccess = await _mileRepository.SpendMilesAsync(clientMiles, transferMiles);
 
                 if(!transferSuccess)
                 {
@@ -669,6 +787,115 @@ namespace AirMiles.FrontOffice.Controllers
             }
 
             this.ModelState.AddModelError(string.Empty, "Please select a valid Client Id");
+            return View(model);
+        }
+
+        public IActionResult ExtendMiles()
+        {
+            // Generates a new instance of ProlongMilesViewModel
+            var model = new ExtendMilesViewModel
+            {
+                Amount = 2000
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExtendMiles(ExtendMilesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Gets the current Client
+                var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
+
+                //Checks if the maximum value of transfered miles has been reached
+                var prolongMiles = model.Amount + client.ProlongedMiles;
+
+                if (prolongMiles > 20000)
+                {
+                    this.ModelState.AddModelError(string.Empty, "You can only extend a maximum of 20.000 Miles per Year");
+
+                    return View(model);
+                }
+
+                // Gets a list of the client Bonus Miles
+                var clientMiles =  _mileRepository.GetAllBonusMiles(client.Id);
+
+                // Creates a new Mile Object for the giftedClient
+                var mile = _converterHelper.ToMile(model, client.Id, 1);
+
+                var extendedMiles = _converterHelper.ToTransaction(model, mile);
+
+
+                // Creates a transaction on the Database
+                try
+                {
+                    await _transactionRepository.CreateAsync(extendedMiles);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your extension.Please try again later");
+                    return View(model);
+                }
+
+
+                // Extends the Miles
+                var extendSuccess = await _mileRepository.SpendMilesAsync(clientMiles, model.Amount);
+
+                if (!extendSuccess)
+                {
+
+                    this.ModelState.AddModelError(string.Empty, "There was a critical error with the extension algorithm. Please contact the Administrator as soon as possible");
+                    return View(model);
+                }
+
+                // Creates a new Mile on the DataBase
+                try
+                {
+                    await _mileRepository.CreateAsync(mile);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
+                    return View(model);
+                }
+
+                // Updates the client Prolonged Miles on the DataBase
+                try
+                {
+                    client.ProlongedMiles = prolongMiles;
+                    await _clientRepository.UpdateAsync(client);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
+                    return View(model);
+                }
+
+                ViewBag.Message = "Your extension of miles was successful!";
+                return View();
+
+            }
+
+            // Generates a new instance of ExtendMilesViewModel
+            var returnModel = new ExtendMilesViewModel
+            {
+                Amount = 2000
+            };
+
+            return View(model);
+        }
+
+        public IActionResult ConvertMiles()
+        {
+            // Generates a new instance of ProlongMilesViewModel
+            var model = new ConvertMilesViewModel
+            {
+                BonusAmount = 2000,
+                StatusAmount = 1000
+            };
+
             return View(model);
         }
 

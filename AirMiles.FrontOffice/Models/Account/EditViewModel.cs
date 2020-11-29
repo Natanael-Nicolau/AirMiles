@@ -23,8 +23,8 @@ namespace AirMiles.FrontOffice.Models.Account
         public string BirthDate { get; set; }
 
         [Required]
-        [Display(Name = "Role")]
-        public string Role { get; set; }
+        [Display(Name = "Status")]
+        public string Status { get; set; }
 
         [Required]
         [Display(Name = "Status Miles")]
@@ -49,6 +49,9 @@ namespace AirMiles.FrontOffice.Models.Account
         [Required]
         [Display(Name = "Revision Month")]
         public string RevisionMonth { get; set; }
+
+        [Display(Name = "Number of Flights")]
+        public int TotalFlights { get; set; }
 
         public string BackgroundPath { get; set; }
     }

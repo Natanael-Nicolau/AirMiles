@@ -18,15 +18,13 @@
                         <hr />
                     </div>
                     <input type="hidden" asp-for="Amount" />
-                    <div class="form-example-int">
-                        <div class="form-group" style="font-size:medium">
-                            @Html.DisplayNameFor(model => model.Amount): @Html.DisplayFor(model => model.Amount)
-                            <input type="radio" checked="checked" class="i-checks">
-                        </div>
+                    <div class="priceCard">
+                        <p>@Html.DisplayFor(model => model.Amount)<sup>Miles</sup></p>
+                        <input type="radio" checked="checked" class="i-checks">
                     </div>
                     <div class="form-example-int mg-t-15">
                         <div class="form-group" style="font-size:medium">
-                            @Html.DisplayNameFor(model => model.GiftedClientID): <input type="text" placeholder="Ex: 000000000" asp-for="GiftedClientID"/>
+                            @Html.DisplayNameFor(model => model.GiftedClientID): <input type="text" placeholder="Ex: 000000000" asp-for="GiftedClientID" />
                         </div>
                     </div>
                     <hr />
@@ -42,3 +40,30 @@
         </div>
     </div>
 </form>
+
+ <style>
+
+     .priceCard {
+         border: 1px solid grey;
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         max-width: 12%;
+         align-content: center;
+         background-color: ghostwhite;
+     }
+
+         .priceCard p {
+             color: black;
+             font-size: large;
+             font-weight: bold;
+             margin-left: 15px;
+             margin-top: 15px;
+         }
+
+       .priceCard input {
+           margin-right:10px;
+           justify-self: end;
+           align-self:center
+       }
+
+</style>

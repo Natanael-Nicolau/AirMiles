@@ -39,11 +39,11 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
                  .ToList();
         }
 
-        public async Task<bool> TransferMilesAsync(List<Mile> clientMiles, int transferMiles)
+        public async Task<bool> SpendMilesAsync(List<Mile> clientMiles, int milesToSpend)
         {
             bool isSuccess = true;
 
-            for (int i = transferMiles, j = 0; i != 0; j++)
+            for (int i = milesToSpend, j = 0; i != 0; j++)
             {
                 if (i < 0)
                 {

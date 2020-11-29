@@ -12,6 +12,6 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 
         List<Mile> GetAllBonusMiles(int clientID);
 
-        Task<bool> TransferMilesAsync(List<Mile> clientMiles, int transferMiles);
+        Task<bool> SpendMilesAsync(List<Mile> clientMiles, int milesToSpend);
     }
 }

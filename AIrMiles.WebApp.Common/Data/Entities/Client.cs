@@ -45,6 +45,9 @@ namespace AIrMiles.WebApp.Common.Data.Entities
             }
         }
 
+        [Display(Name = "Number of Flights")]
+        public int TotalFlights { get; set; }
+
 
         public string UserId { get; set; }
         public User User { get; set; }
