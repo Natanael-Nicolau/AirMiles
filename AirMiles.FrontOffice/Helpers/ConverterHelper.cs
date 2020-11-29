@@ -33,14 +33,15 @@ namespace AirMiles.FrontOffice.Helpers
             return new EditViewModel
             {
                 ClientID = client.Id,
-                FullName = user.FullName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 Status = status,
                 Email = user.Email,
-                BirthDate = user.BirthDate.ToShortDateString(),
+                BirthDate = user.BirthDate,
                 PhotoUrl = user.PhotoUrl,
                 TotalFlights = client.TotalFlights,
                 BoughtMiles = client.BoughtMiles.ToString(),
-                ProlongedMiles = client.ProlongedMiles.ToString(),
+                ProlongedMiles = client.ExtendedMiles.ToString(),
                 TransferedMiles = client.TransferedMiles.ToString(),
                 RevisionMonth = client.RevisionMonth.ToString(),
                 BackgroundPath = backgroundPath,
@@ -77,14 +78,14 @@ namespace AirMiles.FrontOffice.Helpers
             };
         }
 
-        public Mile ToMile(ExtendMilesViewModel model, int clientId, int extraYears)
+        public Mile ToMile(ExtendMilesViewModel model, int clientId, DateTime newExpirationDate)
         {
             return new Mile
             {
                 ClientId = clientId,
                 Qtd = model.Amount,
                 MilesTypeId = 2,
-                ExpirationDate = DateTime.Now.AddYears(extraYears)
+                ExpirationDate = newExpirationDate
             };
         }
 
@@ -133,7 +134,7 @@ namespace AirMiles.FrontOffice.Helpers
         {
             return new Transaction
             {
-                Description = "Prolong",
+                Description = "Extended",
                 Value = mile.Qtd,
                 TransactionDate = DateTime.Now,
                 Price = 70,
@@ -163,6 +164,34 @@ namespace AirMiles.FrontOffice.Helpers
                 LastUpdated = DateTime.Today.ToShortDateString(),
                 BgImage = "/lib/ClientTemplate/img/card/card_background.jpg",
                 BackLogo = "/lib/ClientTemplate/img/card/logo_black.png"
+            };
+        }
+
+        public Mile ToMile(ConvertMilesViewModel model, int clientId)
+        {
+            return new Mile
+            {
+                ClientId = clientId,
+                ExpirationDate = DateTime.Now.AddYears(1),
+                IsAproved = true,
+                IsDeleted = false,
+                MilesTypeId = 1,
+                Qtd = model.StatusAmount
+            };
+        }
+
+        public Transaction ToTransaction(ConvertMilesViewModel model, Mile mile)
+        {
+            return new Transaction
+            {
+                ClientID = mile.ClientId,
+                Description = "Converted",
+                IsAproved = true,
+                IsDeleted = false,
+                Price = 70,
+                IsCreditCard = true,
+                TransactionDate = DateTime.Now,
+                Value = -model.BonusAmount
             };
         }
     }

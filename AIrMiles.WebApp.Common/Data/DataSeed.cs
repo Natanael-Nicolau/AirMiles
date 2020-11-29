@@ -239,17 +239,17 @@ namespace AIrMiles.WebApp.Common.Data
                 user = await _userRepository.GetUserByEmailAsync("basicclient@yopmail.com");
                 if (user != null)
                 {
-                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ProlongedMiles = 0, RevisionMonth = DateTime.Now.Month, TransferedMiles = 0, TotalFlights = 0 });
+                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ExtendedMiles = 0, ConvertedMiles = 0, RevisionMonth = DateTime.Now.Month, TransferedMiles = 0, TotalFlights = 0 });
                 }
                 user = await _userRepository.GetUserByEmailAsync("silverclient@yopmail.com");
                 if (user != null)
                 {
-                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ProlongedMiles = 0, RevisionMonth = DateTime.Now.Month, TransferedMiles = 0, TotalFlights = 0 });
+                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ExtendedMiles = 0, ConvertedMiles = 0, RevisionMonth = DateTime.Now.Month, TransferedMiles = 0, TotalFlights = 0 });
                 }
                 user = await _userRepository.GetUserByEmailAsync("goldclient@yopmail.com");
                 if (user != null)
                 {
-                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ProlongedMiles = 0, RevisionMonth = DateTime.Now.Month, TransferedMiles = 0, TotalFlights = 0 });
+                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ExtendedMiles = 0, ConvertedMiles = 0, RevisionMonth = DateTime.Now.Month, TransferedMiles = 0, TotalFlights = 0 });
                 }
                 await _context.SaveChangesAsync();
             }

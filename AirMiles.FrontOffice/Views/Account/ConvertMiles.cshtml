@@ -26,6 +26,7 @@
                             <div id="home" class="tab-pane fade in active">
                                 <div class="flex">
                                     <input type="hidden" asp-for="BonusAmount" />
+                                    <input type="hidden" asp-for="StatusAmount" />
                                     <div class="priceCard">
                                         <p>@Html.DisplayFor(model => model.BonusAmount)<sup>BonusMiles</sup></p>
                                         <input type="radio" checked="checked" class="i-checks">
@@ -34,6 +35,9 @@
                                     <div class="priceCard">
                                         <p>@Html.DisplayFor(model => model.StatusAmount)<sup>StatusMiles</sup></p>
                                     </div>
+                                </div>
+                                <div class="text-success">
+                                    @ViewBag.Message
                                 </div>
                                 <div class="form-example-int mg-t-15">
                                     <a id="btn_continue" class="btn btn-default btn-icon-notika waves-effect" style="background-color: #00c292"><i class="notika-icon notika-right-arrow"></i> Continue</a>
@@ -70,9 +74,6 @@
                                         <div class="nk-int-st">
                                             <input type="text" class="form-control" data-mask="999" placeholder="CVC/CVV/CID">
                                         </div>
-                                    </div>
-                                    <div class="text-success">
-                                        @ViewBag.Message
                                     </div>
                                     <br />
                                     <div class="form-example-int mg-t-15">

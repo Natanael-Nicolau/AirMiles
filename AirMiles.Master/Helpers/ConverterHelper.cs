@@ -210,7 +210,7 @@ namespace AirMiles.Master.Helpers
                 FullName = client.User.FullName,
                 NextRevision = client.NextRevision,
                 BoughtMiles = client.BoughtMiles,
-                ProlongedMiles = client.ProlongedMiles,
+                ProlongedMiles = client.ExtendedMiles,
                 TransferedMiles = client.TransferedMiles
             };
         }

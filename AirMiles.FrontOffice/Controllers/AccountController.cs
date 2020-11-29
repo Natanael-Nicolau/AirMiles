@@ -391,6 +391,7 @@ namespace AirMiles.FrontOffice.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(IFormFile photo, int clientID)
         {
             var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
@@ -433,9 +434,35 @@ namespace AirMiles.FrontOffice.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditInfo(string name, string email, string birthDate)
+        [Authorize]
+        public async Task<IActionResult> EditInfo(string firstName, string lastName, string birthDate)
         {
-            return StatusCode(422,"Email");
+            try
+            {
+                var user = await _userRepository.GetUserByEmailAsync(this.User.Identity.Name);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                user.FirstName = firstName;
+                user.LastName = lastName;
+                user.BirthDate = DateTime.ParseExact(birthDate, "yyyy-MM-dd", null);
+
+                var result = await _userRepository.UpdateUserAsync(user);
+                if (!result.Succeeded)
+                {
+                    return StatusCode(500, "Database Error");
+                }
+
+                return StatusCode(200, "Info Successfully Updated");
+            }
+            catch (Exception)
+            {
+                return StatusCode(520, "Unknown Error");
+            }
+
+            
         }
 
         #endregion
@@ -789,6 +816,7 @@ namespace AirMiles.FrontOffice.Controllers
             return View(model);
         }
 
+        [Authorize]
         public IActionResult ExtendMiles()
         {
             // Generates a new instance of ProlongMilesViewModel
@@ -800,6 +828,7 @@ namespace AirMiles.FrontOffice.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> ExtendMiles(ExtendMilesViewModel model)
         {
@@ -809,7 +838,7 @@ namespace AirMiles.FrontOffice.Controllers
                 var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
 
                 //Checks if the maximum value of transfered miles has been reached
-                var prolongMiles = model.Amount + client.ProlongedMiles;
+                var prolongMiles = model.Amount + client.ExtendedMiles;
 
                 if (prolongMiles > 20000)
                 {
@@ -822,7 +851,8 @@ namespace AirMiles.FrontOffice.Controllers
                 var clientMiles =  _mileRepository.GetAllBonusMiles(client.Id);
 
                 // Creates a new Mile Object for the giftedClient
-                var mile = _converterHelper.ToMile(model, client.Id, 1);
+                var newDate = clientMiles.OrderBy(m => m.ExpirationDate).FirstOrDefault().ExpirationDate.AddYears(1);
+                var mile = _converterHelper.ToMile(model, client.Id, newDate);
 
                 var extendedMiles = _converterHelper.ToTransaction(model, mile);
 
@@ -863,7 +893,7 @@ namespace AirMiles.FrontOffice.Controllers
                 // Updates the client Prolonged Miles on the DataBase
                 try
                 {
-                    client.ProlongedMiles = prolongMiles;
+                    client.ExtendedMiles = prolongMiles;
                     await _clientRepository.UpdateAsync(client);
                 }
                 catch (Exception)
@@ -886,6 +916,7 @@ namespace AirMiles.FrontOffice.Controllers
             return View(model);
         }
 
+        [Authorize]
         public IActionResult ConvertMiles()
         {
             // Generates a new instance of ProlongMilesViewModel
@@ -895,6 +926,105 @@ namespace AirMiles.FrontOffice.Controllers
                 StatusAmount = 1000
             };
 
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ConvertMiles(ConvertMilesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
+                if (client == null)
+                {
+                    return NotFound();
+                }
+
+                //Checks if the maximum value of transfered miles has been reached
+                var convertMiles = model.BonusAmount + client.ExtendedMiles;
+
+                if (convertMiles > 20000)
+                {
+                    this.ModelState.AddModelError(string.Empty, "You can only convert a maximum of 20.000 Miles per Year");
+
+                    return View(model);
+                }
+
+
+                //Checks if client is eligeable for mile conversion
+                int totalStatusMiles = _mileRepository.GetClientTotalStatusMiles(client.Id);
+                var status = await _userRepository.GetClientStatusRoleAsync(this.User.Identity.Name);
+                if (string.IsNullOrEmpty(status))
+                {
+                    return NotFound();
+                }
+
+                if ((status == "Basic" && (totalStatusMiles < 25000 || totalStatusMiles >= 30000)) || (status == "Silver" && (totalStatusMiles < 65000 || totalStatusMiles >= 70000)) || status == "Gold")
+                {
+                    ViewBag.Message = "You aren't eligeable for mile conversion";
+                    return View(model);
+                }
+
+                // Gets a list of the client Bonus Miles
+                var clientMiles = _mileRepository.GetAllBonusMiles(client.Id);
+
+
+                
+
+
+                // Creates a new Mile Object for the client
+                var mile = _converterHelper.ToMile(model, client.Id);
+
+                var convertedMiles = _converterHelper.ToTransaction(model, mile);
+
+
+                // Creates a transaction on the Database
+                try
+                {
+                    await _transactionRepository.CreateAsync(convertedMiles);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your conversion. Please try again later");
+                    return View(model);
+                }
+
+
+                // Converts the Miles
+                var convertSuccess = await _mileRepository.SpendMilesAsync(clientMiles, model.BonusAmount);
+                if (!convertSuccess)
+                {
+
+                    this.ModelState.AddModelError(string.Empty, "There was a critical error with the conversion algorithm. Please contact the Administrator as soon as possible");
+                    return View(model);
+                }
+
+                // Creates a new Mile on the DataBase
+                try
+                {
+                    await _mileRepository.CreateAsync(mile);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
+                    return View(model);
+                }
+
+                // Updates the client Converted Miles on the DataBase
+                try
+                {
+                    client.ConvertedMiles = convertMiles;
+                    await _clientRepository.UpdateAsync(client);
+                }
+                catch (Exception)
+                {
+                    this.ModelState.AddModelError(string.Empty, "There was an error processing your purchase.Please try again later");
+                    return View(model);
+                }
+
+                ViewBag.Message = "Your conversion of miles was successful!";
+            }
             return View(model);
         }
 

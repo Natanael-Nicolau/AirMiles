@@ -100,51 +100,62 @@
     };
 
     async function editInfo() {
+
+
         const { value } = await Swal.fire({
             showCancelButton: true,
             html:
                 '<h2>Edit Information</h2>' +
-                '<h3>Full Name</h3>' +
-                '<input id="swal-input1" value="@Model.FullName" class="swal2-input">' +
-                '<h3>Email</h3>' +
-                '<input id="swal-input2" value="@Model.Email" class="swal2-input">' +
+                '<h3>First Name</h3>' +
+                '<input id="swal-FirstName" value="@Model.FirstName" class="swal2-input">' +
+                '<h3>Last Name</h3>' +
+                '<input id="swal-LastName" value="@Model.LastName" class="swal2-input">' +
                 '<h3>BirthDate</h3>' +
-                '<input id="swal-input3" value="@Model.BirthDate" class="swal2-input">',
+                '<input type="date" id="swal-BirthDate" value="@Model.BirthDate.Value.ToString("yyyy-MM-dd")" class="swal2-input">',
             focusConfirm: false,
             preConfirm: () => {
+                let nameRegex = new RegExp('[a-zA-Z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u024F]{2,50}')
 
-                if ($('#swal-input1').val() == '' || $('#swal-input2').val() == '' || $('#swal-input3').val() == '') {
+                if ($('#swal-FirstName').val() == '' || $('#swal-LastName').val() == '' || $('#swal-BirthDate').val() == '') {
                     Swal.showValidationMessage("Enter a value in all fields");
+                    return false;
+                }
+                if ( !nameRegex.test($('#swal-FirstName').val()) ) {
+                    Swal.showValidationMessage("Invalid First Name");
+                    return false;
+                }
+                if ( !nameRegex.test($('#swal-LastName').val()) ) {
+                    Swal.showValidationMessage("Invalid Last Name");
                     return false;
                 }
                 else {
 
-                    const formValues = { fullName: $('#swal-input1').val(), email: $('#swal-input2').val(), birthDate: $('#swal-input3').val() };
-
-                    let closeModal = false;
-
+                    const formValues = { firstName: $('#swal-FirstName').val(), lastName: $('#swal-LastName').val(), birthDate: $('#swal-BirthDate').val() };
                     $.ajax({
                         async: false,
-                        url: '@Url.Action("Edit", "Account")',
+                        url: '@Url.Action("EditInfo", "Account")',
                         type: 'POST',
                         data: formValues,
                         success: function (result) {
-                            // Fire success modal 
-                            closeModal = true;
+                            Swal.fire(
+                                'Success!',
+                                'Personal Information Updated!',
+                                'success'
+                            ).then((result) => {
+                                window.location.reload(true);
+                            });
                         },
                         error: function (jqXHR) {
-                            // Fire error modal
-                            Swal.showValidationMessage("An error was catched");
-                            closeModal = false;
+                            Swal.fire(
+                                jqXHR.status.toString(),
+                                jqXHR.responseText,
+                                'error'
+                            )
                         },
                     })
-                    return closeModal;
                 }
             }
         })
-        if (value) {
-            Swal.fire
-        }
     }
 </script>
 

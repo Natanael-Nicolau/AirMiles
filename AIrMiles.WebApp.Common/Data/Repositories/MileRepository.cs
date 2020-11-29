@@ -54,8 +54,8 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 
                 if (currentMile.Qtd >= i)
                 {
-                    i = 0;
                     currentMile.Qtd -= i;
+                    i = 0;
                 }
                 else
                 {

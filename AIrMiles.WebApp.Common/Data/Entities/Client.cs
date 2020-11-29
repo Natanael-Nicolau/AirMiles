@@ -19,11 +19,15 @@ namespace AIrMiles.WebApp.Common.Data.Entities
         [Display(Name = "Buy Cap")]
         public int BoughtMiles { get; set; }
 
-        [Display(Name = "Prolong Cap")]
-        public int ProlongedMiles { get; set; }
+        [Display(Name = "Extended Cap")]
+        public int ExtendedMiles { get; set; }
 
         [Display(Name = "Transfer Cap")]
         public int TransferedMiles { get; set; }
+
+        [Display(Name = "Conversion Cap")]
+        public int ConvertedMiles { get; set; }
+
 
         [Display(Name = "Revision Month")]
         public int RevisionMonth { get; set; }

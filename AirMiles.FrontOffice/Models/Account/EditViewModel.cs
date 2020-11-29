@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AirMiles.FrontOffice.Models.Account
 {
@@ -7,7 +8,11 @@ namespace AirMiles.FrontOffice.Models.Account
         [DisplayFormat(DataFormatString ="{0:D9}")]
         public int ClientID { get; set; }
 
-        public string FullName { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
 
         [Required]
         [Display(Prompt = "Email...")]
@@ -20,7 +25,8 @@ namespace AirMiles.FrontOffice.Models.Account
 
         [Required]
         [Display(Name = "Birth Date", Prompt = "yyyy/mm/dd")]
-        public string BirthDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? BirthDate { get; set; }
 
         [Required]
         [Display(Name = "Status")]
