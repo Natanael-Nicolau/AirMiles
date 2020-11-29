@@ -6,6 +6,11 @@
     <title>@ViewData["Title"] - AirMiles</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Syncfusion Essential JS 2 Styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+
+    <!-- Syncfusion Essential JS 2 Scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
     <!-- Bootstrap CSS
         ============================================ -->
     <link rel="stylesheet" href="~/lib/ClientTemplate/css/bootstrap.min.css">
@@ -18,6 +23,7 @@
     <!-- wave CSS
        ============================================ -->
     <link rel="stylesheet" href="~/lib/ClientTemplate/css/wave/waves.min.css">
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/wave/button.css">
     <!-- Notika icon CSS
         ============================================ -->
     <link rel="stylesheet" href="~/lib/ClientTemplate/css/notika-custom-icon.css">
@@ -28,12 +34,18 @@
     <!-- bootstrap JS
         ============================================ -->
     <script src="~/lib/ClientTemplate/js/bootstrap.min.js"></script>
+    <!-- Input Mask JS
+       ============================================ -->
+    <script src="~/lib/ClientTemplate/js/jasny-bootstrap.min.js"></script>
     <!-- Login JS
        ============================================ -->
     <script src="~/lib/ClientTemplate/js/login/login-action.js"></script>
     <!-- ValidateCheckBox JS
       ============================================ -->
     <script src="../lib/ClientTemplate/js/checkBoxValidation.js"></script>
+    <!-- SweetAlert JS
+     ============================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 </head>
 <body>
@@ -55,6 +67,9 @@
                     <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
                         <li>
                             <a href="/Account/Edit"><i class="notika-icon notika-house"></i> Home</a>
+                        </li>
+                        <li>
+                            <a href="/Account/MilesCard"><i class="notika-icon notika-credit-card"></i> Cinel Air Miles Card</a>
                         </li>
                         <li>
                             <a data-toggle="tab" href="#MilesGo"><i class="notika-icon notika-travel"></i> Cinel Miles&Go</a>
@@ -88,6 +103,12 @@
                                 <li>
                                     <a href="/Account/TransferMiles">Transfer Miles</a>
                                 </li>
+                                <li>
+                                    <a href="/Account/ExtendMiles">Extend Miles</a>
+                                </li>
+                                <li>
+                                    <a href="/Account/ConvertMiles">Convert Miles</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -114,5 +135,13 @@
         </div>
     </div>
     @RenderSection("Scripts", required: false)
+    <!-- Syncfusion Essential JS 2 ScriptManager -->
+    <ejs-scripts></ejs-scripts>
 </body>
 </html>
+
+<style>
+    .swal2-popup {
+        font-size: 1.6rem !important;
+    }
+</style>

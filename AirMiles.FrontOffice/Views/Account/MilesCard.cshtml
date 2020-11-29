@@ -1,0 +1,184 @@
+﻿@model AirMiles.FrontOffice.Models.Account.MilesCardViewModel
+
+@{
+    ViewData["Title"] = "Miles Card";
+
+}
+
+<div class="form-example-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-example-wrap">
+                    <div class="cmp-tb-hd">
+                        <h1>Miles Card</h1>
+                        <br />
+                        <p style="font-size:large">
+                            Here you can access your Cinel Air Miles Card.
+                        </p>
+                        <hr />
+                    </div>
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="~/lib/ClientTemplate/img/logo/logo.png">
+                                <p id="miles_go">MILES&GO</p>
+                                <p id="name">@Html.DisplayFor(model => model.FullName)</p>
+                                <p><span id="ID" class="bold">ID</span>@Html.DisplayFor(model => model.ClientID)<span class="bold">Valid Until</span><span id="right">@Html.DisplayFor(model => model.ValidUntil)</span></p>
+                                <img id="status" src=@Url.Content(Model.StatusPhoto)>
+                            </div>
+                            <div class="flip-card-back">
+                                <p id="first"><span class="bold">Status Miles</span><span class="content">@Html.DisplayFor(model => model.StatusMiles)</span></p>
+                                <p><span class="bold">Bonus Miles</span><span class="content">@Html.DisplayFor(model => model.BonusMiles)</span></p>
+                                <p><span class="bold">Last Update</span><span class="content">@Html.DisplayFor(model => model.LastUpdated)</span></p>
+                                <ejs-qrcodegenerator id="qr" width="100" height="100" mode="SVG" value=@Model.ClientID>
+                                    <e-qrcodegenerator-displaytext visibility="false" size="0"></e-qrcodegenerator-displaytext>
+                                    <e-qrcodegenerator-margin bottom="0" left="0" right="0" top="3"></e-qrcodegenerator-margin>
+                                </ejs-qrcodegenerator>
+                                <img class="logo" src=@Url.Content(Model.BackLogo)>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+
+    .flip-card {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: transparent;
+        width: 500px;
+        height: 300px;
+        perspective: 1000px;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        cursor: pointer;
+    }
+
+    .flip-card-inner.is-flipped {
+            transform: rotateY(180deg);
+
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    .flip-card-front {
+        background-image: url(@Model.BgImage);
+        background-size: 500px;
+        color: black;
+    }
+
+    .flip-card-back {
+        color: white;
+        transform: rotateY(180deg);
+        color: black;
+        background-color: @Model.BackColor;
+    }
+
+    .flip-card-front img {
+        width: 200px;
+        margin-top: 10px;
+        margin-left: -55%;
+    }
+
+    .flip-card-front p {
+        text-align: left;
+        margin-left: 15px;
+    }
+
+    .flip-card-front span {
+        text-align: left;
+        margin-left: 20px;
+        margin-right: 5px;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    #ID {
+        margin-left: 0px;
+    }
+
+    #right {
+        margin-left: 5px;
+    }
+
+    #miles_go {
+        font-size: 60px;
+        margin-top: 0.5%;
+    }
+
+    #name {
+        text-transform: uppercase;
+        font-size: 20px;
+        margin-top: 8%;
+    }
+
+    #first {
+        margin-top: 20px;
+    }
+
+    .flip-card-back p {
+        text-align: left;
+        margin-bottom: 20px;
+        margin-left: 25px;
+    }
+
+    .flip-card-back span {
+        text-align: left;
+    }
+
+    #qr {
+        float: right;
+        margin-top: -120px;
+        margin-right: 30px;
+    }
+
+    .logo {
+        margin-top: 40px;
+        margin-right: 20px;
+        width: 350px;
+    }
+
+    .content {
+        margin-left: 10px;
+    }
+
+    #status {
+        width: 110px;
+        height: 110px;
+        margin-top: -80px;
+        margin-right: 10px;
+        float: right;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var card = document.querySelector('.flip-card-inner');
+
+    card.addEventListener('click', function () {
+        card.classList.toggle('is-flipped');
+    });
+
+</script>

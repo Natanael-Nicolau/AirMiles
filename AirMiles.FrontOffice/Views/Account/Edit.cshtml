@@ -1,6 +1,7 @@
 ﻿@model AirMiles.FrontOffice.Models.Account.EditViewModel
 
 @{
+    
     ViewData["Title"] = "Edit";
 }
 
@@ -11,54 +12,53 @@
             <div class="view-mail-list sm-res-mg-t-30">
                 <!-- Contact area Start-->
                 <div class="contact-area">
-                    <input type="file" id="upload" style="display:none" />
-                    <input type="hidden" id="clientID" asp-for="ClientID" />
-                    <div class="contact-win" style="background-image: url(@Model.BackgroundPath)">
-                        <div class="contact-img" style="padding-left:20px">
-                            <img id="user_photo" src="@Url.Content(Model.PhotoUrl)" style="width:150px; cursor:pointer" alt="User Image" />
-                            <h2 style="color:lightseagreen">@Html.DisplayFor(model => model.FullName)</h2>
+                    <div class="area">
+                        <div class="contact">
+                           
+                                <input type="file" id="upload" style="display:none" />
+                                <input type="hidden" id="clientID" asp-for="ClientID" />
+                                <img src="@Url.Content(Model.PhotoUrl)" id="user_photo">
+                            <div class="contactInfo">
+                                <p id="fullName">@Html.DisplayFor(model => model.FullName)</p>
+                                <p class="contactTitle">Client Number<span>@Html.DisplayFor(model => model.ClientID)</span></p>
+                                <p class="contactTitle">BirthDate<span>@Html.DisplayFor(model => model.BirthDate)</span></p>
+                                <p class="contactTitle">Status<span>@Html.DisplayFor(model => model.Status)</span></p>
+                            </div>
+                            <button type="submit" id="edit" onclick="editInfo()">
+                                UPDATE INFORMATION
+                            </button>
                         </div>
-                        <div class="conct-sc-ic">
+                        <div class="subArea">
+                            <div class="section">
+                                <p class="sectionTitle">Miles</p>
+                                <div class="info">
+                                    <p>@Html.DisplayNameFor(model => model.StatusMiles)<span>@Html.DisplayFor(model => model.StatusMiles)</span></p>
+
+                                    <p>@Html.DisplayNameFor(model => model.BonusMiles)<span>@Html.DisplayFor(model => model.BonusMiles)</span></p>
+
+                                    <p>@Html.DisplayNameFor(model => model.BoughtMiles)<span>@Html.DisplayFor(model => model.BoughtMiles)</span></p>
+
+                                    <p>@Html.DisplayNameFor(model => model.ProlongedMiles)<span>@Html.DisplayFor(model => model.ProlongedMiles)</span></p>
+
+                                    <p>@Html.DisplayNameFor(model => model.TransferedMiles)<span>@Html.DisplayFor(model => model.TransferedMiles)</span></p>
+                                </div>
+                            </div>
+                            <div class="fitSection">
+                                <div class="section">
+                                    <p class="sectionTitle">Contact</p>
+                                    <div class="info">
+                                        <p>@Html.DisplayNameFor(model => model.Email)<span>@Html.DisplayFor(model => model.Email)</span></p>
+                                    </div>
+                                </div>
+                                <div class="section">
+                                    <p class="sectionTitle">Extra Info</p>
+                                    <div class="info">
+                                        <p>@Html.DisplayNameFor(model => model.TotalFlights)<span>@Html.DisplayFor(model => model.TotalFlights)</span></p>
+                                        <p>@Html.DisplayNameFor(model => model.RevisionMonth)<span>@Html.DisplayFor(model => model.RevisionMonth)</span></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <hr />
-                    <div class="contact-ctn">
-                        <div class="contact-ad-hd">
-                            <p class="ctn-ads" style="font-size:large">@Html.DisplayNameFor(model => model.ClientID): @Html.DisplayFor(model => model.ClientID)</p>
-                        </div>
-                        <hr />
-                        <div class="contact-ad-hd">
-                            <p class="ctn-ads" style="font-size:large">@Html.DisplayNameFor(model => model.Email): @Html.DisplayFor(model => model.Email)</p>
-                        </div>
-                        <hr />
-                        <div class="contact-ad-hd">
-                            <p class="ctn-ads" style="font-size:large">@Html.DisplayNameFor(model => model.BirthDate): @Html.DisplayFor(model => model.BirthDate)</p>
-                        </div>
-                        <hr />
-                        <div class="contact-ad-hd">
-                            <p class="ctn-ads" style="font-size:large">@Html.DisplayNameFor(model => model.RevisionMonth): @Html.DisplayFor(model => model.RevisionMonth)</p>
-                        </div>
-                        <hr />
-                        <div class="contact-ad-hd">
-                            <p class="ctn-ads" style="font-size:large">@Html.DisplayNameFor(model => model.StatusMiles): @Html.DisplayFor(model => model.StatusMiles)</p>
-                        </div>
-                        <hr />
-                        <div class="contact-ad-hd">
-                            <p class="ctn-ads" style="font-size:large">@Html.DisplayNameFor(model => model.BonusMiles): @Html.DisplayFor(model => model.BonusMiles)</p>
-                        </div>
-                        <hr />
-                        <div class="contact-ad-hd">
-                            <p class="ctn-ads" style="font-size:large">@Html.DisplayNameFor(model => model.BoughtMiles): @Html.DisplayFor(model => model.BoughtMiles)</p>
-                        </div>
-                        <hr />
-                        <div class="contact-ad-hd">
-                            <p class="ctn-ads" style="font-size:large">@Html.DisplayNameFor(model => model.ProlongedMiles): @Html.DisplayFor(model => model.ProlongedMiles)</p>
-                        </div>
-                        <hr />
-                        <div class="contact-ad-hd">
-                            <p class="ctn-ads" style="font-size:large">@Html.DisplayNameFor(model => model.TransferedMiles): @Html.DisplayFor(model => model.TransferedMiles)</p>
-                        </div>
-                        <hr />
                     </div>
                 </div>
             </div>
@@ -97,5 +97,150 @@
             complete: function (jqXHR, status) {
             }
         });
-            };
+    };
+
+    async function editInfo() {
+        const { value } = await Swal.fire({
+            showCancelButton: true,
+            html:
+                '<h2>Edit Information</h2>' +
+                '<h3>Full Name</h3>' +
+                '<input id="swal-input1" value="@Model.FullName" class="swal2-input">' +
+                '<h3>Email</h3>' +
+                '<input id="swal-input2" value="@Model.Email" class="swal2-input">' +
+                '<h3>BirthDate</h3>' +
+                '<input id="swal-input3" value="@Model.BirthDate" class="swal2-input">',
+            focusConfirm: false,
+            preConfirm: () => {
+
+                if ($('#swal-input1').val() == '' || $('#swal-input2').val() == '' || $('#swal-input3').val() == '') {
+                    Swal.showValidationMessage("Enter a value in all fields");
+                    return false;
+                }
+                else {
+
+                    const formValues = { fullName: $('#swal-input1').val(), email: $('#swal-input2').val(), birthDate: $('#swal-input3').val() };
+
+                    let closeModal = false;
+
+                    $.ajax({
+                        async: false,
+                        url: '@Url.Action("Edit", "Account")',
+                        type: 'POST',
+                        data: formValues,
+                        success: function (result) {
+                            // Fire success modal 
+                            closeModal = true;
+                        },
+                        error: function (jqXHR) {
+                            // Fire error modal
+                            Swal.showValidationMessage("An error was catched");
+                            closeModal = false;
+                        },
+                    })
+                    return closeModal;
+                }
+            }
+        })
+        if (value) {
+            Swal.fire
+        }
+    }
 </script>
+
+<style>
+    .area {
+        display: grid;
+        grid-template-rows: auto auto;
+       
+        
+    }
+
+    .contact {
+        display: grid;
+        grid-template-columns: 1fr 1fr 4fr;
+        background-image: url( @Model.BackgroundPath );
+        border-radius: 10px
+    }
+
+    .contact img {
+            height: 150px;
+            width: 150px;
+            margin-left: 20px;
+            align-self: center;
+            border-radius: 50%;
+    }
+
+    .contactInfo {
+        width: auto;
+        margin: 0 auto auto 20px;
+    }
+
+    #fullName {
+        font-size: x-large;
+    }
+
+    .contact p {
+        font-weight: bold;
+        font-size: larger;
+    }
+
+    .contact span {
+        margin-left: 10px;
+        font-size: large;
+        font-weight: normal;
+    }
+
+    .contact button {
+        color: white;
+        background-color: black;
+        font-weight: bold;
+        height: auto;
+        width: auto;
+        justify-self: end;
+        border-radius:10px;
+        margin: 15px 20px auto auto;
+    }
+
+    .subArea {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        height: auto;
+        grid-template-rows: auto;
+        grid-column-gap: 20px
+    }
+
+    .section {
+        border: 2px solid grey;
+        border-radius: 5px;
+        margin: 10px 0 10px 0;
+    }
+
+    .sectionTitle {
+        font-size: x-large;
+    }
+
+    .section p {
+        padding-bottom: 10px;
+        padding-left: 5px;
+    }
+
+    .fitSection :last-child {
+        margin-top: 25px;
+    }
+
+    .info p {
+        font-weight: bold;
+        border-bottom: 1px solid black;
+    }
+
+    .info span {
+        margin-left: 10%;
+        font-weight: normal;
+    }
+
+    .info :last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+</style>

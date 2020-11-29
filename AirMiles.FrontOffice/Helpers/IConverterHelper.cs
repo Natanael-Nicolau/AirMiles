@@ -10,12 +10,18 @@ namespace AirMiles.FrontOffice.Helpers
 
         IEnumerable<Balance_MovementsViewModel> ToBalanceMovementsViewModel(List<Transaction> transactions);
 
-        Mile ToMile(BuyMilesViewModel model, int clientId);
+        Mile ToMile(BuyMilesViewModel model, int clientId, int extraYears);
+
+        Mile ToMile(ExtendMilesViewModel model, int clientId, int extraYears);
 
         Transaction ToTransaction(BuyMilesViewModel model, Mile mile);
 
-        Mile ToMile(int giftedClientId, int amount);
+        Transaction ToTransaction(ExtendMilesViewModel model, Mile mile);
+
+        Mile ToMile(int giftedClientId, int amount, int extraYears);
 
         Transaction ToTransaction(int giftedClientId, int qtd);
+
+        MilesCardViewModel ToMilesCardViewModel(Client client, User user);
     }
 }

@@ -1,18 +1,19 @@
-﻿@model IList<AirMiles.FrontOffice.Models.Account.BuyMilesViewModel>
+﻿@model AirMiles.FrontOffice.Models.Account.ExtendMilesViewModel
 
 @{
-    ViewData["Title"] = "Buy Miles";
+    ViewData["Title"] = "Extend Miles";
 }
 
-<form method="post" action="/Account/BuyMiles" class="form-example-area">
+<form method="post" action="/Account/ExtendMiles" class="form-example-area">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="form-example-wrap">
                     <div class="cmp-tb-hd">
-                        <h1 >Buy Miles</h1>
+                        <h1>Extend Miles</h1>
+                        <br />
                         <p style="font-size:large">
-                            Choose the Amount you want to purchase.
+                            Choose the Amount you want to extend.
                         </p>
                         <hr />
                     </div>
@@ -23,23 +24,11 @@
                         </ul>
                         <div class="tab-content tab-custom-st">
                             <div id="home" class="tab-pane fade in active">
-                                <div class="grid">
-                                    @for (var i = 0; i < Model.Count(); i++)
-                                    {
-                                        <input type="hidden" asp-for="@Model[i].Amount" />
-                                        <input type="hidden" asp-for="@Model[i].Price" />
-
-                                        <div class="priceCard">
-                                            <p> @Html.DisplayFor(modelItem => modelItem[i].Amount)<sup>Miles</sup></p>
-                                            <div class="priceFlex">
-                                                <input type="radio" asp-for="@(Model[i].Selected)" value="true" class="i-checks">
-                                                <span>@Html.DisplayFor(modelItem => modelItem[i].Price)€</span>
-                                            </div>
-                                        </div>
-
-                                    }
+                                <input type="hidden" asp-for="Amount" />
+                                <div class="priceCard">
+                                    <p>@Html.DisplayFor(model => model.Amount)<sup>Miles</sup></p>
+                                    <input type="radio" checked="checked" class="i-checks">
                                 </div>
-                                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                                 <div class="form-example-int mg-t-15">
                                     <a id="btn_continue" class="btn btn-default btn-icon-notika waves-effect" style="background-color: #00c292"><i class="notika-icon notika-right-arrow"></i> Continue</a>
                                 </div>
@@ -86,11 +75,11 @@
                                     </div>
                                 </div>
                             </div>
-                           
-                        </div>
+
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </form>
@@ -99,17 +88,13 @@
 
 <style>
 
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: auto;
-        grid-gap: 10px;
-    }
-
     .priceCard {
         border: 1px solid grey;
         display: grid;
-        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+        max-width: 12%;
+        align-content: center;
+        background-color: ghostwhite;
     }
     
     .priceCard p {
@@ -118,29 +103,13 @@
         font-weight: bold;
         margin-left: 15px;
         margin-top: 15px;
-    }
 
-    .priceFlex {
-        border-top: 1px solid grey;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
     }
     
-    .priceFlex input {
-        margin: auto 15px auto 15px;
-    }
-    
-    .priceFlex span {
+    .priceCard input {
+        margin-right: 10px;
         justify-self: end;
-        color: green;
-        font-size: large;
-        text-decoration: underline;
-        margin: auto 15px auto 15px;
-
-    }
-
-    .priceCard:hover {
-        background-color: ghostwhite;
+        align-self: center;
     }
 </style>
 
@@ -162,7 +131,9 @@
             Swal.fire({
                 icon: 'error',
                 title: '<h2>Oops...</h2>',
-                text: 'You must select a value!'
+                width: '500px',
+                html:
+                    '<h4>You must select a value!</h4>'
             })
         }
     });
@@ -180,4 +151,3 @@
     });
 
 </script>
-

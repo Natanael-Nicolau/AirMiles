@@ -19,27 +19,36 @@
                             <thead>
                                 <tr>
                                     <th>@Html.DisplayNameFor(model => model.TransactionType)</th>
+
                                     <th>@Html.DisplayNameFor(model => model.Amount)</th>
+
                                     <th>@Html.DisplayNameFor(model => model.Date)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var mile in Model)
                                 {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => mile.TransactionType)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => mile.Amount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => mile.Date)
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => mile.TransactionType)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => mile.Amount)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => mile.Date)
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
+                        <div id="export">
+                            <button class="item" onclick="DownloadPDF()"><img src="~/images/Utilities/Pdf.png" /></button>
+                            <span class="item">Download PDF</span>
+                        </div>
+                       <!--PDF here-->
                     </div>
                 </div>
             </div>
@@ -55,3 +64,43 @@
        ============================================ -->
 <script src="~/lib/ClientTemplate/js/data-table/jquery.dataTables.min.js"></script>
 <script src="~/lib/ClientTemplate/js/data-table/data-table-act.js"></script>
+
+<style>
+    #export {
+        margin-top: 20px;
+        display:flex;
+        flex-direction:row
+    }
+
+    #export button {
+        border: 0;
+        background-color:transparent;
+        color:none;
+    }
+
+    #export img {
+        width:30px;
+        height:30px;
+    }
+
+    .item {
+        font-weight:bold;
+        margin-left: 20px;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).on('ready', function () {
+        $('#data-table-basic').DataTable().order([2, 'desc']).draw();
+    });
+
+    function DownloadPDF() {
+        var table = $('#data-table-basic').DataTable();
+        var info = table.rows({ page: 'current' }).data().toArray();
+        var headers = table.columns().header().toArray().map(x => x.innerText);
+        var _url = '@Url.Action("DownloadBalanceMovementsPDF", "Account")';
+
+
+       window.location.href = '/Account/DownloadBalanceMovementsPDF?info=' + info + '&headers=' + headers; 
+    }
+</script>
