@@ -1,0 +1,84 @@
+﻿@model AirMiles.Master.Models.Clients.DetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+    ViewData["ViewName"] = "Client Details";
+}
+
+<div class="col-lg-3 col-md-6">
+    <div class="card">
+        <div class="card-body">
+            <div class="stat-widget-one">
+                <div class="stat-icon dib"><i class="ti-money text-success border-success"></i></div>
+                <div class="stat-content dib">
+                    <div class="stat-text">@Html.DisplayNameFor(model => model.TotalStatusMiles)</div>
+                    <div class="stat-digit">@Html.DisplayFor(model => model.TotalStatusMiles)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-3 col-md-6">
+    <div class="card">
+        <div class="card-body">
+            <div class="stat-widget-one">
+                <div class="stat-icon dib"><i class="ti-money text-warning border-warning"></i></div>
+                <div class="stat-content dib">
+                    <div class="stat-text">@Html.DisplayNameFor(model => model.TotalBonusMiles)</div>
+                    <div class="stat-digit">@Html.DisplayFor(model => model.TotalBonusMiles)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12">
+    <aside class="profile-nav alt">
+        <section class="card">
+            <div class="card-header user-header alt bg-dark">
+                <div class="media">
+                    <i class="fa fa-user mr-3 fa-5x" style="background-color: ghostwhite; padding:10px; border-radius: 10px"></i>
+                    <div class="media-body">
+                        <h2 class="text-light display-6">@Html.DisplayFor(model => model.FullName)</h2>
+                        <p>@Html.DisplayFor(model => model.Status)</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <i class="fa fa-money"></i> @Html.DisplayNameFor(model => model.BoughtMiles): @Html.DisplayFor(model => model.BoughtMiles) / 20000
+                </li>
+                <li class="list-group-item">
+                    <i class="fa fa-money"></i> @Html.DisplayNameFor(model => model.ProlongedMiles): @Html.DisplayFor(model => model.ProlongedMiles) / 20000
+                </li>
+                <li class="list-group-item">
+                    <i class="fa fa-money"></i> @Html.DisplayNameFor(model => model.TransferedMiles): @Html.DisplayFor(model => model.TransferedMiles) / 20000
+                </li>
+                <li class="list-group-item">
+                    <i class="fa fa-calendar"></i> @Html.DisplayNameFor(model => model.NextRevision): @Html.DisplayFor(model => model.NextRevision)
+                </li>
+                <li class="list-group-item">
+                    <i class="fa fa-envelope-o"></i> @Html.DisplayNameFor(model => model.Email): @Html.DisplayFor(model => model.Email)
+            </ul>
+        </section>
+    </aside>
+</div>            
+
+
+
+<div class="col-lg">
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fa fa-arrow-circle-left"></i> Back to List
+    </a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+        <i class="fa fa-trash-o"></i> Delete
+    </a>
+</div>
+
+
+
+
+@section Scripts {
+    <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
+}

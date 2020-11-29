@@ -4,156 +4,148 @@
     ViewData["ViewName"] = "Create Account";
 }
 
-    <div class="card">
-        <div class="card-body card-block">
+<div class="card">
+    <div class="card-body card-block">
 
-            <!--FirstName-->
+        <!--FirstName-->
 
-            <form method="post" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly"></div>
-
-                <div class="form-group">
-                    <label asp-for="FirstName" class=" form-control-label"></label>
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <input asp-for="FirstName" class="form-control">
-                    </div>
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="FirstName" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                    <input asp-for="FirstName" class="form-control">
                 </div>
+            </div>
 
-                @if (ViewData.ModelState["FirstName"] != null && ViewData.ModelState["FirstName"].Errors.Any())
-                {
-                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                        <span class="badge badge-pill badge-danger">Error</span>
-                        <span asp-validation-for="FirstName"></span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                }
-
-                <!--FirstNameEnd-->
-
-                <!--LastName-->
-
-                <div class="form-group">
-                    <label asp-for="LastName" class=" form-control-label"></label>
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <input asp-for="LastName" class="form-control">
-                    </div>
+            @if (ViewData.ModelState["FirstName"] != null && ViewData.ModelState["FirstName"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="FirstName"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+            }
 
-                @if (ViewData.ModelState["LastName"] != null && ViewData.ModelState["LastName"].Errors.Any())
-                {
-                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                        <span class="badge badge-pill badge-danger">Error</span>
-                        <span asp-validation-for="LastName"></span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                }
+            <!--FirstNameEnd-->
+            <!--LastName-->
 
-                <!--LastNameEnd-->
-
-                <!--Email-->
-
-                <div class="form-group">
-                    <label asp-for="Email" class=" form-control-label"></label>
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
-                        <input type="email" asp-for="Email" class="form-control">
-                    </div>
+            <div class="form-group">
+                <label asp-for="LastName" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                    <input asp-for="LastName" class="form-control">
                 </div>
+            </div>
 
-                @if (ViewData.ModelState["Email"] != null && ViewData.ModelState["Email"].Errors.Any())
-                {
-                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                        <span class="badge badge-pill badge-danger">Error</span>
-                        <span asp-validation-for="Email"></span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                }
-
-                <!--EmailEnd-->
-
-                <!--BirthDate-->
-
-                <div class="form-group">
-                    <label asp-for="BirthDate" class=" form-control-label"></label>
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                        <input type="date" asp-for="BirthDate" class="form-control">
-                    </div>
+            @if (ViewData.ModelState["LastName"] != null && ViewData.ModelState["LastName"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="LastName"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+            }
 
+            <!--LastNameEnd-->
+            <!--Email-->
 
-                @if (ViewData.ModelState["BirthDate"] != null && ViewData.ModelState["BirthDate"].Errors.Any())
-                {
-                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                        <span class="badge badge-pill badge-danger">Error</span>
-                        <span asp-validation-for="BirthDate"></span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                }
-
-                <!--BirthDateEnd-->
-
-                <!--Role-->
-
-                <div class="form-group">
-                    <label asp-for="Role" class=" form-control-label"></label>
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-tag"></i></div>
-                        <select asp-for="Role" asp-items="Model.Roles" class="form-control standartSelect">
-                        </select>
-                    </div>
+            <div class="form-group">
+                <label asp-for="Email" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+                    <input type="email" asp-for="Email" class="form-control">
                 </div>
+            </div>
 
-                @if (ViewData.ModelState["Role"] != null && ViewData.ModelState["Role"].Errors.Any())
-                {
-                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                        <span class="badge badge-pill badge-danger">Error</span>
-                        <span asp-validation-for="Role"></span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                }
-
-                <!--RoleEnd-->
-
-                <!--Photo-->
-
-                <div class="form-group">
-                    <label asp-for="Photo" class=" form-control-label"></label>
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-picture-o"></i></div>
-                        <input asp-for="Photo" class="form-control" type="file">
-                    </div>
+            @if (ViewData.ModelState["Email"] != null && ViewData.ModelState["Email"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Email"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+            }
 
-                @if (ViewData.ModelState["Photo"] != null && ViewData.ModelState["Photo"].Errors.Any())
-                {
-                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                        <span class="badge badge-pill badge-danger">Error</span>
-                        <span asp-validation-for="Photo"></span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                }
+            <!--EmailEnd-->
+            <!--BirthDate-->
 
-                <!--PhotoEnd-->
+            <div class="form-group">
+                <label asp-for="BirthDate" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                    <input asp-for="BirthDate" class="form-control">
+                </div>
+            </div>
 
-                <!--Buttons-->
+
+            @if (ViewData.ModelState["BirthDate"] != null && ViewData.ModelState["BirthDate"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="BirthDate"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--BirthDateEnd-->
+            <!--Role-->
+
+            <div class="form-group">
+                <label asp-for="Role" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-tag"></i></div>
+                    <select asp-for="Role" asp-items="Model.Roles" class="form-control standartSelect">
+                    </select>
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["Role"] != null && ViewData.ModelState["Role"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Role"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--RoleEnd-->
+            <!--Photo-->
+
+            <div class="form-group">
+                <label asp-for="Photo" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-picture-o"></i></div>
+                    <input asp-for="Photo" class="form-control" type="file">
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["Photo"] != null && ViewData.ModelState["Photo"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Photo"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--PhotoEnd-->
+            <!--Buttons-->
 
             <div class="card-footer form-group">
-
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                 <div class="text-success">
                     <p>
                         @ViewBag.Message
@@ -168,12 +160,12 @@
                 </button>
             </div>
 
-                <!--ButtonsEnd-->
+            <!--ButtonsEnd-->
 
-            </form>
-        </div>
+        </form>
     </div>
+</div>
 
-    @section Scripts {
-        <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
-    }
+@section Scripts {
+    <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
+}

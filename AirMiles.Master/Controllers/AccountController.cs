@@ -64,7 +64,8 @@ namespace AirMiles.Master.Controllers
         {
             var model = new CreateViewModel
             {
-                Roles = _userRepository.GetBackOfficeRoles()
+                Roles = _userRepository.GetBackOfficeRoles(),
+                BirthDate = DateTime.Now
             };
 
             return View(model);
@@ -86,7 +87,7 @@ namespace AirMiles.Master.Controllers
                 if (user == null)
                 {
                     // Initializes an empty path
-                    string path;
+                    string path = string.Empty;
 
                     if (model.Photo != null && model.Photo.Length > 0)
                     {

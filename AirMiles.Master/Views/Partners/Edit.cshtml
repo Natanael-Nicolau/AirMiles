@@ -1,0 +1,160 @@
+﻿@model AirMiles.Master.Models.Partners.EditViewModel
+@{
+    ViewData["Title"] = "Edit Partner";
+    ViewData["ViewName"] = "Edit Partner";
+}
+
+<div class="card">
+    <div class="card-body card-block">
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ImagePath" />
+
+            <!--Name-->
+            <div class="form-group">
+                <label asp-for="Name" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-id-card"></i></div>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["Name"] != null && ViewData.ModelState["Name"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Name"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--NameEnd-->
+            <!--ImageFile-->
+
+            <div class="form-group">
+                <label asp-for="ImageFile" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-picture-o"></i></div>
+                    <input type="file" asp-for="ImageFile" class="form-control" />
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["ImageFile"] != null && ViewData.ModelState["ImageFile"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="ImageFile"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--ImageFileEnd-->
+            <!--WebsiteUrl-->
+
+            <div class="form-group">
+                <label asp-for="WebsiteUrl" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-link"></i></div>
+                    <input asp-for="WebsiteUrl" class="form-control" />
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["WebsiteUrl"] != null && ViewData.ModelState["WebsiteUrl"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="WebsiteUrl"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--WebsiteUrlEnd-->
+            <!--Description-->
+
+            <div class="form-group">
+                <label asp-for="Description" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-comment"></i></div>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                </div>
+            </div>
+
+
+            @if (ViewData.ModelState["Description"] != null && ViewData.ModelState["Description"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Description"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--DescriptionEnd-->
+            <!--IsStarAlliance-->
+
+            <div class="form-group">
+                <label asp-for="IsStarAlliance" class=" form-control-label"></label>
+                <label class=" switch switch-3d switch-primary mr-3">
+                    <input type="checkbox" asp-for="IsStarAlliance" class="switch-input" />
+                    <span class="switch-label"></span>
+                    <span class="switch-handle">
+                    </span>
+                </label>
+            </div>
+
+            @if (ViewData.ModelState["IsStarAlliance"] != null && ViewData.ModelState["IsStarAlliance"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="IsStarAlliance"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--IsStarAllianceEnd-->
+            <!--Buttons-->
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <div class="card-footer form-group">
+
+                <div class="text-success">
+                    <p>
+                        @ViewBag.Message
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-dot-circle-o"></i> Submit
+                </button>
+                @if (this.User.IsInRole("SuperEmployee"))
+                {
+                    <a asp-action="ApprovalIndex" class="btn btn-danger btn-sm">
+                        <i class="fa fa-ban"></i> Cancel
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="Index" class="btn btn-danger btn-sm">
+                        <i class="fa fa-ban"></i> Cancel
+                    </a>
+                }
+            </div>
+
+            <!--ButtonsEnd-->
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
+}

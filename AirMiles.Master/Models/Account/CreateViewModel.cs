@@ -11,12 +11,12 @@ namespace AirMiles.Master.Models.Account
     {
         [Required]
         [Display(Name = "First Name", Prompt = "First Name...")]
-        [RegularExpression("[A-z]{2,50}", ErrorMessage = "Expression Malformed")]
+        [RegularExpression("[a-zA-Z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u024F]{2,50}", ErrorMessage = "Invalid Characters used")]
         public string FirstName { get; set; }
 
         [Required]
         [Display(Name = "Last Name", Prompt = "Last Name...")]
-        [RegularExpression("[A-z]{2,50}", ErrorMessage = "Expression Malformed")]
+        [RegularExpression("[a-zA-Z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u024F]{2,50}", ErrorMessage = "Invalid Characters used")]
         public string LastName { get; set; }
 
         [Required]
@@ -31,7 +31,8 @@ namespace AirMiles.Master.Models.Account
         public IFormFile Photo { get; set; }
 
         [Required]
-        [Display(Name = "Birth Date", Prompt = "yyyy/mm/dd")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Birth Date")]
         public DateTime BirthDate { get; set; }
 
         [Required]

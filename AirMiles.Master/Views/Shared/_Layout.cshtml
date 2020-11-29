@@ -76,16 +76,16 @@
                     {
                         <h3 class="menu-title">Approval Requests</h3><!-- /.menu-title -->
                         <li>
-                            <a asp-controller="Ticket" asp-action="Requests">Ticket</a>
+                            <a asp-controller="Ticket" asp-action="ApprovalIndex">Ticket</a>
                         </li>
                         <li>
-                            <a asp-controller="Flights" asp-action="Requests">Flight</a>
+                            <a asp-controller="Flights" asp-action="ApprovalIndex">Flight</a>
                         </li>
                         <li>
-                            <a asp-controller="Airports" asp-action="Requests">Airport</a>
+                            <a asp-controller="Airports" asp-action="ApprovalIndex">Airport</a>
                         </li>
                         <li>
-                            <a asp-controller="Partners" asp-action="Requests">Partner</a>
+                            <a asp-controller="Partners" asp-action="ApprovalIndex">Partner</a>
                         </li>
                     }
                     @if (this.User.IsInRole("Admin"))
@@ -158,6 +158,7 @@
         <script src="~/lib/bootstrap/vendors/jqvmap/dist/jquery.vmap.min.js"></script>
         <script src="~/lib/bootstrap/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
         <script src="~/lib/bootstrap/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
         @RenderSection("Scripts", required: false)
 </body>

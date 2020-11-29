@@ -95,8 +95,7 @@ namespace AirMiles.FrontOffice.Controllers
         {
             await _userRepository.LogoutAsync();
 
-            //TODO Change this
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction(nameof(Login));
         }
 
         #endregion

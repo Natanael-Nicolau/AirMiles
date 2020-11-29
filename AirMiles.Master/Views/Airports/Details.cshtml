@@ -1,0 +1,118 @@
+﻿@model AirMiles.Master.Models.Airports.DetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+    ViewData["ViewName"] = "Airport Details";
+}
+
+<aside class="profile-nav alt">
+    <section class="card">
+        <div class="card-header user-header alt bg-dark">
+            <div class="media">
+                <i class="fa fa-plane mr-3 fa-5x" style="background-color: ghostwhite; padding:10px; border-radius: 10px"></i>
+                <div class="media-body">
+                    <h2 class="text-light display-6">@Html.DisplayFor(model => model.Name)</h2>
+                    <p>@Html.DisplayFor(model => model.FullLocation)</p>
+                </div>
+            </div>
+        </div>
+
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <i class="fa fa-tag"></i> @Html.DisplayNameFor(model => model.IATA): @Html.DisplayFor(model => model.IATA)
+            </li>
+            <li class="list-group-item">
+                <i class="fa fa-map-marker"></i> @Html.DisplayNameFor(model => model.Latitude): @Html.DisplayFor(model => model.Latitude)
+            </li>
+            <li class="list-group-item">
+                <i class="fa fa-map-marker"></i> @Html.DisplayNameFor(model => model.Longitude): @Html.DisplayFor(model => model.Longitude)
+            </li>
+        </ul>
+    </section>
+</aside>
+
+
+@if (this.User.IsInRole("SuperEmployee"))
+{
+    <a asp-action="ApprovalIndex" class="btn btn-secondary">
+        <i class="fa fa-arrow-circle-left"></i> Back to List
+    </a>
+}
+else
+{
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fa fa-arrow-circle-left"></i> Back to List
+    </a>
+}
+@if (!this.User.IsInRole("Employee"))
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+        <i class="fa fa-pencil"></i> Edit
+    </a>
+    @if (Model.IsAproved)
+    {
+        <a onclick="deleteConfirm(@Model.Id)" class="btn btn-danger">
+            <i class="fa fa-trash-o"></i> Delete
+        </a>
+    }
+    else
+    {
+        <a asp-action="Aprove" asp-route-id="@Model.Id" class="btn btn-success">
+            <i class="fa fa-check"></i> Aprove
+        </a>
+        <a onclick="deleteConfirm(@Model.Id)" class="btn btn-danger">
+            <i class="fa fa-trash-o"></i> Reject
+        </a>
+
+    }
+}
+
+
+
+@section Scripts {
+    <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+    function deleteConfirm(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Airports")',
+                    type: 'Post',
+                    data: { id: id },
+                    success: function (result) {
+                        console.log(result);
+                        // Fire success modal
+                        Swal.fire(
+                            'Deleted!',
+                            '@(Model.IsAproved ? "Airport has been deleted." : "Request has been deleted.")',
+                            'success'
+                        ).then((result) => {
+                            window.location.href = '@(Model.IsAproved ? @Url.Action("Index", "Airports") : @Url.Action("ApprovalIndex", "Airports"))'
+                        });
+
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        console.log(result.responseText);
+                        Swal.fire(
+                            result.status.toString(),
+                            result.responseText,
+                            'error'
+                        )
+                    }
+
+                });
+            }
+        })
+    }
+
+    </script>
+}

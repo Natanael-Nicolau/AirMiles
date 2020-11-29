@@ -12,10 +12,26 @@ namespace AirMiles.Master.Helpers
         Models.Miles.RequestsIndexViewModel ToRequestsIndexViewModel(MilesRequest request);
 
         Models.Account.DetailsViewModel ToDetailsViewModel(User user, string role);
-        User ToUserEntity(Models.Account.CreateViewModel model, string photoPath);
+        Models.Airports.DetailsViewModel ToDetailsViewModel(Airport airport);
+        Models.Partners.DetailsViewModel ToDetailsViewModel(Partner partner);
+        Models.Flights.DetailsViewModel ToDetailsViewModel(Flight flight);
+        Models.Clients.DetailsViewModel ToDetailsViewModel(Client client, string status);
+
 
         Models.Account.EditViewModel ToEditViewModel(User user, string role);
+        Models.Airports.EditViewModel ToEditViewModel(Airport airport);
+        Models.Partners.EditViewModel ToEditViewModel(Partner partner);
+        Models.Flights.EditViewModel ToEditViewModel(Flight flight);
+        
+
+
+
 
         Flight ToFlightEntity(Models.Flights.CreateViewModel model);
+        User ToUserEntity(Models.Account.CreateViewModel model, string photoPath);
+
+        Airport ToAirportEntity(Models.Airports.CreateViewModel model);
+        Partner ToPartnerEntity(Models.Partners.CreateViewModel model, string imageUrl);
+        
     }
 }

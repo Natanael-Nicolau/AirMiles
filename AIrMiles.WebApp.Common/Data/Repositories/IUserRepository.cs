@@ -34,7 +34,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
         Task<string> GenerateEmailConfirmationTokenAsync(User user);
 
         Task<string> GeneratePasswordResetTokenAsync(User user);
-
+        Task<string> GetClientStatusRoleAsync(string email);
         Task<User> GetUserByEmailAsync(string email);
         Task<User> GetUserByIdAsync(string userId);
 

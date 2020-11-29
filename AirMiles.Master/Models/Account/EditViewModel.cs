@@ -13,12 +13,12 @@ namespace AirMiles.Master.Models.Account
     {
         [Required]
         [Display(Name = "First Name", Prompt = "First Name...")]
-        [RegularExpression("[A-z]{2,50}", ErrorMessage = "Expression Malformed")]
+        [RegularExpression("[a-zA-Z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u024F]{2,50}", ErrorMessage = "Expression Malformed")]
         public string FirstName { get; set; }
 
         [Required]
         [Display(Name = "Last Name", Prompt = "Last Name...")]
-        [RegularExpression("[A-z]{2,50}", ErrorMessage = "Expression Malformed")]
+        [RegularExpression("[a-zA-Z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u024F]{2,50}", ErrorMessage = "Expression Malformed")]
         public string LastName { get; set; }
 
         public string FullName { get; set; }

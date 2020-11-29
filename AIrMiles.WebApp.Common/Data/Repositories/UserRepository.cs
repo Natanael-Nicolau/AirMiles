@@ -155,5 +155,13 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
             return await _userManager.RemoveFromRoleAsync(user, role);
         }
 
+        public async Task<string> GetClientStatusRoleAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles.FirstOrDefault(x => x == "Basic" || x == "Silver" || x == "Gold");
+
+        }
     }
 }

@@ -11,5 +11,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
     {
         IEnumerable<SelectListItem> GetStartingAirports();
         IEnumerable<SelectListItem> GetEndAirports(int StartAirportId);
+
+        Task<Airport> GetByIataAsync(string iata);
     }
 }

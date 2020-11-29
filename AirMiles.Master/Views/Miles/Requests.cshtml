@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AirMiles.Master.Models.Miles.RequestsIndexViewModel>
 @{
-    ViewData["Title"] = "User Index";
+    ViewData["Title"] = "Requests Index";
     ViewData["ViewName"] = "Index";
 }
 
@@ -13,7 +13,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Users</strong>
+                        <strong class="card-title">Requests</strong>
                     </div>
                     <div class="card-body">
                         <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
@@ -36,7 +36,7 @@
                                         <td>@Html.DisplayFor(modelItem => item.PartnerName)</td>
                                         <td>
                                             <a asp-action="Aprove" asp-route-id="@item.RequestId" class="btn btn-info"><i class="fa fa-check"> Aprove</i></a>
-                                            <a asp-action="Reject" asp-route-id="@item.RequestId" class="btn btn-danger"><i class="fa fa-trash-o"></i> Reject</a>
+                                            <a onclick="deleteConfirm(@item.RequestId)" class="btn btn-danger"><i class="fa fa-trash-o"></i> Reject</a>
                                         </td>
                                     </tr>
                                 }
@@ -54,6 +54,50 @@
     @{
         await Html.RenderPartialAsync("_DataTableScriptsPartial");
     }
+<script type="text/javascript">
+    function deleteConfirm(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Miles")',
+                    type: 'Post',
+                    data: { id: id },
+                    success: function (result) {
+                        console.log(result);
+                        // Fire success modal
+                        Swal.fire(
+                            'Deleted!',
+                            'Request has been deleted.',
+                            'success'
+                        ).then((result) => {
+                            window.location.reload(true);
+                        });
+
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        console.log(result.responseText);
+                        Swal.fire(
+                            result.status.toString(),
+                            result.responseText,
+                            'error'
+                        )
+                    }
+
+                });
+            }
+        })
+    }
+
+</script>
 }
 
 

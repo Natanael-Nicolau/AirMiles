@@ -16,9 +16,19 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
             _context = context;
         }
 
+        public IQueryable<Client> GetAllWithUsers()
+        {
+            return _context.Clients
+                .Where(c => !c.IsDeleted)
+                .Include(c => c.User)
+                .AsNoTracking();
+        }
+
         public async Task<Client> GetByEmailAsync(string email)
         {
-            return await _context.Clients.Include(c => c.User)
+            return await _context.Clients
+                .Where(c => !c.IsDeleted)
+                .Include(c => c.User)
                 .Where(c => c.User.Email == email)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();

@@ -1,0 +1,171 @@
+﻿@model AirMiles.Master.Models.Airports.CreateViewModel
+@{
+    ViewData["Title"] = "Create Airport";
+    ViewData["ViewName"] = "Create Airport";
+}
+
+<div class="card">
+    <div class="card-body card-block">
+        <form method="post">
+
+            <!--Name-->
+            <div class="form-group">
+                <label asp-for="Name" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-plane"></i></div>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["Name"] != null && ViewData.ModelState["Name"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Name"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--NameEnd-->
+            <!--IATA-->
+
+            <div class="form-group">
+                <label asp-for="IATA" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-tag"></i></div>
+                    <input asp-for="IATA" class="form-control" />
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["IATA"] != null && ViewData.ModelState["IATA"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="IATA"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--IATAEnd-->
+            <!--Latitude-->
+
+            <div class="form-group">
+                <label asp-for="Latitude" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-map-marker"></i></div>
+                    <input asp-for="Latitude" class="form-control" />
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["Latitude"] != null && ViewData.ModelState["Latitude"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Latitude"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--LatitudeEnd-->
+            <!--Longitude-->
+
+            <div class="form-group">
+                <label asp-for="Longitude" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-map-marker"></i></div>
+                    <input asp-for="Longitude" class="form-control" />
+                </div>
+            </div>
+
+            @if (ViewData.ModelState["Longitude"] != null && ViewData.ModelState["Longitude"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Longitude"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--LongitudeEnd-->
+            <!--Country-->
+
+            <div class="form-group">
+                <label asp-for="Country" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-flag"></i></div>
+                    <input asp-for="Country" class="form-control">
+                </div>
+            </div>
+
+
+            @if (ViewData.ModelState["Country"] != null && ViewData.ModelState["Country"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Country"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--CountryEnd-->
+            <!--City-->
+
+            <div class="form-group">
+                <label asp-for="City" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-building"></i></div>
+                    <input asp-for="City" class="form-control" />
+                </div>
+            </div>
+
+
+            @if (ViewData.ModelState["City"] != null && ViewData.ModelState["City"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="City"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--CityEnd-->
+            <!--Buttons-->
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <div class="card-footer form-group">
+
+                <div class="text-success">
+                    <p>
+                        @ViewBag.Message
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-dot-circle-o"></i> Submit
+                </button>
+                <button asp-action="Index" class="btn btn-danger btn-sm">
+                    <i class="fa fa-ban"></i> Cancel
+                </button>
+            </div>
+
+            <!--ButtonsEnd-->
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationCurrencyPartial");}
+}

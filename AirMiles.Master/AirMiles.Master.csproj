@@ -33,8 +33,4 @@
     <ProjectReference Include="..\AIrMiles.WebApp.Common\AIrMiles.WebApp.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Clients\" />
-  </ItemGroup>
-
 </Project>

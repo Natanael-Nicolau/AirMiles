@@ -113,22 +113,30 @@ namespace AirMiles.Master.Controllers
             return RedirectToAction(nameof(Requests));
         }
 
-        public async Task<IActionResult> Reject(int? id)
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var request = await _milesRequestRepository.GetByIdAsync(id.Value);
-            if (request == null)
+            try
             {
-                return NotFound();
-            }
+                var request = await _milesRequestRepository.GetByIdAsync(id.Value);
+                if (request == null)
+                {
+                    return NotFound();
+                }
 
-            request.IsDeleted = true;
-            await _milesRequestRepository.UpdateAsync(request);
-            return RedirectToAction(nameof(Requests));
+                await _milesRequestRepository.DeleteAsync(request);
+                return StatusCode(200, "Success");
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(520, "Unknown Error.");
+            }
         }
 
         #endregion

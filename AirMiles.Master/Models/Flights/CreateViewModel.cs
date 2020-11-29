@@ -39,11 +39,11 @@ namespace AirMiles.Master.Models.Flights
 
 
         [Required]
-        [Display(Name = "Start Time")]
+        [Display(Name = "Start Time", Prompt = "yyyy/MM/dd HH:mm")]
         public DateTime FlightStart { get; set; }
 
         [Required]
-        [Display(Name = "End Time")]
+        [Display(Name = "End Time", Prompt = "yyyy/MM/dd HH:mm")]
         public DateTime FlightEnd { get; set; }
 
     }

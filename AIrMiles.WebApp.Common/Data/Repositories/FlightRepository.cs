@@ -19,6 +19,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
         public IQueryable<Flight> GetAllWithAirportsAndPartners()
         {
             return _context.Flights
+                .Where(f => !f.IsDeleted)
                 .Include(f => f.StartAirport)
                 .Include(f => f.EndAirport)
                 .Include(f => f.FlightCompany)

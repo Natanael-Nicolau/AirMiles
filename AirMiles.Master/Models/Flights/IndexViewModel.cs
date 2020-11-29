@@ -21,6 +21,7 @@ namespace AirMiles.Master.Models.Flights
 
 
         [Display(Name = "Start Time")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public DateTime FlightStart { get; set; }
 
     }

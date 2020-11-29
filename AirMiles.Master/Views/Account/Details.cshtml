@@ -8,9 +8,8 @@
     <section class="card">
         <div class="card-header user-header alt bg-dark">
             <div class="media">
-                <a href="#">
-                    <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="Image" src="@Url.Content(Model.PhotoUrl)">
-                </a>
+                <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="Image" src="@Url.Content(Model.PhotoUrl)">
+                @*<i class="fa fa-plane align-self-center rounded-circle mr-3 fa-5x"></i>*@
                 <div class="media-body">
                     <h2 class="text-light display-6">@Html.DisplayFor(model => model.FullName)</h2>
                     <p>@Html.DisplayFor(model => model.Role)</p>

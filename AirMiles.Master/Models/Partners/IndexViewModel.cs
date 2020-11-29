@@ -11,7 +11,7 @@ namespace AirMiles.Master.Models.Partners
         public int Id { get; set; }
         public string Name { get; set; }
 
-        [Display(Name ="Star Aliance?")]
+        [Display(Name = "Star Alliance Member?")]
         public bool IsStarAlliance { get; set; }
 
         [Display(Name ="Added since")]

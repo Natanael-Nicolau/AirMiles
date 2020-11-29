@@ -62,5 +62,11 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 
             return list;
         }
+
+        public async Task<Airport> GetByIataAsync(string iata)
+        {
+            return await _context.Airports
+                .FirstOrDefaultAsync(a => a.IATA == iata);
+        }
     }
 }

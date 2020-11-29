@@ -34,13 +34,13 @@ namespace AIrMiles.WebApp.Common.Data.Entities
         {
             get
             {
-                if (DateTime.Now.Month <= this.RevisionMonth)
+                if (DateTime.Now.Month < this.RevisionMonth)
                 {
-                    return new DateTime(DateTime.Now.Year, this.RevisionMonth, 31);
+                    return new DateTime(DateTime.Now.Year, this.RevisionMonth, 1);
                 }
                 else
                 {
-                    return new DateTime((DateTime.Now.Year + 1), this.RevisionMonth, 31);
+                    return new DateTime((DateTime.Now.Year + 1), this.RevisionMonth, 1);
                 }
             }
         }
