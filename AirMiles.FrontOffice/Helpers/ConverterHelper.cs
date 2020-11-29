@@ -7,9 +7,13 @@ namespace AirMiles.FrontOffice.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {
-        public EditViewModel ToEditViewModel(Client client, User user)
+        public EditViewModel ToEditViewModel(Client client, User user, string backgroundPath)
         {
-          
+            if(user.PhotoUrl == null)
+            {
+                user.PhotoUrl = $"~/images/Users/Default_User_Image.png";
+            }
+
             return new EditViewModel
             {
                 ClientID = client.Id,
@@ -21,6 +25,7 @@ namespace AirMiles.FrontOffice.Helpers
                 ProlongedMiles = client.ProlongedMiles.ToString(),
                 TransferedMiles = client.TransferedMiles.ToString(),
                 RevisionMonth = client.RevisionMonth.ToString(),
+                BackgroundPath = backgroundPath
             };
         }
 
@@ -67,5 +72,34 @@ namespace AirMiles.FrontOffice.Helpers
                 IsCreditCard = false
             };
         }
+
+        public Mile ToMile(int giftedClientId, int amount)
+        {
+            return new Mile
+            {
+                ClientId = giftedClientId,
+                Qtd = amount,
+                MilesTypeId = 2,
+                ExpirationDate = DateTime.Now.AddYears(3),
+                IsAproved = true,
+                IsDeleted = false,
+            };
+        }
+
+        public Transaction ToTransaction(int giftedClientId, int qtd)
+        {
+            return  new Transaction
+            {
+                Description = "Transfered",
+                ClientID = giftedClientId,
+                TransactionDate = DateTime.Now,
+                Price = 0,
+                Value = qtd,
+                IsAproved = true,
+                IsCreditCard = false
+            };
+        }
+
+
     }
 }

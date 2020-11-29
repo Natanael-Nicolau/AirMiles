@@ -8,5 +8,6 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 {
     public interface ITransactionRepository : IGenericRepository<Transaction>
     {
+        List<Transaction> GetAllByClientId(int clientID);
     }
 }
