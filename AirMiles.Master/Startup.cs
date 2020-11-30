@@ -59,12 +59,10 @@ namespace AirMiles.Master
             services.AddScoped<IFlightRepository, FlightRepository>();
             services.AddScoped<IMileRepository, MileRepository>();
             services.AddScoped<IPartnerRepository, PartnerRepository>();
-            services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMilesRequestRepository, MilesRequestRepository>();
-
             services.AddScoped<IMailHelper, MailHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<IImageHelper, ImageHelper>();

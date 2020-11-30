@@ -4,7 +4,7 @@ namespace AirMiles.Master.Helpers.DailyUpdates
 {
     public class TicketUpdateModel
     {
-        public string CLientId { get; set; }
+        public string ClientId { get; set; }
         public string Fullname { get; set; }
         public string StartRegion { get; set; }
         public string EndRegion { get; set; }

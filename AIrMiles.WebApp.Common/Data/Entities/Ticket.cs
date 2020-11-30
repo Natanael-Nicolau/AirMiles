@@ -21,8 +21,8 @@ namespace AIrMiles.WebApp.Common.Data.Entities
 
         public decimal Price { get; set; }
 
-        public int ReservationId { get; set; }
-        public Reservation Reservation { get; set; }
+        public int ClientId { get; set; }
+        public Client Client { get; set; }
 
         public int FlightClassId { get; set; }
         public FlightClass FlightClass { get; set; }

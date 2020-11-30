@@ -20,8 +20,6 @@ namespace AIrMiles.WebApp.Common.Data
         public DbSet<MilesRequest> MilesRequests { get; set; }
         public DbSet<MilesType> MilesTypes { get; set; }
         public DbSet<Partner> Partners { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<ReservationType> ReservationTypes { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
@@ -50,10 +48,6 @@ namespace AIrMiles.WebApp.Common.Data
 
             builder.Entity<Flight>()
                 .Property(f => f.BasePrice)
-                .HasColumnType("decimal(8,2)");
-
-            builder.Entity<Reservation>()
-                .Property(r => r.Price)
                 .HasColumnType("decimal(8,2)");
 
             builder.Entity<FlightClass>()

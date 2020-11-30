@@ -269,12 +269,6 @@ namespace AIrMiles.WebApp.Common.Data
                 _context.Miles.Add(new Mile { ClientId = 3, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 50000 });
                 await _context.SaveChangesAsync();
             }
-            if (_context.ReservationTypes.Count() == 0)
-            {
-                _context.ReservationTypes.Add(new ReservationType { Description = "1Way", IsAproved = true, IsDeleted = false });
-                _context.ReservationTypes.Add(new ReservationType { Description = "2Ways", IsAproved = true, IsDeleted = false });
-                await _context.SaveChangesAsync();
-            }
             if (_context.FlightClasses.Count() == 0)
             {
                 _context.FlightClasses.Add(new FlightClass { Description = "Discount", IsAproved = true, IsDeleted = false });
@@ -308,20 +302,12 @@ namespace AIrMiles.WebApp.Common.Data
                 _context.Flights.Add(new Flight { StartAirportId = 3, EndAirportId = 1, FlightStart = DateTime.Now.AddDays(3), FlightEnd = DateTime.Now.AddDays(3).AddMinutes(60), BaseMilesPrice = 1000, FlightCompanyId = 1, IsAproved = true, IsDeleted = false });
                 await _context.SaveChangesAsync();
             }
-            if (_context.Reservations.Count() == 0)
-            {
-                _context.Reservations.Add(new Reservation { ClientId = 1, ReservationDate = DateTime.Now, ReservationTypeId = 1, Price = 500 });
-                _context.Reservations.Add(new Reservation { ClientId = 1, ReservationDate = DateTime.Now, ReservationTypeId = 1, Price = 900 });
-                _context.Reservations.Add(new Reservation { ClientId = 2, ReservationDate = DateTime.Now, ReservationTypeId = 1, Price = 750 });
-                _context.Reservations.Add(new Reservation { ClientId = 3, ReservationDate = DateTime.Now, ReservationTypeId = 1, Price = 2000 });
-                await _context.SaveChangesAsync();
-            }
             if (_context.Tickets.Count() == 0)
             {
-                _context.Tickets.Add(new Ticket {FlightId = 1, FlightClassId = 2, ReservationId = 1, Seat = "A1", Price = 500, FirstName = "Andy", LastName="Smith" });
-                _context.Tickets.Add(new Ticket { FlightId = 3, FlightClassId = 1, ReservationId = 2, Seat = "B2", Price = 900, FirstName = "Andy", LastName = "Smith" });
-                _context.Tickets.Add(new Ticket { FlightId = 2, FlightClassId = 4, ReservationId = 3, Seat = "C3", Price = 750, FirstName = "Silver", LastName = "Surfer" });
-                _context.Tickets.Add(new Ticket { FlightId = 4, FlightClassId = 5, ReservationId = 4, Seat = "D4", Price = 2000, FirstName = "Gold", LastName = "Roger" });
+                _context.Tickets.Add(new Ticket {FlightId = 1, FlightClassId = 2, ClientId = 1, Seat = "A1", Price = 500, FirstName = "Andy", LastName="Smith" });
+                _context.Tickets.Add(new Ticket { FlightId = 3, FlightClassId = 1, ClientId = 1, Seat = "B2", Price = 900, FirstName = "Andy", LastName = "Smith" });
+                _context.Tickets.Add(new Ticket { FlightId = 2, FlightClassId = 4, ClientId = 2, Seat = "C3", Price = 750, FirstName = "Silver", LastName = "Surfer" });
+                _context.Tickets.Add(new Ticket { FlightId = 4, FlightClassId = 5, ClientId = 3, Seat = "D4", Price = 2000, FirstName = "Gold", LastName = "Roger" });
                 await _context.SaveChangesAsync();
             }
             if (_context.MilesRequests.Count() == 0)
