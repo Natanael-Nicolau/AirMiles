@@ -27,6 +27,9 @@
     <!-- Notika icon CSS
         ============================================ -->
     <link rel="stylesheet" href="~/lib/ClientTemplate/css/notika-custom-icon.css">
+    <!-- bootstrap select CSS
+      ============================================ -->
+    <link rel="stylesheet" href="~/lib/ClientTemplate/css/bootstrap-select/bootstrap-select.css">
     <!-- style CSS
         ============================================ -->
     <link rel="stylesheet" href="~/lib/ClientTemplate/css/style.css">
@@ -46,7 +49,6 @@
     <!-- SweetAlert JS
      ============================================ -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
 </head>
 <body>
     <div class="header-top-area" style="background-color:white">
@@ -91,23 +93,29 @@
                         <div id="MilesGo" class="tab-pane notika-tab-menu-bg animated flipInX">
                             <ul class="notika-main-menu-dropdown">
                                 <li>
-                                    <a href="/Account/BalanceMovements">Balance and Movements</a>
+                                    <a href="/Miles/BalanceMovements">Balance and Movements</a>
+                                </li>
+                                <li>
+                                    <a href="/Miles/BuyTicket">Buy Tickets</a>
+                                </li>
+                                <li>
+                                    <a href="/Miles/TicketIndex">Ticket History</a>
                                 </li>
                             </ul>
                         </div>
                         <div id="MilesStore" class="tab-pane notika-tab-menu-bg animated flipInX">
                             <ul class="notika-main-menu-dropdown">
                                 <li>
-                                    <a href="/Account/BuyMiles">Buy Miles</a>
+                                    <a href="/Miles/BuyMiles">Buy Miles</a>
                                 </li>
                                 <li>
-                                    <a href="/Account/TransferMiles">Transfer Miles</a>
+                                    <a href="/Miles/TransferMiles">Transfer Miles</a>
                                 </li>
                                 <li>
-                                    <a href="/Account/ExtendMiles">Extend Miles</a>
+                                    <a href="/Miles/ExtendMiles">Extend Miles</a>
                                 </li>
                                 <li>
-                                    <a href="/Account/ConvertMiles">Convert Miles</a>
+                                    <a href="/Miles/ConvertMiles">Convert Miles</a>
                                 </li>
                             </ul>
                         </div>
@@ -116,7 +124,7 @@
             </div>
         </div>
     </div>
-    <div id="renderBody">
+    <div>
         @RenderBody()
     </div>
     <!-- Start Footer area-->
@@ -134,9 +142,16 @@
             </div>
         </div>
     </div>
+    <!-- bootstrap select JS
+      ============================================ -->
+    <script src="~/lib/ClientTemplate/js/bootstrap-select/bootstrap-select.js"></script>
+    <!-- main JS
+      ============================================ -->
+    <script src="~/lib/ClientTemplate/js/main.js"></script>
     @RenderSection("Scripts", required: false)
     <!-- Syncfusion Essential JS 2 ScriptManager -->
     <ejs-scripts></ejs-scripts>
+
 </body>
 </html>
 

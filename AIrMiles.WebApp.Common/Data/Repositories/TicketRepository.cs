@@ -14,5 +14,6 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
         {
             _context = context;
         }
+
     }
 }

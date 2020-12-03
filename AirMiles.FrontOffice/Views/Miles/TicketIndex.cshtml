@@ -1,0 +1,110 @@
+﻿@model IEnumerable<AirMiles.FrontOffice.Models.Account.TicketViewModel>
+
+@{
+    ViewData["Title"] = "Ticket History";
+}
+
+<!-- Data Table area Start-->
+<div class="data-table-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="data-table-list">
+                    <div class="basic-tb-hd">
+                        <h1>Ticket History</h1>
+                        <p>See all the tickets purchased with Miles currency. A PDF download option is also available.</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="data-table" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.FullName)</th>
+
+                                    <th>@Html.DisplayNameFor(model => model.StartAirport)</th>
+
+                                    <th>@Html.DisplayNameFor(model => model.EndAirport)</th>
+
+                                    <th>@Html.DisplayNameFor(model => model.FlightStart)</th>
+
+                                    <th>@Html.DisplayNameFor(model => model.FlightClass)</th>
+
+                                    <th>@Html.DisplayNameFor(model => model.Seat)</th>
+
+                                    <th>PDF</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ticket in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.FullName)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.StartAirport)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.EndAirport)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.FlightStart)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.FlightClass)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ticket.Seat)
+                                    </td>
+
+                                    <td>
+                                        <img class="pdf" src="~/images/Utilities/Pdf.png" />
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <!--PDF here-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Data Table area End-->
+<!-- Data Table CSS
+       ============================================ -->
+<link rel="stylesheet" href="~/lib/ClientTemplate/css/jquery.dataTables.min.css">
+<!-- Data Table JS
+       ============================================ -->
+<script src="~/lib/ClientTemplate/js/data-table/jquery.dataTables.min.js"></script>
+<script src="~/lib/ClientTemplate/js/data-table/data-table-act.js"></script>
+
+<style>
+    .pdf
+    {
+        width: 40px;
+        height: 40px;
+    }
+</style>
+
+<script type="text/javascript">
+    //$(document).on('ready', function () {
+    //    $('#data-table-basic').DataTable().order([2, 'desc']).draw();
+    //});
+
+    $('#data-table tbody').on('click', '.pdf', function () {
+
+        var table = $('#data-table').DataTable();
+        var info = table.row($(this).parents('tr')).data();
+        var headers = table.columns().header().toArray().map(x => x.innerText);
+
+        var _url = '@Url.Action("DownloadTicketPDF", "Account")';
+
+        window.location.href = '/Account/DownloadTicketPDF?info=' + info + '&headers=' + headers; 
+    });
+</script>
