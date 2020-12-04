@@ -11,8 +11,8 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="data-table-list">
                     <div class="basic-tb-hd">
-                        <h2>Basic Example</h2>
-                        <p>It's just that simple. Turn your simple table into a sophisticated data table and offer your users a nice experience and great features without any effort.</p>
+                        <h1>Balance And Movements</h1>
+                        <p>Here you can see the history of all your account movements. In addition you can download in PDF format a copy of the data displayed in the current page.</p>
                     </div>
                     <div class="table-responsive">
                         <table id="data-table-basic" class="table table-striped">
@@ -98,9 +98,8 @@
         var table = $('#data-table-basic').DataTable();
         var info = table.rows({ page: 'current' }).data().toArray();
         var headers = table.columns().header().toArray().map(x => x.innerText);
-        var _url = '@Url.Action("DownloadBalanceMovementsPDF", "Account")';
 
 
-       window.location.href = '/Account/DownloadBalanceMovementsPDF?info=' + info + '&headers=' + headers; 
+       window.location.href = '/Miles/DownloadBalanceMovementsPDF?info=' + info + '&headers=' + headers; 
     }
 </script>
