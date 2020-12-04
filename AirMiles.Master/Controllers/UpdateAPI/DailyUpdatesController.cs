@@ -132,8 +132,7 @@ namespace AirMiles.Master.Controllers.UpdateAPI
                             await _userRepository.AddUsertoRoleAsync(user, "Basic");
                         }
                     }
-
-                    //TODO: remove range status miles                 
+               
                     await _mileRepository.ResetClientStatusMiles(client.Id);
 
 
@@ -202,7 +201,7 @@ namespace AirMiles.Master.Controllers.UpdateAPI
                             //Region Modifier
                             double regionModifier = _dailyUpdateHelper.CalculateRegionModifier(ticket.StartRegion, ticket.EndRegion, ticket.FlightClass);
 
-                            //Update client miles
+                            //Update client miles and flights
                             int milesToBeCredited = Convert.ToInt32(Math.Truncate(baseMiles * statusModifier * regionModifier));
 
 
@@ -235,6 +234,11 @@ namespace AirMiles.Master.Controllers.UpdateAPI
                                     await _mileRepository.CreateAsync(newBonusMile);
                                 }
                             }
+
+                            client.TotalFlights++;
+                            await _clientRepository.UpdateAsync(client);
+
+
 
                             //Update Client transactions
                             var transaction = new Transaction

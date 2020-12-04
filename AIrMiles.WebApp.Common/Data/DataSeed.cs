@@ -264,7 +264,7 @@ namespace AIrMiles.WebApp.Common.Data
                 _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 25000 });
                 _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 25000 });
                 _context.Miles.Add(new Mile { ClientId = 2, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 65000 });
-                _context.Miles.Add(new Mile { ClientId = 2, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 65000 });
+                _context.Miles.Add(new Mile { ClientId = 2, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 69000 });
                 _context.Miles.Add(new Mile { ClientId = 3, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 50000 });
                 _context.Miles.Add(new Mile { ClientId = 3, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 50000 });
                 await _context.SaveChangesAsync();

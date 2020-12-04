@@ -141,6 +141,7 @@ namespace AirMiles.FrontOffice.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> BuyTicket(int flightId, string price, int flightClassId)
         {
             if (flightId != 0 || string.IsNullOrEmpty(price) || flightClassId != 0)
@@ -171,7 +172,12 @@ namespace AirMiles.FrontOffice.Controllers
                     return StatusCode(400, "You dont have enough miles to purchase this ticket!");
                 }
 
-                var selectedFlight = _flightRepository.GetAllWithAirportsAndPartners().Where(f => f.Id == flightId).FirstOrDefault();
+                var selectedFlight = _flightRepository.GetAllWithAirportsAndPartners().Where(f => f.IsAproved && f.Id == flightId).FirstOrDefault();
+                if (selectedFlight == null)
+                {
+                    return StatusCode(404, "Flight Not Found!");
+                }
+
 
                 var ticket = new Ticket
                 {
@@ -208,7 +214,7 @@ namespace AirMiles.FrontOffice.Controllers
 
             var client = await _clientRepository.GetByEmailAsync(this.User.Identity.Name);
 
-            var tickets = _ticketRepository.GetAll().Where(t => t.IsAproved == false && t.ClientId == client.Id).ToList();
+            var tickets = _ticketRepository.GetAll().Where(t => t.IsAproved && t.ClientId == client.Id).ToList();
 
             var flights = _flightRepository.GetAllWithAirportsAndPartners().Where(f => f.IsAproved).ToList();
 
