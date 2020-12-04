@@ -425,7 +425,7 @@
         formData.append('price', $('#renderDiv').find('span:eq(0)').text().replace('Miles',''));
         formData.append('flightClassId', classId);
 
-        var _url = '@Url.Action("BuyTicket","Account")';
+        var _url = '@Url.Action("BuyTicket","Miles")';
 
         $.ajax({
             url: _url,

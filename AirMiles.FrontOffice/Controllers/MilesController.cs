@@ -434,7 +434,7 @@ namespace AirMiles.FrontOffice.Controllers
                 }
 
                 // Creates a new Mile Object for the giftedClient
-                var mile = _converterHelper.ToMile(model.Amount, giftedClient.Id, 1);
+                var mile = _converterHelper.ToMile(giftedClient.Id, model.Amount, 1);
 
                 // Creates the Transaction on the giftedClient end
                 var receivedMiles = _converterHelper.ToTransaction(giftedClient.Id, mile.Qtd);
@@ -585,7 +585,7 @@ namespace AirMiles.FrontOffice.Controllers
                 }
 
                 ViewBag.Message = "Your extension of miles was successful!";
-                return View();
+                return View(model);
 
             }
 

@@ -231,7 +231,7 @@ namespace AirMiles.Master.Controllers.UpdateAPI
                                         MilesTypeId = 1,
                                         Qtd = milesToBeCredited
                                     };
-                                    await _mileRepository.CreateAsync(newBonusMile);
+                                    await _mileRepository.CreateAsync(newStatusMile);
                                 }
                             }
 

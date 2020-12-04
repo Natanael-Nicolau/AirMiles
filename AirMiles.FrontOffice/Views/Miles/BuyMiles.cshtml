@@ -4,7 +4,7 @@
     ViewData["Title"] = "Buy Miles";
 }
 
-<form method="post" action="/Account/BuyMiles" class="form-example-area">
+<form method="post" action="/Miles/BuyMiles" class="form-example-area">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -22,20 +22,23 @@
                             <li><a id="tab_payment">2 - Payment Details</a></li>
                         </ul>
                         <div class="tab-content tab-custom-st">
+                            <div class="text-success">
+                                @ViewBag.Message
+                            </div>
                             <div id="home" class="tab-pane fade in active">
                                 <div class="grid">
                                     @for (var i = 0; i < Model.Count(); i++)
                                     {
-                                        <input type="hidden" asp-for="@Model[i].Amount" />
-                                        <input type="hidden" asp-for="@Model[i].Price" />
+                                    <input type="hidden" asp-for="@Model[i].Amount" />
+                                    <input type="hidden" asp-for="@Model[i].Price" />
 
-                                        <div class="priceCard">
-                                            <p> @Html.DisplayFor(modelItem => modelItem[i].Amount)<sup>Miles</sup></p>
-                                            <div class="priceFlex">
-                                                <input type="radio" asp-for="@(Model[i].Selected)" value="true" class="i-checks">
-                                                <span>@Html.DisplayFor(modelItem => modelItem[i].Price)€</span>
-                                            </div>
+                                    <div class="priceCard">
+                                        <p> @Html.DisplayFor(modelItem => modelItem[i].Amount)<sup>Miles</sup></p>
+                                        <div class="priceFlex">
+                                            <input type="radio" asp-for="@(Model[i].Selected)" value="true" class="i-checks">
+                                            <span>@Html.DisplayFor(modelItem => modelItem[i].Price)€</span>
                                         </div>
+                                    </div>
 
                                     }
                                 </div>
@@ -76,9 +79,6 @@
                                             <input type="text" class="form-control" data-mask="999" placeholder="CVC/CVV/CID">
                                         </div>
                                     </div>
-                                    <div class="text-success">
-                                        @ViewBag.Message
-                                    </div>
                                     <br />
                                     <div class="form-example-int mg-t-15">
                                         <a id="btn_back" class="btn btn-default btn-icon-notika waves-effect" style="background-color: lightgray; margin-right:10px"><i class="notika-icon notika-left-arrow"></i> Back</a>
@@ -86,7 +86,7 @@
                                     </div>
                                 </div>
                             </div>
-                           
+
                         </div>
                         </div>
                     </div>

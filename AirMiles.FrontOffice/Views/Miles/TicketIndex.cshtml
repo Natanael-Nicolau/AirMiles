@@ -103,8 +103,8 @@
         var info = table.row($(this).parents('tr')).data();
         var headers = table.columns().header().toArray().map(x => x.innerText);
 
-        var _url = '@Url.Action("DownloadTicketPDF", "Account")';
+        var _url = '@Url.Action("DownloadTicketPDF", "Miles")';
 
-        window.location.href = '/Account/DownloadTicketPDF?info=' + info + '&headers=' + headers; 
+        window.location.href = '/Miles/DownloadTicketPDF?info=' + info + '&headers=' + headers; 
     });
 </script>

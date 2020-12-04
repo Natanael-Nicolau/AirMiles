@@ -40,11 +40,11 @@ namespace AIrMiles.WebApp.Common.Data.Entities
             {
                 if (DateTime.Now.Month < this.RevisionMonth)
                 {
-                    return new DateTime(DateTime.Now.Year, this.RevisionMonth, 1);
+                    return new DateTime(DateTime.Now.Year, this.RevisionMonth, 1).AddMonths(1).AddDays(-1);
                 }
                 else
                 {
-                    return new DateTime((DateTime.Now.Year + 1), this.RevisionMonth, 1);
+                    return new DateTime((DateTime.Now.Year + 1), this.RevisionMonth, 1).AddMonths(1).AddDays(-1);
                 }
             }
         }

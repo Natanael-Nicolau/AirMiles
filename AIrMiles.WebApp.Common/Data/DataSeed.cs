@@ -239,17 +239,17 @@ namespace AIrMiles.WebApp.Common.Data
                 user = await _userRepository.GetUserByEmailAsync("basicclient@yopmail.com");
                 if (user != null)
                 {
-                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ExtendedMiles = 0, ConvertedMiles = 0, RevisionMonth = DateTime.Now.Month, TransferedMiles = 0, TotalFlights = 0 });
+                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ExtendedMiles = 0, ConvertedMiles = 0, RevisionMonth = 10, TransferedMiles = 0, TotalFlights = 0 });
                 }
                 user = await _userRepository.GetUserByEmailAsync("silverclient@yopmail.com");
                 if (user != null)
                 {
-                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ExtendedMiles = 0, ConvertedMiles = 0, RevisionMonth = DateTime.Now.Month, TransferedMiles = 0, TotalFlights = 0 });
+                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ExtendedMiles = 0, ConvertedMiles = 0, RevisionMonth = 11, TransferedMiles = 0, TotalFlights = 0 });
                 }
                 user = await _userRepository.GetUserByEmailAsync("goldclient@yopmail.com");
                 if (user != null)
                 {
-                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ExtendedMiles = 0, ConvertedMiles = 0, RevisionMonth = DateTime.Now.Month, TransferedMiles = 0, TotalFlights = 0 });
+                    _context.Clients.Add(new Client { UserId = user.Id, BoughtMiles = 0, IsAproved = true, IsDeleted = false, ExtendedMiles = 0, ConvertedMiles = 0, RevisionMonth = 12, TransferedMiles = 0, TotalFlights = 0 });
                 }
                 await _context.SaveChangesAsync();
             }
@@ -263,8 +263,8 @@ namespace AIrMiles.WebApp.Common.Data
             {
                 _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 25000 });
                 _context.Miles.Add(new Mile { ClientId = 1, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 25000 });
-                _context.Miles.Add(new Mile { ClientId = 2, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 65000 });
-                _context.Miles.Add(new Mile { ClientId = 2, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 69000 });
+                _context.Miles.Add(new Mile { ClientId = 2, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 69000 });
+                _context.Miles.Add(new Mile { ClientId = 2, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 65000 });
                 _context.Miles.Add(new Mile { ClientId = 3, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 1, Qtd = 50000 });
                 _context.Miles.Add(new Mile { ClientId = 3, ExpirationDate = DateTime.Now.AddYears(3), IsAproved = true, MilesTypeId = 2, Qtd = 50000 });
                 await _context.SaveChangesAsync();
@@ -291,7 +291,7 @@ namespace AIrMiles.WebApp.Common.Data
             if (_context.Airports.Count() == 0)
             {
                 _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "Francisco de Sá Carneiro Airport", IATA = "OPO", Latitude = 41.25m, Longitude = -8.68m, Country = "Portugal", City = "Porto", Region = "Europe" });
-                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "Humberto Delgado Airport (Lisbon Portela Airport)", IATA = "LIS", Latitude = 38.78m, Longitude = -9.14m, Country = "Portugal", City = "Lisbon", Region = "Europe" });
+                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "Humberto Delgado Airport", IATA = "LIS", Latitude = 38.78m, Longitude = -9.14m, Country = "Portugal", City = "Lisbon", Region = "Europe" });
                 _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "John F Kennedy International Airport", IATA = "JFK", Latitude = 40.64m, Longitude = -73.78m, Country = "United States", City = "New York", Region = "North America" });
             }
             if (_context.Flights.Count() == 0)

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Transfer Miles";
 }
 
-<form method="post" action="/Account/TransferMiles" class="form-example-area">
+<form method="post" action="/Miles/TransferMiles" class="form-example-area">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -17,6 +17,9 @@
                         </p>
                         <hr />
                     </div>
+                    <div class="text-success">
+                        @ViewBag.Message
+                    </div>
                     <input type="hidden" asp-for="Amount" />
                     <div class="priceCard">
                         <p>@Html.DisplayFor(model => model.Amount)<sup>Miles</sup></p>
@@ -28,9 +31,6 @@
                         </div>
                     </div>
                     <hr />
-                    <div class="text-success">
-                        @ViewBag.Message
-                    </div>
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-example-int mg-t-15">
                         <button type="submit" class="btn btn-success notika-btn-success">Transfer</button>
