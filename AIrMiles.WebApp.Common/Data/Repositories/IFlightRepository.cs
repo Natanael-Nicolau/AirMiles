@@ -10,5 +10,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
     {
 
         IQueryable<Flight> GetAllWithAirportsAndPartners();
+        Task<Flight> GetByIdWithAirportsAndPartnersAsync(int flightId);
+        Task<FlightClass> GetFlightClassByIdAsync(int id);
     }
 }

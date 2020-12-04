@@ -216,9 +216,14 @@ namespace AirMiles.FrontOffice.Controllers
 
             var tickets = _ticketRepository.GetAll().Where(t => t.IsAproved && t.ClientId == client.Id).ToList();
 
-            var flights = _flightRepository.GetAllWithAirportsAndPartners().Where(f => f.IsAproved).ToList();
+            foreach(var ticket in tickets)
+            {
+                ticket.Flight = await _flightRepository.GetByIdWithAirportsAndPartnersAsync(ticket.FlightId);
 
-            var model = _converterHelper.ToTicketIndexViewModel(user, tickets, flights);
+                ticket.FlightClass = await _flightRepository.GetFlightClassByIdAsync(ticket.FlightClassId);
+            }
+
+            var model = _converterHelper.ToTicketIndexViewModel(user, tickets);
 
             return View(model);
         }

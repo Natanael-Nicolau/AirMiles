@@ -25,5 +25,23 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
                 .Include(f => f.FlightCompany)
                 .AsNoTracking();
         }
+
+        public async Task<Flight> GetByIdWithAirportsAndPartnersAsync(int flightId)
+        {
+            return await _context.Flights
+                .Where(f => !f.IsDeleted && f.Id == flightId)
+                .Include(f => f.StartAirport)
+                .Include(f => f.EndAirport)
+                .Include(f => f.FlightCompany)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<FlightClass> GetFlightClassByIdAsync(int id)
+        {
+            return await _context.FlightClasses
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace AirMiles.FrontOffice.Helpers
 
         IEnumerable<Balance_MovementsViewModel> ToBalanceMovementsViewModel(List<Transaction> transactions);
 
-        IEnumerable<TicketViewModel> ToTicketIndexViewModel(User user, List<Ticket> tickets, List<Flight> flights);
+        IEnumerable<TicketViewModel> ToTicketIndexViewModel(User user, List<Ticket> tickets);
 
         Mile ToMile(BuyMilesViewModel model, int clientId, int extraYears);
 

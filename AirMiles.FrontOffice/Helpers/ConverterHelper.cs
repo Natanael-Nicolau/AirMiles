@@ -67,57 +67,27 @@ namespace AirMiles.FrontOffice.Helpers
             return model;
         }
 
-        public IEnumerable<TicketViewModel> ToTicketIndexViewModel(User user, List<Ticket> tickets, List<Flight> flights)
+        public IEnumerable<TicketViewModel> ToTicketIndexViewModel(User user, List<Ticket> tickets)
         {
             var model = new List<TicketViewModel>();
 
             foreach (var ticket in tickets)
             {
-                foreach(var flight in flights)
+                var item = new TicketViewModel
                 {
-                    if(ticket.FlightId == flight.Id)
-                    {
-                        var item = new TicketViewModel
-                        {
-                            FullName = user.FullName,
-                            Id = ticket.Id,
-                            Seat = ticket.Seat,
-                            Price = ticket.Price,
-                            StartAirport = flight.StartAirport.Name,
-                            EndAirport = flight.EndAirport.Name,
-                            Company = flight.FlightCompany.Name,
-                            FlightStart = flight.FlightStart,
-                            FlightEnd = flight.FlightEnd,
-                        };
+                    FullName = user.FullName,
+                    Id = ticket.Id,
+                    Seat = ticket.Seat,
+                    FlightClass = ticket.FlightClass.Description,
+                    Price = ticket.Price,
+                    StartAirport = ticket.Flight.StartAirport.Name,
+                    EndAirport = ticket.Flight.EndAirport.Name,
+                    Company = ticket.Flight.FlightCompany.Name,
+                    FlightStart = ticket.Flight.FlightStart,
+                    FlightEnd = ticket.Flight.FlightEnd
+                };
 
-                        if (ticket.FlightClassId == 1)
-                        {
-                            item.FlightClass = "Discount";
-                        }
-                        else if (ticket.FlightClassId == 2)
-                        {
-                            item.FlightClass = "Basic";
-                        }
-                        else if (ticket.FlightClassId == 3)
-                        {
-                            item.FlightClass = "Classic";
-                        }
-                        else if (ticket.FlightClassId == 4)
-                        {
-                            item.FlightClass = "Plus";
-                        }
-                        else if (ticket.FlightClassId == 5)
-                        {
-                            item.FlightClass = "Executive";
-                        }
-                        else if (ticket.FlightClassId == 6)
-                        {
-                            item.FlightClass = "Top Executive";
-                        }
-
-                        model.Add(item);
-                    }
-                }
+                model.Add(item);
             }
 
             return model;
