@@ -296,18 +296,18 @@ namespace AIrMiles.WebApp.Common.Data
             }
             if (_context.Flights.Count() == 0)
             {
-                _context.Flights.Add(new Flight { StartAirportId = 1, EndAirportId = 2, FlightStart = DateTime.Now.AddDays(2), FlightEnd = DateTime.Now.AddDays(2).AddMinutes(60), BaseMilesPrice = 500, FlightCompanyId = 1, IsAproved = true, IsDeleted = false });
-                _context.Flights.Add(new Flight { StartAirportId = 2, EndAirportId = 1, FlightStart = DateTime.Now.AddDays(3), FlightEnd = DateTime.Now.AddDays(3).AddMinutes(60), BaseMilesPrice = 500, FlightCompanyId = 1, IsAproved = false, IsDeleted = false });
-                _context.Flights.Add(new Flight { StartAirportId = 1, EndAirportId = 3, FlightStart = DateTime.Now.AddDays(2), FlightEnd = DateTime.Now.AddDays(2).AddMinutes(60), BaseMilesPrice = 1000, FlightCompanyId = 1, IsAproved = false, IsDeleted = false });
-                _context.Flights.Add(new Flight { StartAirportId = 3, EndAirportId = 1, FlightStart = DateTime.Now.AddDays(3), FlightEnd = DateTime.Now.AddDays(3).AddMinutes(60), BaseMilesPrice = 1000, FlightCompanyId = 1, IsAproved = true, IsDeleted = false });
+                _context.Flights.Add(new Flight { StartAirportId = 1, EndAirportId = 2, FlightStart = new DateTime(2020, 12, 3, 22, 0, 0), FlightEnd = new DateTime(2020, 12, 3, 23, 0, 0), BaseMilesPrice = 4000, FlightCompanyId = 1, IsAproved = true, IsDeleted = false });
+                _context.Flights.Add(new Flight { StartAirportId = 2, EndAirportId = 1, FlightStart = new DateTime(2020, 12, 3, 22, 0, 0), FlightEnd = new DateTime(2020, 12, 3, 23, 0, 0), BaseMilesPrice = 4000, FlightCompanyId = 1, IsAproved = false, IsDeleted = false });
+                _context.Flights.Add(new Flight { StartAirportId = 1, EndAirportId = 3, FlightStart = new DateTime(2020, 12, 3, 17, 0, 0), FlightEnd = new DateTime(2020, 12, 3, 23, 0, 0), BaseMilesPrice = 10000, FlightCompanyId = 1, IsAproved = false, IsDeleted = false });
+                _context.Flights.Add(new Flight { StartAirportId = 3, EndAirportId = 1, FlightStart = new DateTime(2020, 12, 3, 17, 0, 0), FlightEnd = new DateTime(2020, 12, 3, 23, 0, 0), BaseMilesPrice = 10000, FlightCompanyId = 1, IsAproved = true, IsDeleted = false });
                 await _context.SaveChangesAsync();
             }
             if (_context.Tickets.Count() == 0)
             {
-                _context.Tickets.Add(new Ticket { FlightId = 1, FlightClassId = 2, ClientId = 1, Seat = null, IsAproved = false,  Price = 500, FirstName = "Andy", LastName="Smith" });
-                _context.Tickets.Add(new Ticket { FlightId = 3, FlightClassId = 1, ClientId = 1, Seat = null, IsAproved = false, Price = 900, FirstName = "Andy", LastName = "Smith" });
-                _context.Tickets.Add(new Ticket { FlightId = 2, FlightClassId = 4, ClientId = 2, Seat = "C3", IsAproved = true, Price = 750, FirstName = "Silver", LastName = "Surfer" });
-                _context.Tickets.Add(new Ticket { FlightId = 4, FlightClassId = 5, ClientId = 3, Seat = "D4", IsAproved = true, Price = 2000, FirstName = "Gold", LastName = "Roger" });
+                _context.Tickets.Add(new Ticket { FlightId = 1, FlightClassId = 2, ClientId = 1, Seat = null, IsAproved = false,  Price = 4000, FirstName = "Andy", LastName="Smith" });
+                _context.Tickets.Add(new Ticket { FlightId = 3, FlightClassId = 1, ClientId = 1, Seat = null, IsAproved = false, Price = 7500, FirstName = "Andy", LastName = "Smith" });
+                _context.Tickets.Add(new Ticket { FlightId = 1, FlightClassId = 4, ClientId = 2, Seat = "C3", IsAproved = true, Price = 6000, FirstName = "Silver", LastName = "Surfer" });
+                _context.Tickets.Add(new Ticket { FlightId = 3, FlightClassId = 5, ClientId = 3, Seat = "D4", IsAproved = true, Price = 17500, FirstName = "Gold", LastName = "Roger" });
                 await _context.SaveChangesAsync();
             }
             if (_context.MilesRequests.Count() == 0)
