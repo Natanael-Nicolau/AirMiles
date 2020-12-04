@@ -18,7 +18,7 @@ let server = http.createServer((request, response) => {
   console.log('METHOD:', request.method);
 
   if(request.url == '/todayTickets') {
-    let sqlCommand = `SELECT CLientId, Fullname, StartRegion, EndRegion, StartIATA, EndIATA, FlightClass, StartDate, EndDate
+    let sqlCommand = `SELECT CLientId, Fullname, StartRegion, EndRegion, StartIATA, EndIATA, FlightClass, StartDate, EndDate, FlightCompanyName
               FROM Flights
               WHERE EndDate BETWEEN (NOW() - INTERVAL 1 DAY) and NOW();`
 
@@ -30,7 +30,7 @@ let server = http.createServer((request, response) => {
         console.log ('Error', error.message, error.stack);
         response.status(503).send('Can\'t connect to DataBase');
       }
-      response.end(JSON.stringify({results}));
+      response.end(JSON.stringify(results));
     });
   }
 });

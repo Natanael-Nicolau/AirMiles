@@ -68,7 +68,8 @@ namespace AirMiles.Master.Helpers
                 Latitude = airport.Latitude,
                 Longitude = airport.Longitude,
                 Country = airport.Country,
-                City = airport.City
+                City = airport.City,
+                Region = airport.Region
             };
         }
 
@@ -110,7 +111,8 @@ namespace AirMiles.Master.Helpers
                 Latitude = model.Latitude,
                 Longitude = model.Longitude,
                 Country = model.Country,
-                City = model.City
+                City = model.City,
+                Region = model.Region
             };
         }
 
@@ -166,7 +168,8 @@ namespace AirMiles.Master.Helpers
                 Id = airport.Id,
                 IsAproved = airport.IsAproved,
                 Latitude = airport.Latitude,
-                Longitude = airport.Longitude
+                Longitude = airport.Longitude,
+                Region = airport.Region
             };
         }
 

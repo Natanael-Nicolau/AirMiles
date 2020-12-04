@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AirMiles.Master.Helpers;
+using AirMiles.Master.Helpers.DailyUpdates;
 using AIrMiles.WebApp.Common.Data;
 using AIrMiles.WebApp.Common.Data.Entities;
 using AIrMiles.WebApp.Common.Data.Repositories;
@@ -66,7 +67,7 @@ namespace AirMiles.Master
             services.AddScoped<IMailHelper, MailHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<IImageHelper, ImageHelper>();
-
+            services.AddScoped<IDailyUpdateHelper, DailyUpdateHelper>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

@@ -39,12 +39,6 @@
         <i class="fa fa-lock"></i> Change Password
     </a>
 }
-@if (this.User.IsInRole("Admin"))
-{
-    <a asp-action="Delete" asp-route-email="@Model.Username" class="btn btn-danger">
-        <i class="fa fa-trash-o"></i> Delete
-    </a>
-}
 
 @section Scripts {
     <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>

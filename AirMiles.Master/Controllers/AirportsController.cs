@@ -46,6 +46,8 @@ namespace AirMiles.Master.Controllers
 
         }
 
+
+
         [Authorize(Roles = "Employee,Admin")]
         public IActionResult Create()
         {
@@ -123,6 +125,7 @@ namespace AirMiles.Master.Controllers
                 airportForUpdate.Country = model.Country;
                 airportForUpdate.City = model.City;
                 airportForUpdate.Name = model.Name;
+                airportForUpdate.Region = model.Region;
 
                 await _airportRepository.UpdateAsync(airportForUpdate);
                 ViewBag.Message = "Airport successfuly updated!";

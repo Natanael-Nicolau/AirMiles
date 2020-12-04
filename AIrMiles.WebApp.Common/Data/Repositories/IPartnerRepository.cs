@@ -10,5 +10,6 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
     public interface IPartnerRepository : IGenericRepository<Partner>
     {
         IEnumerable<SelectListItem> GetAllFlightCompanies();
+        Task<Partner> GetByNameAsync(string name);
     }
 }

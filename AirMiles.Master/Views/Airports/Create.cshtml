@@ -95,6 +95,29 @@
             }
 
             <!--LongitudeEnd-->
+            <!--Region-->
+
+            <div class="form-group">
+                <label asp-for="Region" class=" form-control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-globe"></i></div>
+                    <input asp-for="Region" class="form-control">
+                </div>
+            </div>
+
+
+            @if (ViewData.ModelState["Region"] != null && ViewData.ModelState["Region"].Errors.Any())
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Error</span>
+                    <span asp-validation-for="Region"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <!--RegionEnd-->
             <!--Country-->
 
             <div class="form-group">

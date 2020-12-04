@@ -1,4 +1,6 @@
 ﻿using AIrMiles.WebApp.Common.Data.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +21,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 
             return _context.Miles
                 .Where(m => m.MilesTypeId == 1 && m.ClientId == clientID && !m.IsDeleted)
+                .AsNoTracking()
                 .Sum(m => m.Qtd);
         }
 
@@ -70,6 +73,25 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
             await _context.SaveChangesAsync();
 
             return isSuccess;
+        }
+
+        public async Task DeleteExpiredMilesAsync()
+        {
+            var milesToRemove = _context.Miles
+                .Where(m => m.ExpirationDate <= DateTime.Now);
+
+            _context.RemoveRange(milesToRemove);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ResetClientStatusMiles(int clientId)
+        {
+            var clientStatusMiles = _context.Miles
+                .Where(m => m.ClientId == clientId && m.MilesTypeId == 1);
+
+
+            _context.RemoveRange(clientStatusMiles);
+            await _context.SaveChangesAsync();
         }
     }
 }

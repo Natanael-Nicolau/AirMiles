@@ -32,5 +32,8 @@ namespace AirMiles.Master.Models.Airports
 
         [Required]
         public string City { get; set; }
+
+        [Required]
+        public string Region { get; set; }
     }
 }

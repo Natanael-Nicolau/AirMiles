@@ -113,7 +113,7 @@
                 '<h3>BirthDate</h3>' +
                 '<input type="date" id="swal-BirthDate" value="@Model.BirthDate.Value.ToString("yyyy-MM-dd")" class="swal2-input">',
             focusConfirm: false,
-            preConfirm: () => {
+            preConfirm: (firstName, lastName, birthdate) => {
                 let nameRegex = new RegExp('[a-zA-Z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u024F]{2,50}')
 
                 if ($('#swal-FirstName').val() == '' || $('#swal-LastName').val() == '' || $('#swal-BirthDate').val() == '') {
@@ -128,7 +128,7 @@
                     Swal.showValidationMessage("Invalid Last Name");
                     return false;
                 }
-                else {
+                else {                                        
 
                     const formValues = { firstName: $('#swal-FirstName').val(), lastName: $('#swal-LastName').val(), birthDate: $('#swal-BirthDate').val() };
                     $.ajax({

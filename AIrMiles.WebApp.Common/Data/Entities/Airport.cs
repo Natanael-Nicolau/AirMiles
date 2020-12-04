@@ -22,6 +22,9 @@ namespace AIrMiles.WebApp.Common.Data.Entities
         public string Country { get; set; }
         public string City { get; set; }
 
+        public string Region { get; set; }
+
+
         [NotMapped]
         [Display(Name = "Location")]
         public string FullLocation => $"{City}, {Country}";

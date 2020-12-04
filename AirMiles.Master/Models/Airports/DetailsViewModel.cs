@@ -14,6 +14,6 @@ namespace AirMiles.Master.Models.Airports
         public string IATA { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
-
+        public string Region { get; set; }
     }
 }

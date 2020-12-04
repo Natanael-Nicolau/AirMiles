@@ -13,5 +13,8 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
         List<Mile> GetAllBonusMiles(int clientID);
 
         Task<bool> SpendMilesAsync(List<Mile> clientMiles, int milesToSpend);
+        Task DeleteExpiredMilesAsync();
+
+        Task ResetClientStatusMiles(int clientId);
     }
 }

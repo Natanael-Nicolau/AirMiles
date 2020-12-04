@@ -15,15 +15,18 @@ namespace AirMiles.Master.Controllers
     {
         private readonly IClientRepository _clientRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMileRepository _mileRepository;
         private readonly IConverterHelper _converterHelper;
 
         public ClientsController(
             IClientRepository clientRepository,
             IUserRepository userRepository,
+            IMileRepository mileRepository,
             IConverterHelper converterHelper)
         {
             _clientRepository = clientRepository;
             _userRepository = userRepository;
+            _mileRepository = mileRepository;
             _converterHelper = converterHelper;
         }
 
@@ -74,14 +77,15 @@ namespace AirMiles.Master.Controllers
 
             var model = _converterHelper.ToDetailsViewModel(client, status);
 
-            //TODO: change this after merge with Tiago
-            model.TotalStatusMiles = 5000;
-            model.TotalBonusMiles = 3000;
+            
+            model.TotalStatusMiles = _mileRepository.GetClientTotalStatusMiles(client.Id);
+            model.TotalBonusMiles = _mileRepository.GetClientTotalBonusMiles(client.Id);
 
             return View(model);
         }
 
         [Authorize(Roles = "Admin,SuperEmployee")]
+        [HttpPost]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -93,11 +97,6 @@ namespace AirMiles.Master.Controllers
             {
                 var client = await _clientRepository.GetByIdAsync(id.Value);
                 if (client == null)
-                {
-                    return NotFound();
-                }
-                var user = await _userRepository.GetUserByIdAsync(client.UserId);
-                if (user == null)
                 {
                     return NotFound();
                 }

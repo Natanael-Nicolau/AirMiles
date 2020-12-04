@@ -38,5 +38,14 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 
             return list;
         }
+
+        public async Task<Partner> GetByNameAsync(string name)
+        {
+            return await _context.Partners
+                .Where(p => p.Name == name)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+        }
     }
 }

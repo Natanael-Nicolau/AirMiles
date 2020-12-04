@@ -13,5 +13,6 @@ namespace AirMiles.Master.Helpers.DailyUpdates
         public string FlightClass { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public string FlightCompanyName { get; set; }
     }
 }

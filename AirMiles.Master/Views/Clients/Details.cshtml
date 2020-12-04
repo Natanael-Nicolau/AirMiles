@@ -71,7 +71,7 @@
     <a asp-action="Index" class="btn btn-secondary">
         <i class="fa fa-arrow-circle-left"></i> Back to List
     </a>
-    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+    <a onclick="deleteConfirm(@Model.Id)" class="btn btn-danger">
         <i class="fa fa-trash-o"></i> Delete
     </a>
 </div>
@@ -81,4 +81,48 @@
 
 @section Scripts {
     <script src="~/lib/bootstrap/vendors/chosen/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+    function deleteConfirm(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Clients")',
+                    type: 'Post',
+                    data: { id: id },
+                    success: function (result) {
+                        console.log(result);
+                        // Fire success modal
+                        Swal.fire(
+                            'Deleted!',
+                            'Client has been deleted.',
+                            'success'
+                        ).then((result) => {
+                            window.location.href = '@Url.Action("Index", "Clients")'
+                        });
+
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        console.log(result.responseText);
+                        Swal.fire(
+                            result.status.toString(),
+                            result.responseText,
+                            'error'
+                        )
+                    }
+
+                });
+            }
+        })
+    }
+
+    </script>
 }

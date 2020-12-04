@@ -1,0 +1,151 @@
+﻿@model IEnumerable<AirMiles.Master.Models.Tickets.ApprovalIndexViewModel>
+@{
+    ViewData["Title"] = "Flight Aprovals";
+    ViewData["ViewName"] = "Aprovals Index";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/vendors/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/lib/bootstrap/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
+
+<div class="content mt-3">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Flights</strong>
+                    </div>
+                    <div class="card-body">
+                        <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.StartIATA)</th>
+                                    <th>@Html.DisplayNameFor(model => model.EndIATA)</th>
+                                    <th>@Html.DisplayNameFor(model => model.StartTime)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Class)</th>
+                                    <th style="width: 270px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.StartIATA)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.EndIATA)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.StartTime)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Class)</td>
+                                        <td>
+                                            <a onclick="aproveConfirm(@item.Id)" class="btn btn-success"><i class="fa fa-check"> Aprove</i></a>
+                                            <a onclick="deleteConfirm(@item.Id)" class="btn btn-danger"><i class="fa fa-trash-o"></i> Reject</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_DataTableScriptsPartial");
+    }
+<script type="text/javascript">
+    function aproveConfirm(id) {
+        console.log(1);
+            Swal.fire({
+                title: 'Please select a seat',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'on'
+                },
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'You need to write something!'
+                    }
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Confirm',
+                showLoaderOnConfirm: true,
+                preConfirm: (seat) => {
+                    console.log(2);
+                    return fetch(`/Tickets/Aprove?id=${id}&seat=${seat}`)
+                        .then(response => {
+                            console.log(3);
+                            if (!response.ok) {
+                                console.log(response);
+                                throw new Error(response)
+                            }
+                            Swal.fire(
+                                'Aproved!',
+                                'Request has been aproved.',
+                                'success'
+                            ).then(() => {
+                                window.location.reload(true);
+                            });
+                                
+                        })
+                        .catch((response) => {
+                            console.log(response);
+                            console.log("ups");
+                            Swal.fire(
+                                response.status.toString(),
+                                response.responseText,
+                                'error'
+                            )
+                        });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            })
+
+    }
+
+
+    function deleteConfirm(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Tickets")',
+                    type: 'Get',
+                    data: { id: id },
+                    success: function (result) {
+                        console.log(result);
+                        // Fire success modal
+                        Swal.fire(
+                            'Deleted!',
+                            'Request has been deleted.',
+                            'success'
+                        ).then(() => {
+                            window.location.reload(true);
+                        });
+
+                    },
+                    error: function (result) {
+                        Swal.fire(
+                            result.status.toString(),
+                            result.responseText,
+                            'error'
+                        )
+                    }
+
+                });
+            }
+        })
+    }
+
+</script>
+}
+
+

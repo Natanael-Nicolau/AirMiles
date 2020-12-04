@@ -290,9 +290,9 @@ namespace AIrMiles.WebApp.Common.Data
             }
             if (_context.Airports.Count() == 0)
             {
-                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "Francisco de Sá Carneiro Airport", IATA = "OPO", Latitude = 41.25m, Longitude = -8.68m, Country = "Portugal", City = "Porto" });
-                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "Humberto Delgado Airport (Lisbon Portela Airport)", IATA = "LIS", Latitude = 38.78m, Longitude = -9.14m, Country = "Portugal", City = "Lisbon" });
-                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "John F Kennedy International Airport", IATA = "JFK", Latitude = 40.64m, Longitude = -73.78m, Country = "United States", City = "New York" });
+                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "Francisco de Sá Carneiro Airport", IATA = "OPO", Latitude = 41.25m, Longitude = -8.68m, Country = "Portugal", City = "Porto", Region = "Europe" });
+                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "Humberto Delgado Airport (Lisbon Portela Airport)", IATA = "LIS", Latitude = 38.78m, Longitude = -9.14m, Country = "Portugal", City = "Lisbon", Region = "Europe" });
+                _context.Airports.Add(new Airport { IsDeleted = false, IsAproved = true, Name = "John F Kennedy International Airport", IATA = "JFK", Latitude = 40.64m, Longitude = -73.78m, Country = "United States", City = "New York", Region = "North America" });
             }
             if (_context.Flights.Count() == 0)
             {
@@ -304,10 +304,10 @@ namespace AIrMiles.WebApp.Common.Data
             }
             if (_context.Tickets.Count() == 0)
             {
-                _context.Tickets.Add(new Ticket {FlightId = 1, FlightClassId = 2, ClientId = 1, Seat = "A1", Price = 500, FirstName = "Andy", LastName="Smith" });
-                _context.Tickets.Add(new Ticket { FlightId = 3, FlightClassId = 1, ClientId = 1, Seat = "B2", Price = 900, FirstName = "Andy", LastName = "Smith" });
-                _context.Tickets.Add(new Ticket { FlightId = 2, FlightClassId = 4, ClientId = 2, Seat = "C3", Price = 750, FirstName = "Silver", LastName = "Surfer" });
-                _context.Tickets.Add(new Ticket { FlightId = 4, FlightClassId = 5, ClientId = 3, Seat = "D4", Price = 2000, FirstName = "Gold", LastName = "Roger" });
+                _context.Tickets.Add(new Ticket { FlightId = 1, FlightClassId = 2, ClientId = 1, Seat = null, IsAproved = false,  Price = 500, FirstName = "Andy", LastName="Smith" });
+                _context.Tickets.Add(new Ticket { FlightId = 3, FlightClassId = 1, ClientId = 1, Seat = null, IsAproved = false, Price = 900, FirstName = "Andy", LastName = "Smith" });
+                _context.Tickets.Add(new Ticket { FlightId = 2, FlightClassId = 4, ClientId = 2, Seat = "C3", IsAproved = true, Price = 750, FirstName = "Silver", LastName = "Surfer" });
+                _context.Tickets.Add(new Ticket { FlightId = 4, FlightClassId = 5, ClientId = 3, Seat = "D4", IsAproved = true, Price = 2000, FirstName = "Gold", LastName = "Roger" });
                 await _context.SaveChangesAsync();
             }
             if (_context.MilesRequests.Count() == 0)

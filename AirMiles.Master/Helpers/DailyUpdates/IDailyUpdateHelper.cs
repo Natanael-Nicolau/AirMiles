@@ -8,5 +8,6 @@ namespace AirMiles.Master.Helpers.DailyUpdates
     public interface IDailyUpdateHelper
     {
         Task<int> CalculateTicketMilesAsync(TicketUpdateModel ticket);
+        double CalculateRegionModifier(string startRegion, string endRegion, string flightClass);
     }
 }

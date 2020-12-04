@@ -8,5 +8,7 @@ namespace AIrMiles.WebApp.Common.Data.Repositories
 {
     public interface ITicketRepository : IGenericRepository<Ticket>
     {
+        IQueryable<Ticket> GetAllWithFlightInfo();
+        Task DeleteOldTickets();
     }
 }
