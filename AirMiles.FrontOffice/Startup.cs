@@ -15,9 +15,12 @@ namespace AirMiles.FrontEnd
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -42,8 +45,14 @@ namespace AirMiles.FrontEnd
 
             services.AddDbContext<DataContext>(cfg =>
             {
-                cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
-                //cfg.UseSqlServer(this.Configuration.GetConnectionString("SQLPublishConnection"));
+                if (!_hostingEnvironment.IsDevelopment())
+                {
+                    cfg.UseSqlServer(this.Configuration.GetConnectionString("SQLPublishConnection"));
+                }
+                else
+                {
+                    cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
+                }
             });
             services.AddTransient<DataSeed>();
 
